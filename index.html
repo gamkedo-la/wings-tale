@@ -1,0 +1,89 @@
+<script>
+const GAME_W = 256;
+const GAME_H = 240;
+const PLAYER_DIM=12;
+const PLAYER_SPEED=15;
+var px, py;
+var enemyList=[];
+const ENEMY_DIM=7;
+const ENEMY_SPEED=5;
+var shotList=[];
+const SHOT_DIM=4;
+const SHOT_SPEED=7;
+window.onload = function() {
+	canvas=document.createElement("canvas");
+	canvas.width=GAME_W;
+	canvas.height=GAME_H;
+	document.body.appendChild(canvas);
+	context=canvas.getContext("2d");
+	setInterval(update,1000/30);
+	setInterval(spawn,30);
+	document.addEventListener('keydown',keyPush);
+	reset();
+}
+function reset() {
+	px=GAME_W/2;
+	py=GAME_H-PLAYER_DIM*2;
+	shotList = [];
+	enemyList = [];
+}
+function spawn() {
+	enemyList.push({x:(0.025+Math.random()*0.95)*canvas.width,y:0});
+}
+function update() {
+	context.fillStyle="black";
+	context.fillRect(0,0,canvas.width,canvas.height);
+	context.fillStyle="white";
+	context.fillRect(px-PLAYER_DIM/2,py-PLAYER_DIM/2,PLAYER_DIM,PLAYER_DIM);
+	context.fillStyle="lime";
+	for(var s=0;s<shotList.length;s++) {
+		shotList[s].y -= SHOT_SPEED;
+		context.fillRect(shotList[s].x-SHOT_DIM/2,shotList[s].y-SHOT_DIM/2,SHOT_DIM,SHOT_DIM);
+		for(var e=enemyList.length-1;e>=0;e--) {
+			var dx=Math.abs(enemyList[e].x-shotList[s].x);
+			var dy=Math.abs(enemyList[e].y-shotList[s].y);
+			var dist=Math.sqrt(dx*dx+dy*dy);
+			if(dist< (SHOT_DIM+ENEMY_DIM)/2) {
+				enemyList.splice(e,1);
+			}
+		}
+	}
+	context.fillStyle="red";
+	for(var e=0;e<enemyList.length;e++) {
+		enemyList[e].y += ENEMY_SPEED;
+		context.fillRect(enemyList[e].x-ENEMY_DIM/2,enemyList[e].y-ENEMY_DIM/2,ENEMY_DIM,ENEMY_DIM);
+		var dx=Math.abs(enemyList[e].x-px);
+		var dy=Math.abs(enemyList[e].y-py);
+		var dist=Math.sqrt(dx*dx+dy*dy);
+		if(dist< (PLAYER_DIM+ENEMY_DIM)/2) {
+			reset();
+			break;
+		}
+	}
+}
+function keyPush(evt) {
+	switch(evt.keyCode) {
+		case KEY_SPACE:
+			shotList.push({x:px,y:py});
+			break;
+		case KEY_LEFT:
+			px-=PLAYER_SPEED;
+			break;
+		case KEY_UP:
+			py-=PLAYER_SPEED;
+			break;
+		case KEY_RIGHT:
+			px+=PLAYER_SPEED;
+			break;
+		case KEY_DOWN:
+			py+=PLAYER_SPEED;
+			break;
+	}
+}
+
+const KEY_SPACE = 32;
+const KEY_UP = 38;
+const KEY_RIGHT = 39;
+const KEY_DOWN = 40;
+const KEY_LEFT = 37;
+</script>
