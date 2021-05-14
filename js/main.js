@@ -1,5 +1,6 @@
 var levelProgressInPixels = 0;
 var levelProgressRate = 0.45;
+var bgDrawY = 0; // also used for drawing and collision of surface enemies
 
 window.onload = function() {
 	setupCanvas();
@@ -19,11 +20,9 @@ function loadingDoneSoStartGame() {
 
 function animateSprites() {
 	animatePlayer();
-	for(var e=0;e<enemyList.length;e++) {
-		if(++enemyList[e].frame>=ENEMY_FRAMES) {
-			enemyList[e].frame = 0;
-		}
-	}
+	animateEnemies();
+	animateShots();
+	animateSurfaceEnemies();
 }
 
 function reset() {
@@ -31,6 +30,8 @@ function reset() {
 	py=GAME_H-PLAYER_DIM*2;
 	shotList = [];
 	enemyList = [];
+	surfaceEnemyList = [];
+	spawnSurfaceEnemies();
 }
 
 function enemyToShotCollision() {
@@ -59,11 +60,11 @@ function enemyToShotCollision() {
 function drawBackground() {
 	//context.fillStyle="#006994";
 	//context.fillRect(0,0,canvas.width,canvas.height);
-	var bgDrawY = -(images["level_island"].height-GAME_H)+levelProgressInPixels;
+	bgDrawY = -(images["level island"].height-GAME_H)+levelProgressInPixels;
 	if(bgDrawY>0) {
 		bgDrawY = 0;
 	}
-	context.drawImage(images["level_island"],0,bgDrawY);
+	context.drawImage(images["level island"],0,bgDrawY);
 }
 
 function update() {
@@ -71,11 +72,13 @@ function update() {
 
 	movePlayer();
 	moveShots();
+	moveSurfaceEnemies();
 	moveEnemies();
 
 	enemyToShotCollision();
 
 	drawBackground();
+	drawSurfaceEnemies();
 	drawPlayer();
 	drawShots();
 	drawEnemies();

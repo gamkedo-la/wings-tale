@@ -44,3 +44,11 @@ function moveEnemies() {
 		}
 	}
 }
+
+function animateEnemies() {
+	for(var e=0;e<enemyList.length;e++) {
+		if(++enemyList[e].frame>=ENEMY_FRAMES) {
+			enemyList[e].frame = 0;
+		}
+	}
+}

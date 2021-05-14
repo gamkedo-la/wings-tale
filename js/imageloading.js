@@ -4,8 +4,10 @@ function loadImages() {
     startedLoading = true
     const imageList = [
         {imgName: "player", theFile: "player.png"},
+        {imgName: "player shot", theFile: "playershot.png"},
         {imgName: "bug", theFile: "enemybug.png"},
-        {imgName: "level_island", theFile: "level-islands.png"},
+        {imgName: "turret", theFile: "enemyturret.png"},
+        {imgName: "level island", theFile: "level-islands.png"},
     ];
 
     picsToLoad = imageList.length;

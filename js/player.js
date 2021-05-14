@@ -13,6 +13,8 @@ var holdUp=false;
 var holdRight=false;
 var holdDown=false;
 var holdFire=false;
+var holdBomb=false;
+var wasHoldingBomb=false; // to tell when state toggles, since not repeat fire
 
 function drawPlayer() {
 	context.fillStyle="white";
@@ -63,6 +65,11 @@ function movePlayer() {
 		py=GAME_H-EDGE_MARGIN-1;
 	}
 
+
+	if(holdBomb && wasHoldingBomb != holdBomb) {
+		console.log("Not implemented: ground attack / drop bomb");
+	}
+	wasHoldingBomb = holdBomb;
 
 	if(holdFire) {
 		// pmx = partial momentum x, using part of current player speed to bunch up less
