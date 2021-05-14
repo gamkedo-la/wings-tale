@@ -2,7 +2,7 @@ var levelProgressInPixels = 0;
 var levelProgressRate = 0.45;
 var bgDrawY = 0; // also used for drawing and collision of surface enemies
 
-window.onload = function() {
+window.onload = function() { // discord repo check
 	setupCanvas();
 
 	if(debug_showHiddenCanvas) {
