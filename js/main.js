@@ -1,3 +1,5 @@
+var levelProgressInPixels = 0;
+var levelProgressRate = 0.45;
 
 window.onload = function() {
 	setupCanvas();
@@ -55,11 +57,18 @@ function enemyToShotCollision() {
 } // end of function
 
 function drawBackground() {
-	context.fillStyle="#006994";
-	context.fillRect(0,0,canvas.width,canvas.height);
+	//context.fillStyle="#006994";
+	//context.fillRect(0,0,canvas.width,canvas.height);
+	var bgDrawY = -(images["level_island"].height-GAME_H)+levelProgressInPixels;
+	if(bgDrawY>0) {
+		bgDrawY = 0;
+	}
+	context.drawImage(images["level_island"],0,bgDrawY);
 }
 
 function update() {
+	levelProgressInPixels += levelProgressRate;
+
 	movePlayer();
 	moveShots();
 	moveEnemies();
