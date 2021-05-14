@@ -23,5 +23,8 @@ function moveEnemies() {
 			reset();
 			break;
 		}
+		if(enemyList[e].y>GAME_H) {
+			enemyList[e].readyToRemove = true;
+		}
 	}
 }

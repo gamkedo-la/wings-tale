@@ -33,7 +33,7 @@ window.onload = function() {
 	}
 	setInterval(update,1000/30);
 	setInterval(spawnEnemy,30);
-	document.addEventListener('keydown',keyPush);
+	inputSetup();
 	reset();
 }
 
@@ -45,13 +45,23 @@ function reset() {
 }
 
 function enemyToShotCollision() {
-	for(var s=0;s<shotList.length;s++) {
+	for(var s=shotList.length-1;s>=0;s--) {
+		if(shotList[s].readyToRemove) { // out of bounds or otherwise
+			shotList.splice(s,1);
+			continue;
+		}
 		for(var e=enemyList.length-1;e>=0;e--) {
+			if(enemyList[e].readyToRemove) { // out of bounds or otherwise
+				enemyList.splice(e,1);
+				break;
+			}
 			var dx=Math.abs(enemyList[e].x-shotList[s].x);
 			var dy=Math.abs(enemyList[e].y-shotList[s].y);
 			var dist=dx+dy; // no need to bring sqrt into this, but correct would be Math.sqrt(dx*dx+dy*dy);
 			if(dist< (SHOT_DIM+ENEMY_DIM)/2) {
 				enemyList.splice(e,1);
+				shotList.splice(s,1);
+				break; // break since don't compare against other enemies for this removed shot
 			}
 		} // enemies
 	} // shots
@@ -61,6 +71,7 @@ function update() {
 	context.fillStyle="black";
 	context.fillRect(0,0,canvas.width,canvas.height);
 	
+	movePlayer();
 	moveShots();
 	moveEnemies();
 
@@ -72,4 +83,10 @@ function update() {
 
 	scaledCtx.drawImage(canvas, 0, 0, canvas.width, canvas.height,
         					    0, 0, scaledCanvas.width, scaledCanvas.height);
+
+	// text after stretch, for sharpness, proportion, readability
+	scaledCtx.fillStyle = "white";
+	// debugging list isn't growing, removed when expected etc.
+	scaledCtx.fillText("Shots: " + shotList.length,20,20);
+	scaledCtx.fillText("Enemies: " + enemyList.length,20,30);
 }
