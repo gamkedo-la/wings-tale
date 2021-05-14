@@ -11,8 +11,9 @@ function drawShots() {
 
 function moveShots() {
 	for(var s=0;s<shotList.length;s++) {
-		shotList[s].y -= SHOT_SPEED;
-		if(shotList[s].y<0) {
+		shotList[s].x += shotList[s].xv;
+		shotList[s].y += shotList[s].yv;
+		if(shotList[s].y<0 || shotList[s].x<0 || shotList[s].x>GAME_W || shotList[s].y>GAME_H) {
 			shotList[s].readyToRemove = true;
 		}
 	}

@@ -1,7 +1,8 @@
 const PLAYER_DIM = 12;
-const PLAYER_SPEED = 8;
+const PLAYER_SPEED = 3;
 const EDGE_MARGIN = PLAYER_DIM;
 var px, py;
+var pxv=0,pyv=0;
 
 var holdLeft=false;
 var holdUp=false;
@@ -17,17 +18,23 @@ function drawPlayer() {
 function movePlayer() {
 	// input handling
 	if(holdUp) {
-		py -= PLAYER_SPEED;
+		pyv = -PLAYER_SPEED;
 	}
 	if(holdRight) {
-		px += PLAYER_SPEED;
+		pxv = PLAYER_SPEED;
 	}
 	if(holdDown) {
-		py += PLAYER_SPEED;
+		pyv = PLAYER_SPEED;
 	}
 	if(holdLeft) {
-		px -= PLAYER_SPEED;
+		pxv = -PLAYER_SPEED;
 	}
+
+	px += pxv;
+	py += pyv;
+
+	pxv*=0.7;
+	pyv*=0.7;
 
 	// bounds check
 	if(px<EDGE_MARGIN) {
@@ -45,8 +52,12 @@ function movePlayer() {
 
 
 	if(holdFire) {
-		shotList.push({x:px-4,y:py});
-		shotList.push({x:px,y:py-1});
-		shotList.push({x:px+4,y:py});
+		// pmx = partial momentum x, using part of current player speed to bunch up less
+		var pmx = pxv * 0.1;
+		var pmy = pyv * (pyv > 0 ? 0.2 : 0.9);
+
+		shotList.push({x:px-4,y:py,xv:pmx-0.087*SHOT_SPEED,yv:pmy-0.996*SHOT_SPEED});
+		shotList.push({x:px,y:py-1,xv:pmx+0*SHOT_SPEED,yv:pmy-1*SHOT_SPEED});
+		shotList.push({x:px+4,y:py,xv:pmx+0.087*SHOT_SPEED,yv:pmy-0.996*SHOT_SPEED});
 	}
 }
