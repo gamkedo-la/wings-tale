@@ -1,8 +1,12 @@
 const PLAYER_DIM = 12;
+const PLAYER_FRAME_W = 13;
+const PLAYER_FRAME_H = 12;
+const PLAYER_FRAMES = 3;
 const PLAYER_SPEED = 3;
 const EDGE_MARGIN = PLAYER_DIM;
 var px, py;
 var pxv=0,pyv=0;
+var playerFrame=0;
 
 var holdLeft=false;
 var holdUp=false;
@@ -12,10 +16,19 @@ var holdFire=false;
 
 function drawPlayer() {
 	context.fillStyle="white";
-	context.fillRect(px-PLAYER_DIM/2,py-PLAYER_DIM/2,PLAYER_DIM,PLAYER_DIM);
+	//context.fillRect(px-PLAYER_DIM/2,py-PLAYER_DIM/2,PLAYER_DIM,PLAYER_DIM);
+
+	drawAnimFrame("player",px,py, playerFrame, PLAYER_FRAME_W,PLAYER_FRAME_H);
 }
 
-function movePlayer() {
+function animatePlayer() {
+	playerFrame++;
+	if(playerFrame>=PLAYER_FRAMES) {
+		playerFrame = 0;
+	}
+}
+
+function movePlayer() {	
 	// input handling
 	if(holdUp) {
 		pyv = -PLAYER_SPEED;

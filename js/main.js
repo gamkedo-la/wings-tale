@@ -1,40 +1,27 @@
-var debug_showHiddenCanvas = false;
-
-const GAME_W = 256;
-const GAME_H = 240;
-
-// note: 3:4 even though the game resolution isn't. same as on NES
-const SCALED_W = 800;
-const SCALED_H = 600;
-
-var scaledCanvas, scaledCtx;
-var canvas, context;
 
 window.onload = function() {
-	scaledCanvas = document.getElementById('showCanvas');
-	scaledCanvas.width=SCALED_W;
-	scaledCanvas.height=SCALED_H;
-	scaledCtx=scaledCanvas.getContext("2d");
-	
-	canvas=document.createElement("canvas");
-	canvas.width=GAME_W;
-	canvas.height=GAME_H;
-	context=canvas.getContext("2d");
-
-	context.mozImageSmoothingEnabled = false;
-	context.imageSmoothingEnabled = false;
-	context.msImageSmoothingEnabled = false;
-	scaledCtx.mozImageSmoothingEnabled = false;
-	scaledCtx.imageSmoothingEnabled = false;
-	scaledCtx.msImageSmoothingEnabled = false;
+	setupCanvas();
 
 	if(debug_showHiddenCanvas) {
 		document.body.appendChild(canvas); // to debug hidden canvas
 	}
-	setInterval(update,1000/30);
+	loadImages();
+}
+
+function loadingDoneSoStartGame() {
+	startDisplayIntervals();
 	setInterval(spawnEnemy,30);
 	inputSetup();
 	reset();
+}
+
+function animateSprites() {
+	animatePlayer();
+	for(var e=0;e<enemyList.length;e++) {
+		if(++enemyList[e].frame>=ENEMY_FRAMES) {
+			enemyList[e].frame = 0;
+		}
+	}
 }
 
 function reset() {
@@ -67,16 +54,19 @@ function enemyToShotCollision() {
 	} // shots
 } // end of function
 
-function update() {
-	context.fillStyle="black";
+function drawBackground() {
+	context.fillStyle="#006994";
 	context.fillRect(0,0,canvas.width,canvas.height);
-	
+}
+
+function update() {
 	movePlayer();
 	moveShots();
 	moveEnemies();
 
 	enemyToShotCollision();
 
+	drawBackground();
 	drawPlayer();
 	drawShots();
 	drawEnemies();
@@ -89,4 +79,8 @@ function update() {
 	// debugging list isn't growing, removed when expected etc.
 	scaledCtx.fillText("Shots: " + shotList.length,20,20);
 	scaledCtx.fillText("Enemies: " + enemyList.length,20,30);
+}
+
+function randRange(min,max) {
+	return min+Math.random()*(max-min);
 }
