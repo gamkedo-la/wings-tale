@@ -1,21 +1,60 @@
+<style>
+	canvas {
+        image-rendering: optimizeSpeed; /* Older versions of FF          */
+        image-rendering: -moz-crisp-edges; /* FF 6.0+                       */
+        image-rendering: -webkit-optimize-contrast; /* Safari                        */
+        image-rendering: -o-crisp-edges; /* OS X & Windows Opera (12.02+) */
+        image-rendering: pixelated; /* Awesome future-browsers       */
+        -ms-interpolation-mode: nearest-neighbor; /* IE                            */
+    }
+</style>
+<canvas id="showCanvas"></canvas>
 <script>
 const GAME_W = 256;
 const GAME_H = 240;
+
+// note: 3:4 even though the game resolution isn't. same as on NES
+const SCALED_W = 800;
+const SCALED_H = 600;
+
 const PLAYER_DIM=12;
 const PLAYER_SPEED=15;
 var px, py;
+
 var enemyList=[];
 const ENEMY_DIM=7;
-const ENEMY_SPEED=5;
+const ENEMY_SPEED=2;
+
 var shotList=[];
 const SHOT_DIM=4;
 const SHOT_SPEED=7;
+
+var debug_showHiddenCanvas = false;
+
+var scaledCanvas, scaledCtx;
+var canvas, context;
+
 window.onload = function() {
+	scaledCanvas = document.getElementById('showCanvas');
+	scaledCanvas.width=SCALED_W;
+	scaledCanvas.height=SCALED_H;
+	scaledCtx=scaledCanvas.getContext("2d");
+	
 	canvas=document.createElement("canvas");
 	canvas.width=GAME_W;
 	canvas.height=GAME_H;
-	document.body.appendChild(canvas);
 	context=canvas.getContext("2d");
+
+	context.mozImageSmoothingEnabled = false;
+	context.imageSmoothingEnabled = false;
+	context.msImageSmoothingEnabled = false;
+	scaledCtx.mozImageSmoothingEnabled = false;
+	scaledCtx.imageSmoothingEnabled = false;
+	scaledCtx.msImageSmoothingEnabled = false;
+
+	if(debug_showHiddenCanvas) {
+		document.body.appendChild(canvas); // to debug hidden canvas
+	}
 	setInterval(update,1000/30);
 	setInterval(spawn,30);
 	document.addEventListener('keydown',keyPush);
@@ -60,6 +99,9 @@ function update() {
 			break;
 		}
 	}
+
+	scaledCtx.drawImage(canvas, 0, 0, canvas.width, canvas.height,
+        					    0, 0, scaledCanvas.width, scaledCanvas.height);
 }
 function keyPush(evt) {
 	switch(evt.keyCode) {
