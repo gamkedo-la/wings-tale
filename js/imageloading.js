@@ -7,6 +7,7 @@ function loadImages() {
         {imgName: "player shot", theFile: "playershot.png"},
         {imgName: "bug", theFile: "enemybug.png"},
         {imgName: "turret", theFile: "enemyturret.png"},
+        {imgName: "defense_ring_unit", theFile: "defense_ring_unit.png"},
         {imgName: "level island", theFile: "level-islands.png"},
     ];
 
