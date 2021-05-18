@@ -5,25 +5,46 @@ var playerShotCommonFrame = 0;
 const PLAYER_SHOT_FRAMES = 4;
 
 function drawShots() {
-	context.fillStyle="lime";
 	for(var s=0;s<shotList.length;s++) {
-		context.fillRect(shotList[s].x-SHOT_DIM/2,shotList[s].y-SHOT_DIM/2,SHOT_DIM,SHOT_DIM);
-		drawAnimFrame("player shot",shotList[s].x,shotList[s].y, playerShotCommonFrame, SHOT_DIM,SHOT_DIM);
+		shotList[s].draw();
 	}
 }
 
 function moveShots() {
 	for(var s=0;s<shotList.length;s++) {
-		shotList[s].x += shotList[s].xv;
-		shotList[s].y += shotList[s].yv;
-		if(shotList[s].y<0 || shotList[s].x<0 || shotList[s].x>GAME_W || shotList[s].y>GAME_H) {
-			shotList[s].readyToRemove = true;
-		}
+		shotList[s].move();
 	}
 }
 
 function animateShots() {
 	if(++playerShotCommonFrame>=PLAYER_SHOT_FRAMES) {
 		playerShotCommonFrame = 0;
+	}
+}
+
+// to go from -5 to "5 degrees left of player ship facing north"
+function degToShipRad(degAng) {
+	return ((degAng-90) * Math.PI/180.0);
+}
+
+// px+4,py,SHOT_SPEED,5.0,pmx,pmy
+function shotClass(startX,startY, totalSpeed, angle, momentumX,momentumY) {
+	this.x = startX;
+	this.y = startY;
+	this.ang = degToShipRad(angle);
+	this.xv = momentumX + Math.cos(this.ang)*totalSpeed;
+	this.yv = momentumY + Math.sin(this.ang)*totalSpeed;
+	this.readyToRemove = false;
+
+	this.move = function() {
+		this.x += this.xv;
+		this.y += this.yv;
+		if(this.y<0 || this.x<0 || this.x>GAME_W || this.y>GAME_H) {
+			this.readyToRemove = true;
+		}
+	}
+
+	this.draw = function() {
+		drawAnimFrame("player shot",this.x,this.y, playerShotCommonFrame, SHOT_DIM,SHOT_DIM);
 	}
 }

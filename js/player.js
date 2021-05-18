@@ -87,8 +87,11 @@ function movePlayer() {
 		var pmx = pxv * 0.1;
 		var pmy = pyv * (pyv > 0 ? 0.2 : 0.9);
 
-		shotList.push({x:px-4,y:py,xv:pmx-0.087*SHOT_SPEED,yv:pmy-0.996*SHOT_SPEED});
-		shotList.push({x:px,y:py-1,xv:pmx+0*SHOT_SPEED,yv:pmy-1*SHOT_SPEED});
-		shotList.push({x:px+4,y:py,xv:pmx+0.087*SHOT_SPEED,yv:pmy-0.996*SHOT_SPEED});
+		var newShot = new shotClass(px-4,py,SHOT_SPEED,-5.0,pmx,pmy);
+		shotList.push(newShot);
+		newShot = new shotClass(px,py-1,SHOT_SPEED,0.0,pmx,pmy);
+		shotList.push(newShot);
+		newShot = new shotClass(px+4,py,SHOT_SPEED,5.0,pmx,pmy);
+		shotList.push(newShot);
 	}
 }
