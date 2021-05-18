@@ -11,6 +11,7 @@ const KEY_UP = 38;
 const KEY_RIGHT = 39;
 const KEY_DOWN = 40;
 const KEY_LEFT = 37;
+const KEY_PLUS = 187;
 
 function keyPush(evt) {
 	keyHoldUpdate(evt,true);
@@ -44,6 +45,11 @@ function keyHoldUpdate(evt, setTo) {
 			break;
 		case KEY_DOWN:
 			p1.holdDown = setTo;
+			break;
+		case KEY_PLUS:
+			if (!setTo) {
+				levelProgressInPixels += images[currentLevelImageName].height / 10;
+			}
 			break;
 		case KEY_C:
 			if(setTo == false) { // key relase only, to avoid repeats

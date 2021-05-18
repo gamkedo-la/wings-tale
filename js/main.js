@@ -1,6 +1,7 @@
 var levelProgressInPixels = 0;
 var levelProgressRate = 0.45;
 var bgDrawY = 0; // also used for drawing and collision of surface enemies
+var currentLevelImageName = "level island"
 
 var p1 = new playerClass();
 
@@ -29,6 +30,7 @@ function animateSprites() {
 
 function reset() {
 	p1.reset();
+	levelProgressInPixels = 0
 	shotList = [];
 	enemyList = [];
 	surfaceEnemyList = [];
@@ -59,12 +61,12 @@ function enemyToShotCollision() {
 } // end of function
 
 function drawBackground() {
-	bgDrawY = (images["level island"].height-GAME_H)-levelProgressInPixels;
+	bgDrawY = (images[currentLevelImageName].height-GAME_H)-levelProgressInPixels;
 	if(bgDrawY<0) {
 		bgDrawY = 0;
 	}
 
-	context.drawImage(images["level island"],0,bgDrawY,GAME_W,GAME_H,
+	context.drawImage(images[currentLevelImageName],0,bgDrawY,GAME_W,GAME_H,
 											 0,0,GAME_W,GAME_H);
 }
 
@@ -94,7 +96,7 @@ function update() {
 	scaledCtx.fillText("DEBUG/TEMPORARY TEXT",20,debugLineY+=debugLineSkip);
 	scaledCtx.fillText("C key: upgrade player shot, now: "+p1.shotsNumber,20,debugLineY+=debugLineSkip);
 	scaledCtx.fillText("V key: reset player shot",20,debugLineY+=debugLineSkip);
-	var percProgress = Math.floor( 100* levelProgressInPixels / (images["level island"].height-GAME_H));
+	var percProgress = Math.floor( 100* levelProgressInPixels / (images[currentLevelImageName].height-GAME_H));
 	if(percProgress>100) {
 		percProgress = 100;
 	}
