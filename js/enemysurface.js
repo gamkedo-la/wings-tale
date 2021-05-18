@@ -33,7 +33,7 @@ function surfaceEnemyClass(startX,startY) {
 	this.y = startY;
 	this.frame = Math.random()*SURFACE_ENEMY_FRAMES;
 	this.draw = function() {
-		drawAnimFrame("turret",this.x,this.y+bgDrawY, this.frame, SURFACE_ENEMY_DIM,SURFACE_ENEMY_DIM);
+		drawAnimFrame("turret",this.x,this.y-bgDrawY, this.frame, SURFACE_ENEMY_DIM,SURFACE_ENEMY_DIM);
 	}
 
 	this.move = function() {

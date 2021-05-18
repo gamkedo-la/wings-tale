@@ -59,13 +59,13 @@ function enemyToShotCollision() {
 } // end of function
 
 function drawBackground() {
-	//context.fillStyle="#006994";
-	//context.fillRect(0,0,canvas.width,canvas.height);
-	bgDrawY = -(images["level island"].height-GAME_H)+levelProgressInPixels;
-	if(bgDrawY>0) {
+	bgDrawY = (images["level island"].height-GAME_H)-levelProgressInPixels;
+	if(bgDrawY<0) {
 		bgDrawY = 0;
 	}
-	context.drawImage(images["level island"],0,bgDrawY);
+
+	context.drawImage(images["level island"],0,bgDrawY,GAME_W,GAME_H,
+											 0,0,GAME_W,GAME_H);
 }
 
 function update() {
