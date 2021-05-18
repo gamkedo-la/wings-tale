@@ -6,12 +6,16 @@ const PLAYER_SPEED = 3;
 const EDGE_MARGIN = PLAYER_DIM;
 const DFRING_RADIUS = 10;
 
+var shotDegSpread = 3.7;
+
 function playerClass() {
 	this.x; this.y;
 	this.xv=0; this.yv=0;
 	this.dfRingX; this.dfRingY;
 	this.dfRingAngle = 0;
 	this.dfRingAngularSpeed = 2;
+
+	this.shotsNumber = 1;
 
 	this.frame=0;
 
@@ -85,12 +89,12 @@ function playerClass() {
 			var pmx = this.xv * 0.1;
 			var pmy = this.yv * (this.yv > 0 ? 0.2 : 0.9);
 
-			var newShot = new shotClass(this.x-4,this.y,SHOT_SPEED,-5.0,pmx,pmy);
-			shotList.push(newShot);
-			newShot = new shotClass(this.x,this.y-1,SHOT_SPEED,0.0,pmx,pmy);
-			shotList.push(newShot);
-			newShot = new shotClass(this.x+4,this.y,SHOT_SPEED,5.0,pmx,pmy);
-			shotList.push(newShot);
+			var newShot, shotAngSpan = -(this.shotsNumber-1)*(shotDegSpread*0.5);
+
+			for(var i=0;i<this.shotsNumber;i++) {
+				newShot = new shotClass(this.x,this.y,SHOT_SPEED,shotAngSpan+shotDegSpread*i,pmx,pmy);
+				shotList.push(newShot);
+			}
 		}
 	}
 

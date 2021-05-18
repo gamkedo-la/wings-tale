@@ -29,9 +29,9 @@ function degToShipRad(degAng) {
 
 // px+4,py,SHOT_SPEED,5.0,pmx,pmy
 function shotClass(startX,startY, totalSpeed, angle, momentumX,momentumY) {
-	this.x = startX;
-	this.y = startY;
 	this.ang = degToShipRad(angle);
+	this.x = startX+Math.cos(this.ang)*12; // for lateral spacing when there's a spread
+	this.y = startY;
 	this.xv = momentumX + Math.cos(this.ang)*totalSpeed;
 	this.yv = momentumY + Math.sin(this.ang)*totalSpeed;
 	this.readyToRemove = false;

@@ -90,8 +90,11 @@ function update() {
 	// text after stretch, for sharpness, proportion, readability
 	scaledCtx.fillStyle = "white";
 	// debugging list isn't growing, removed when expected etc.
-	scaledCtx.fillText("Shots: " + shotList.length,20,20);
-	scaledCtx.fillText("Enemies: " + enemyList.length,20,30);
+	var debugLineY = 20;var debugLineSkip = 10;
+	scaledCtx.fillText("DEBUG/TEMPORARY TEXT",20,debugLineY+=debugLineSkip);
+	scaledCtx.fillText("C key: upgrade player shot, now: "+p1.shotsNumber,20,debugLineY+=debugLineSkip);
+	scaledCtx.fillText("V key: reset player shot",20,debugLineY+=debugLineSkip);
+	scaledCtx.fillText("Level progress: " + Math.floor( 100* levelProgressInPixels / (images["level island"].height-GAME_H))+"%",20,debugLineY+=debugLineSkip);
 }
 
 function randRange(min,max) {
