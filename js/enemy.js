@@ -33,6 +33,7 @@ function animateEnemies() {
 	}
 }
 
+ // note: so far, not yet a general enemy class, pretty specific to this enemy. we can generalize it when we add more types
 function enemyClass() {
 	this.startX = this.x = (0.025+Math.random()*0.95)*canvas.width;
 	this.y = -ENEMY_DIM;
