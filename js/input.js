@@ -23,23 +23,23 @@ function keyHoldUpdate(evt, setTo) {
 	var validGameKey = true;
 	switch(evt.keyCode) {
 		case KEY_X:
-			holdBomb = setTo;
+			p1.holdBomb = setTo;
 			break;
 		case KEY_Z:
 		case KEY_SPACE:
-			holdFire = setTo;
+			p1.holdFire = setTo;
 			break;
 		case KEY_LEFT:
-			holdLeft = setTo;
+			p1.holdLeft = setTo;
 			break;
 		case KEY_UP:
-			holdUp = setTo;
+			p1.holdUp = setTo;
 			break;
 		case KEY_RIGHT:
-			holdRight = setTo;
+			p1.holdRight = setTo;
 			break;
 		case KEY_DOWN:
-			holdDown = setTo;
+			p1.holdDown = setTo;
 			break;
 		default:
 			validGameKey = false;

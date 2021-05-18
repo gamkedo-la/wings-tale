@@ -2,6 +2,8 @@ var levelProgressInPixels = 0;
 var levelProgressRate = 0.45;
 var bgDrawY = 0; // also used for drawing and collision of surface enemies
 
+var p1 = new playerClass();
+
 window.onload = function() { // discord repo check
 	setupCanvas();
 
@@ -19,15 +21,14 @@ function loadingDoneSoStartGame() {
 }
 
 function animateSprites() {
-	animatePlayer();
+	p1.animate();
 	animateEnemies();
 	animateShots();
 	animateSurfaceEnemies();
 }
 
 function reset() {
-	px=GAME_W/2;
-	py=GAME_H-PLAYER_DIM*2;
+	p1.reset();
 	shotList = [];
 	enemyList = [];
 	surfaceEnemyList = [];
@@ -70,7 +71,7 @@ function drawBackground() {
 function update() {
 	levelProgressInPixels += levelProgressRate;
 
-	movePlayer();
+	p1.move();
 	moveShots();
 	moveSurfaceEnemies();
 	moveEnemies();
@@ -79,7 +80,7 @@ function update() {
 
 	drawBackground();
 	drawSurfaceEnemies();
-	drawPlayer();
+	p1.draw();
 	drawShots();
 	drawEnemies();
 

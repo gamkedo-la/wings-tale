@@ -5,93 +5,99 @@ const PLAYER_FRAMES = 3;
 const PLAYER_SPEED = 3;
 const EDGE_MARGIN = PLAYER_DIM;
 const DFRING_RADIUS = 10;
-var px, py;
-var pxv=0,pyv=0;
-var dfRingX, dfRingY;
-var dfRingAngle = 0;
-var dfRingAngularSpeed = 2;
 
-var playerFrame=0;
+function playerClass() {
+	this.x; this.y;
+	this.xv=0; this.yv=0;
+	this.dfRingX; this.dfRingY;
+	this.dfRingAngle = 0;
+	this.dfRingAngularSpeed = 2;
 
-var holdLeft=false;
-var holdUp=false;
-var holdRight=false;
-var holdDown=false;
-var holdFire=false;
-var holdBomb=false;
-var wasHoldingBomb=false; // to tell when state toggles, since not repeat fire
+	this.frame=0;
 
-function drawPlayer() {
-	context.fillStyle="white";
-	//context.fillRect(px-PLAYER_DIM/2,py-PLAYER_DIM/2,PLAYER_DIM,PLAYER_DIM);
+	this.holdLeft=false;
+	this.holdUp=false;
+	this.holdRight=false;
+	this.holdDown=false;
+	this.holdFire=false;
+	this.holdBomb=false;
+	this.wasHoldingBomb=false; // to tell when state toggles, since not repeat fire
 
-	drawAnimFrame("player",px,py, playerFrame, PLAYER_FRAME_W,PLAYER_FRAME_H);
-	drawAnimFrame("defense_ring_unit", dfRingX, dfRingY, playerFrame, 6, 6);
-}
-
-function animatePlayer() {
-	playerFrame++;
-	if(playerFrame>=PLAYER_FRAMES) {
-		playerFrame = 0;
-	}
-}
-
-function movePlayer() {	
-	// input handling
-	if(holdUp) {
-		pyv = -PLAYER_SPEED;
-	}
-	if(holdRight) {
-		pxv = PLAYER_SPEED;
-	}
-	if(holdDown) {
-		pyv = PLAYER_SPEED;
-	}
-	if(holdLeft) {
-		pxv = -PLAYER_SPEED;
+	this.reset = function() {
+		this.x=GAME_W/2;
+		this.y=GAME_H-PLAYER_DIM*2;
+		this.xv=this.yv=0;
 	}
 
-	px += pxv;
-	py += pyv;
-
-	pxv*=0.7;
-	pyv*=0.7;
-
-	dfRingX = px + DFRING_RADIUS * Math.cos(dfRingAngle);
-	dfRingY = py + DFRING_RADIUS * Math.sin(dfRingAngle);
-
-	dfRingAngle+=dfRingAngularSpeed;
-
-	// bounds check
-	if(px<EDGE_MARGIN) {
-		px=EDGE_MARGIN;
-	}
-	if(px>=GAME_W-EDGE_MARGIN) {
-		px=GAME_W-EDGE_MARGIN-1;
-	}
-	if(py<EDGE_MARGIN) {
-		py=EDGE_MARGIN;
-	}
-	if(py>=GAME_H-EDGE_MARGIN) {
-		py=GAME_H-EDGE_MARGIN-1;
+	this.draw = function() {
+		drawAnimFrame("player",this.x,this.y, this.frame, PLAYER_FRAME_W,PLAYER_FRAME_H);
+		drawAnimFrame("defense_ring_unit", this.dfRingX, this.dfRingY, this.frame, 6, 6);
 	}
 
+	this.move = function() {
+		// input handling
+		if(this.holdUp) {
+			this.yv = -PLAYER_SPEED;
+		}
+		if(this.holdRight) {
+			this.xv = PLAYER_SPEED;
+		}
+		if(this.holdDown) {
+			this.yv = PLAYER_SPEED;
+		}
+		if(this.holdLeft) {
+			this.xv = -PLAYER_SPEED;
+		}
 
-	if(holdBomb && wasHoldingBomb != holdBomb) {
-		console.log("Not implemented: ground attack / drop bomb");
+		this.x += this.xv;
+		this.y += this.yv;
+
+		this.xv*=0.7;
+		this.yv*=0.7;
+
+		this.dfRingX = this.x + DFRING_RADIUS * Math.cos(this.dfRingAngle);
+		this.dfRingY = this.y + DFRING_RADIUS * Math.sin(this.dfRingAngle);
+
+		this.dfRingAngle+=this.dfRingAngularSpeed;
+
+		// bounds check
+		if(this.x<EDGE_MARGIN) {
+			this.x=EDGE_MARGIN;
+		}
+		if(this.x>=GAME_W-EDGE_MARGIN) {
+			this.x=GAME_W-EDGE_MARGIN-1;
+		}
+		if(this.y<EDGE_MARGIN) {
+			this.y=EDGE_MARGIN;
+		}
+		if(this.y>=GAME_H-EDGE_MARGIN) {
+			this.y=GAME_H-EDGE_MARGIN-1;
+		}
+
+
+		if(this.holdBomb && this.wasHoldingBomb != this.holdBomb) {
+			console.log("Not implemented: ground attack / drop bomb");
+		}
+		this.wasHoldingBomb = this.holdBomb;
+
+		if(this.holdFire) {
+			// pmx = partial momentum x, using part of current player speed to bunch up less
+			var pmx = this.xv * 0.1;
+			var pmy = this.yv * (this.yv > 0 ? 0.2 : 0.9);
+
+			var newShot = new shotClass(this.x-4,this.y,SHOT_SPEED,-5.0,pmx,pmy);
+			shotList.push(newShot);
+			newShot = new shotClass(this.x,this.y-1,SHOT_SPEED,0.0,pmx,pmy);
+			shotList.push(newShot);
+			newShot = new shotClass(this.x+4,this.y,SHOT_SPEED,5.0,pmx,pmy);
+			shotList.push(newShot);
+		}
 	}
-	wasHoldingBomb = holdBomb;
 
-	if(holdFire) {
-		// pmx = partial momentum x, using part of current player speed to bunch up less
-		var pmx = pxv * 0.1;
-		var pmy = pyv * (pyv > 0 ? 0.2 : 0.9);
-
-		var newShot = new shotClass(px-4,py,SHOT_SPEED,-5.0,pmx,pmy);
-		shotList.push(newShot);
-		newShot = new shotClass(px,py-1,SHOT_SPEED,0.0,pmx,pmy);
-		shotList.push(newShot);
-		newShot = new shotClass(px+4,py,SHOT_SPEED,5.0,pmx,pmy);
-		shotList.push(newShot);
+	this.animate = function() {
+		this.frame++;
+		if(this.frame>=PLAYER_FRAMES) {
+			this.frame = 0;
+		}
 	}
 }
