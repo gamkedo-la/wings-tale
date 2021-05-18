@@ -94,7 +94,11 @@ function update() {
 	scaledCtx.fillText("DEBUG/TEMPORARY TEXT",20,debugLineY+=debugLineSkip);
 	scaledCtx.fillText("C key: upgrade player shot, now: "+p1.shotsNumber,20,debugLineY+=debugLineSkip);
 	scaledCtx.fillText("V key: reset player shot",20,debugLineY+=debugLineSkip);
-	scaledCtx.fillText("Level progress: " + Math.floor( 100* levelProgressInPixels / (images["level island"].height-GAME_H))+"%",20,debugLineY+=debugLineSkip);
+	var percProgress = Math.floor( 100* levelProgressInPixels / (images["level island"].height-GAME_H));
+	if(percProgress>100) {
+		percProgress = 100;
+	}
+	scaledCtx.fillText("Level progress: " + percProgress+"%",20,debugLineY+=debugLineSkip);
 }
 
 function randRange(min,max) {
