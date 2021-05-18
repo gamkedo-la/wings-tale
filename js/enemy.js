@@ -12,43 +12,58 @@ const ENEMY_SPEED_MIN = 0.8;
 const ENEMY_SPEED_MAX = 2.5;
 
 function spawnEnemy() {
-	var newE = {startX:(0.025+Math.random()*0.95)*canvas.width,y:-ENEMY_DIM,
-				frame:Math.floor(Math.random()*ENEMY_FRAMES), phaseOff:Math.random(),
-				waveSize: randRange(ENEMY_WAVES_AMPLITUDE_MIN,ENEMY_WAVES_AMPLITUDE_MAX),
-				freq: randRange(ENEMY_WAVES_FREQ_MIN,ENEMY_WAVES_FREQ_MAX),
-				speed: randRange(ENEMY_SPEED_MIN,ENEMY_SPEED_MAX)};
-	newE.x = newE.startX;
-	enemyList.push(newE);
+	enemyList.push(new enemyClass());
 }
 
 function drawEnemies() {
 	for(var e=0;e<enemyList.length;e++) {
-		drawAnimFrame("bug",enemyList[e].x,enemyList[e].y, enemyList[e].frame, ENEMY_DIM,ENEMY_DIM);
+		enemyList[e].draw();
 	}
 }
 
 function moveEnemies() {
 	for(var e=0;e<enemyList.length;e++) {
-		enemyList[e].x = enemyList[e].startX + enemyList[e].waveSize*
-						 Math.cos(enemyList[e].phaseOff*Math.PI+enemyList[e].y*enemyList[e].freq);
-		enemyList[e].y += enemyList[e].speed;
-		var dx=Math.abs(enemyList[e].x-px);
-		var dy=Math.abs(enemyList[e].y-py);
-		var dist=dx+dy; // close enough instead of Math.sqrt(dx*dx+dy*dy);
-		if(dist< (PLAYER_DIM+ENEMY_DIM)/2) {
-			reset();
-			break;
-		}
-		if(enemyList[e].y>GAME_H) {
-			enemyList[e].readyToRemove = true;
-		}
+		enemyList[e].move();
 	}
 }
 
 function animateEnemies() {
 	for(var e=0;e<enemyList.length;e++) {
-		if(++enemyList[e].frame>=ENEMY_FRAMES) {
-			enemyList[e].frame = 0;
+		enemyList[e].animate();
+	}
+}
+
+function enemyClass() {
+	this.startX = this.x = (0.025+Math.random()*0.95)*canvas.width;
+	this.y = -ENEMY_DIM;
+	this.frame = Math.floor(Math.random()*ENEMY_FRAMES);
+	this.phaseOff = Math.random();
+	this.waveSize = randRange(ENEMY_WAVES_AMPLITUDE_MIN,ENEMY_WAVES_AMPLITUDE_MAX);
+	this.freq = randRange(ENEMY_WAVES_FREQ_MIN,ENEMY_WAVES_FREQ_MAX);
+	this.speed = randRange(ENEMY_SPEED_MIN,ENEMY_SPEED_MAX);
+	this.readyToRemove = false;
+
+	this.move = function() {
+		this.x = this.startX + this.waveSize*
+						 Math.cos(this.phaseOff*Math.PI+this.y*this.freq);
+		this.y += this.speed;
+		var dx=Math.abs(this.x-px);
+		var dy=Math.abs(this.y-py);
+		var dist=dx+dy; // close enough instead of Math.sqrt(dx*dx+dy*dy);
+		if(this.y>GAME_H) {
+			this.readyToRemove = true;
+		}
+		if(dist< (PLAYER_DIM+ENEMY_DIM)/2) {
+			reset();
+		}
+	}
+
+	this.draw = function() {
+		drawAnimFrame("bug",this.x,this.y, this.frame, ENEMY_DIM,ENEMY_DIM);
+	}
+	this.animate = function() {
+		if(++this.frame>=ENEMY_FRAMES) {
+			this.frame = 0;
 		}
 	}
 }
