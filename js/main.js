@@ -25,6 +25,7 @@ function animateSprites() {
 	p1.animate();
 	animateEnemies();
 	animateShots();
+	animateSplodes();
 	animateSurfaceEnemies();
 }
 
@@ -34,6 +35,7 @@ function reset() {
 	shotList = [];
 	enemyList = [];
 	surfaceEnemyList = [];
+	splodeList = [];
 	spawnSurfaceEnemies();
 }
 
@@ -52,13 +54,30 @@ function enemyToShotCollision() {
 			var dy=Math.abs(enemyList[e].y-shotList[s].y);
 			var dist=dx+dy; // no need to bring sqrt into this, but correct would be Math.sqrt(dx*dx+dy*dy);
 			if(dist< (SHOT_DIM+ENEMY_DIM)/2) {
+				
+				//explode at impact site!
+				newSplode = new splodeClass(enemyList[e].x,enemyList[e].y);
+				splodeList.push(newSplode);
+
+				//remove both the shot and the enemy
 				enemyList.splice(e,1);
 				shotList.splice(s,1);
+				
 				break; // break since don't compare against other enemies for this removed shot
 			}
 		} // enemies
 	} // shots
 } // end of function
+
+function splodeCleanup() {
+	//splodes are marked ready to remove after they play animation once.
+	for(var i=splodeList.length-1;i>=0;i--) {
+		if(splodeList[i].readyToRemove) { // out of bounds or otherwise
+			splodeList.splice(i,1);
+			continue;
+		}
+	}
+}
 
 function drawBackground() {
 	bgDrawY = (images[currentLevelImageName].height-GAME_H)-levelProgressInPixels;
@@ -79,12 +98,14 @@ function update() {
 	moveEnemies();
 
 	enemyToShotCollision();
+	splodeCleanup();
 
 	drawBackground();
 	drawSurfaceEnemies();
 	p1.draw();
 	drawShots();
 	drawEnemies();
+	drawSplodes();
 
 	scaledCtx.drawImage(canvas, 0, 0, canvas.width, canvas.height,
         					    0, 0, scaledCanvas.width, scaledCanvas.height);
