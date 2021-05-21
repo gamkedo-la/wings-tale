@@ -94,6 +94,7 @@ function update() {
 
 	p1.move();
 	moveShots();
+	moveSplodes();
 	moveSurfaceEnemies();
 	moveEnemies();
 
