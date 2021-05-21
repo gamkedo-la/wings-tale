@@ -10,7 +10,7 @@ function drawSplodes() {
 	}
 }
 
-function moveShots() {
+function moveSplodes() {
 	for(var s=0;s<splodeList.length;s++) {
 		splodeList[s].move();
 	}
