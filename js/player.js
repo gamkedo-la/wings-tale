@@ -4,20 +4,19 @@ const PLAYER_FRAME_H = 12;
 const PLAYER_FRAMES = 3;
 const PLAYER_SPEED = 3;
 const EDGE_MARGIN = PLAYER_DIM;
-const DFRING_RADIUS = 10;
+
 
 var shotDegSpread = 3.7;
 
 function playerClass() {
 	this.x; this.y;
 	this.xv=0; this.yv=0;
-	this.dfRingX; this.dfRingY;
-	this.dfRingAngle = 0;
-	this.dfRingAngularSpeed = 2;
 
 	this.shotsNumber = 1;
 
 	this.frame=0;
+
+	this.defenseRing = new defenseRingClass(this.x, this.y);
 
 	this.holdLeft=false;
 	this.holdUp=false;
@@ -35,7 +34,9 @@ function playerClass() {
 
 	this.draw = function() {
 		drawAnimFrame("player",this.x,this.y, this.frame, PLAYER_FRAME_W,PLAYER_FRAME_H);
-		drawAnimFrame("defense_ring_unit", this.dfRingX, this.dfRingY, this.frame, 6, 6);
+		if(this.defenseRing != null){
+			this.defenseRing.draw();
+		}
 	}
 
 	this.move = function() {
@@ -59,10 +60,10 @@ function playerClass() {
 		this.xv*=0.7;
 		this.yv*=0.7;
 
-		this.dfRingX = this.x + DFRING_RADIUS * Math.cos(this.dfRingAngle);
-		this.dfRingY = this.y + DFRING_RADIUS * Math.sin(this.dfRingAngle);
-
-		this.dfRingAngle+=this.dfRingAngularSpeed;
+		//defense ring check
+		if(this.defenseRing != null){
+			this.defenseRing.move(this.x, this.y);
+		}
 
 		// bounds check
 		if(this.x<EDGE_MARGIN) {
@@ -102,6 +103,9 @@ function playerClass() {
 		this.frame++;
 		if(this.frame>=PLAYER_FRAMES) {
 			this.frame = 0;
+		}
+		if(this.defenseRing != null){
+			this.defenseRing.animate();
 		}
 	}
 }
