@@ -16,8 +16,6 @@ function playerClass() {
 
 	this.frame=0;
 
-	this.defenseRing = new defenseRingClass(this.x, this.y);
-
 	this.holdLeft=false;
 	this.holdUp=false;
 	this.holdRight=false;
@@ -34,9 +32,6 @@ function playerClass() {
 
 	this.draw = function() {
 		drawAnimFrame("player",this.x,this.y, this.frame, PLAYER_FRAME_W,PLAYER_FRAME_H);
-		if(this.defenseRing != null){
-			this.defenseRing.draw();
-		}
 	}
 
 	this.move = function() {
@@ -59,11 +54,6 @@ function playerClass() {
 
 		this.xv*=0.7;
 		this.yv*=0.7;
-
-		//defense ring check
-		if(this.defenseRing != null){
-			this.defenseRing.move(this.x, this.y);
-		}
 
 		// bounds check
 		if(this.x<EDGE_MARGIN) {
@@ -103,9 +93,6 @@ function playerClass() {
 		this.frame++;
 		if(this.frame>=PLAYER_FRAMES) {
 			this.frame = 0;
-		}
-		if(this.defenseRing != null){
-			this.defenseRing.animate();
 		}
 	}
 }

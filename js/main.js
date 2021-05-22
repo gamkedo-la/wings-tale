@@ -19,6 +19,7 @@ function loadingDoneSoStartGame() {
 	setInterval(spawnEnemy,30);
 	inputSetup();
 	reset();
+	spawnDefenseRingUnit();
 }
 
 function animateSprites() {
@@ -27,6 +28,7 @@ function animateSprites() {
 	animateShots();
 	animateSplodes();
 	animateSurfaceEnemies();
+	animateDefenseRingUnits();
 }
 
 function reset() {
@@ -97,6 +99,7 @@ function update() {
 	moveSplodes();
 	moveSurfaceEnemies();
 	moveEnemies();
+	moveDefenseRingUnits(p1.x, p1.y);
 
 	enemyToShotCollision();
 	splodeCleanup();
@@ -107,6 +110,7 @@ function update() {
 	drawShots();
 	drawEnemies();
 	drawSplodes();
+	drawDefenseRingUnits();
 
 	scaledCtx.drawImage(canvas, 0, 0, canvas.width, canvas.height,
         					    0, 0, scaledCanvas.width, scaledCanvas.height);
