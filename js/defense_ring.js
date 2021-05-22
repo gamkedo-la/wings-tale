@@ -1,7 +1,7 @@
 var defenseRingUnitList=[];
 
-const RING_ANG_SPEED=2;
-const RADIUS = 10;
+const RING_ANG_SPEED=0.1;
+const RADIUS = 12;
 const RING_FRAME_W = 6;
 const RING_FRAME_H = 6;
 const RING_FRAMES = 4;
