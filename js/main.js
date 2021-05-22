@@ -20,6 +20,8 @@ function loadingDoneSoStartGame() {
 	inputSetup();
 	reset();
 	spawnDefenseRingUnit();
+	spawnDefenseRingUnit();
+	spawnDefenseRingUnit();
 }
 
 function animateSprites() {

@@ -47,8 +47,8 @@ function defenseRingClass() {
     }
 
     this.move = function(pPosX, pPosY, offset){
-        this.dfRingX = pPosX + RADIUS * Math.cos(this.dfRingAngle);
-		this.dfRingY = pPosY + RADIUS * Math.sin(this.dfRingAngle);
+        this.dfRingX = pPosX + RADIUS * Math.cos(this.dfRingAngle + (offset * (2*Math.PI / defenseRingUnitList.length )));
+		this.dfRingY = pPosY + RADIUS * Math.sin(this.dfRingAngle + (offset * (2*Math.PI / defenseRingUnitList.length )));
 
 		this.dfRingAngle+=RING_ANG_SPEED;
     }
