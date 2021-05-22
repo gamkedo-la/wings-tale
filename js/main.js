@@ -2,6 +2,7 @@ var levelProgressInPixels = 0;
 var levelProgressRate = 0.45;
 var bgDrawY = 0; // also used for drawing and collision of surface enemies
 var currentLevelImageName = "level island"
+var nDefenseOrbs = 3;
 
 var p1 = new playerClass();
 
@@ -19,9 +20,6 @@ function loadingDoneSoStartGame() {
 	setInterval(spawnEnemy,30);
 	inputSetup();
 	reset();
-	spawnDefenseRingUnit();
-	spawnDefenseRingUnit();
-	spawnDefenseRingUnit();
 }
 
 function animateSprites() {
@@ -40,7 +38,11 @@ function reset() {
 	enemyList = [];
 	surfaceEnemyList = [];
 	splodeList = [];
+	defenseRingUnitList = [];
 	spawnSurfaceEnemies();
+	for(var i = 0; i<nDefenseOrbs ; i++){
+		spawnDefenseRingUnit();
+	}
 }
 
 function enemyToShotCollision() {
@@ -66,6 +68,36 @@ function enemyToShotCollision() {
 				//remove both the shot and the enemy
 				enemyList.splice(e,1);
 				shotList.splice(s,1);
+				
+				break; // break since don't compare against other enemies for this removed shot
+			}
+		} // enemies
+	} // shots
+} // end of function
+
+function enemyToShieldCollision() {
+	for(var d=defenseRingUnitList.length-1;d>=0;d--) {
+		if(defenseRingUnitList[d].readyToRemove) { // out of bounds or otherwise
+			defenseRingUnitList.splice(d,1);
+			continue;
+		}
+		for(var e=enemyList.length-1;e>=0;e--) {
+			if(enemyList[e].readyToRemove) { // out of bounds or otherwise
+				enemyList.splice(e,1);
+				break;
+			}
+			var dx=Math.abs(enemyList[e].x-defenseRingUnitList[d].x);
+			var dy=Math.abs(enemyList[e].y-defenseRingUnitList[d].y);
+			var dist=dx+dy; // no need to bring sqrt into this, but correct would be Math.sqrt(dx*dx+dy*dy);
+			if(dist< (DEFENSE_RING_ORB_DIM+ENEMY_DIM)/2) {
+				
+				//explode at impact site!
+				newSplode = new splodeClass(enemyList[e].x,enemyList[e].y);
+				splodeList.push(newSplode);
+
+				//remove both the shot and the enemy
+				enemyList.splice(e,1);
+				defenseRingUnitList.splice(d,1);
 				
 				break; // break since don't compare against other enemies for this removed shot
 			}
@@ -104,6 +136,7 @@ function update() {
 	moveDefenseRingUnits(p1.x, p1.y);
 
 	enemyToShotCollision();
+	enemyToShieldCollision();
 	splodeCleanup();
 
 	drawBackground();
