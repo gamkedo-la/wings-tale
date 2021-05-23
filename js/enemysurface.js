@@ -37,8 +37,12 @@ function surfaceEnemyClass(startX,startY) {
 	}
 
 	this.move = function() {
-		if(this.y>GAME_H) {
+		if(GAME_H - this.y > 0) {
 			this.readyToRemove = true;
+		} else {
+			if (120 * Math.random() < 1) {
+				new enemyShotClass(this.x, this.y - bgDrawY)
+			}
 		}
 	}
 

@@ -26,6 +26,7 @@ function animateSprites() {
 	p1.animate();
 	animateEnemies();
 	animateShots();
+	animateEnemyShots();
 	animateSplodes();
 	animateSurfaceEnemies();
 	animateDefenseRingUnits();
@@ -37,6 +38,7 @@ function reset() {
 	shotList = [];
 	enemyList = [];
 	surfaceEnemyList = [];
+	enemyShotList = [];
 	splodeList = [];
 	defenseRingUnitList = [];
 	spawnSurfaceEnemies();
@@ -105,6 +107,57 @@ function enemyToShieldCollision() {
 	} // shots
 } // end of function
 
+function enemyShotToShieldCollision() {
+	for(var d=defenseRingUnitList.length-1;d>=0;d--) {
+		if(defenseRingUnitList[d].readyToRemove) { // out of bounds or otherwise
+			defenseRingUnitList.splice(d,1);
+			continue;
+		}
+		for(var e=enemyShotList.length-1;e>=0;e--) {
+			if(enemyShotList[e].readyToRemove) { // out of bounds or otherwise
+				enemyShotList.splice(e,1);
+				break;
+			}
+			var dx=Math.abs(enemyShotList[e].x-defenseRingUnitList[d].x);
+			var dy=Math.abs(enemyShotList[e].y-defenseRingUnitList[d].y);
+			var dist=dx+dy; // no need to bring sqrt into this, but correct would be Math.sqrt(dx*dx+dy*dy);
+			if(dist< (DEFENSE_RING_ORB_DIM+ENEMY_DIM)/2) {
+				
+				//explode at impact site!
+				newSplode = new splodeClass(enemyShotList[e].x,enemyShotList[e].y);
+				splodeList.push(newSplode);
+
+				//remove both the shot and the enemy
+				enemyShotList.splice(e,1);
+				defenseRingUnitList.splice(d,1);
+				
+				break; // break since don't compare against other enemies for this removed shot
+			}
+		} // enemies
+	} // shots
+} // end of function
+
+function enemyShotToPlayerCollision() {
+	for (var eShot = enemyShotList.length - 1; eShot >= 0; eShot--) {
+		if (enemyShotList[eShot].readyToRemove) {
+			enemyShotList.splice(eShot, 1);
+			continue;
+		}
+
+		var dx1 = Math.abs(enemyShotList[eShot].x - p1.x);
+		var dy1 = Math.abs(enemyShotList[eShot].y - p1.y);
+		// var dx2 = Math.abs(enemyShotList[eShot].x - p2.x); // reserved for player 2
+		// var dy2 = Math.abs(enemyShotList[eShot].y - p2.y); // reserved for player 2
+		var dist1 = dx1+dy1; // no need to bring sqrt into this, but correct would be Math.sqrt(dx*dx+dy*dy);
+		if(dist1 < (SHOT_DIM + PLAYER_DIM) / 2) {
+				
+			reset() // hit the player
+			
+			break; // break since don't compare against other enemies for this removed shot
+		}
+	}
+}
+
 function splodeCleanup() {
 	//splodes are marked ready to remove after they play animation once.
 	for(var i=splodeList.length-1;i>=0;i--) {
@@ -133,10 +186,13 @@ function update() {
 	moveSplodes();
 	moveSurfaceEnemies();
 	moveEnemies();
+	moveEnemyShots();
 	moveDefenseRingUnits(p1.x, p1.y);
 
 	enemyToShotCollision();
 	enemyToShieldCollision();
+	enemyShotToShieldCollision();
+	enemyShotToPlayerCollision();
 	splodeCleanup();
 
 	drawBackground();
@@ -144,6 +200,7 @@ function update() {
 	p1.draw();
 	drawShots();
 	drawEnemies();
+	drawEnemyShots();
 	drawSplodes();
 	drawDefenseRingUnits();
 
