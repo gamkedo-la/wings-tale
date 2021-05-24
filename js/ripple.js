@@ -6,39 +6,45 @@
 					var delay       = 30;                         // delay is desired FPS
 					var oldIdx      = width;
 					var newIdx      = width * (height + 3);       // +2 from above size calc +1 more to get to 2nd image
-					var rippleRad   = 3;
+					var rippleRad   = 1;
 
 					var rippleMap   = [];
 					var lastMap     = [];
+					var depthMap 	= [];
 					var mapIdx;
 					
 					// texture and ripple will hold the image data tco be displayed
 					var ripple;
 					var texture;
+					var depthTexture;
 	
 					// Initialize the maps
 
-					for (var i = 0; i < size; i++)
-					{
+					for (var i = 0; i < size; i++) {
 						lastMap[i]   = 0;
 						rippleMap[i] = 0;
+						depthMap[i] = 0;
 					}
+					
 
                     function rippleReset() {
                         for (var i = 0; i < size; i++)
                         {
                             lastMap[i]   = 0;
                             rippleMap[i] = 0;
+							depthMap[i] = 0;
                         }
+						
+						
 
                     }
 					
 					
 					
 					// -------------------------------------------------------
-				// Drop something in the water at location: dx, dy
+				// Create distortion at location: dx, dy
 					// -------------------------------------------------------
-					function dropRippleAt(dx, dy)
+					function dropRippleAt(dx, dy, rad=rippleRad)
 					{
 						// Make certain dx and dy are integers
 						// Shifting left 0 is slightly faster than parseInt and math.* (or used to be)
@@ -46,9 +52,9 @@
 						dy <<= 0;
 						
 					// Our ripple effect area is actually a square, not a circle
-						for (var j = dy - rippleRad; j < dy + rippleRad; j++)
+						for (var j = dy - rad; j < dy + rad; j++)
 						{
-							for (var k = dx - rippleRad; k < dx + rippleRad; k++)
+							for (var k = dx - rad; k < dx + rad; k++)
 							{
 								rippleMap[oldIdx + (j * width) + k] += 700; ///this number right here controls how big the wave is
 							}
@@ -60,6 +66,16 @@
 					// -------------------------------------------------------
 					function rippleNewFrame()
 					{
+						for (var j = 0; j < height; j++)
+						{
+							for (var k = 0; k < width; k++)
+							{
+								let index = j * width + k
+								let depth = depthMap[oldIdx + index] = depthTexture.data[index*4+1]*2.5 - 255*1.25 >> 0 
+								;
+								depthMap[newIdx + (j * width) + k] = depth;
+							}
+						}
 						var i;
 						var a, b;
 						var data, oldData;
@@ -82,7 +98,8 @@
 										rippleMap[mapIdx - width] + 
 										rippleMap[mapIdx + width] + 
 										rippleMap[mapIdx - 1] + 
-										rippleMap[mapIdx + 1]) >> 1;    
+										rippleMap[mapIdx + 1]) >> 1
+										;    
 								
 						// Subtract 'previous' value (we are about to overwrite rippleMap[newIdx+i])
 								data -= rippleMap[newIdx + i];
@@ -90,6 +107,8 @@
 						// Reduce value more -- for damping
 						// data = data - (data / 32)
 								data -= data >> 3;
+
+								// data += depthMap[newIdx + i];
 						
 						// Set new value
 								rippleMap[newIdx + i] = data;
@@ -101,12 +120,12 @@
 								oldData = lastMap[i];
 								lastMap[i] = data;
 					
-								if (oldData != data)  // if no change no need to alter image
+								//if (oldData != data)  // if no change no need to alter image
 								{
 						// Recall using "<< 0" forces integer value
 									// Calculate pixel offsets
-									a = (((x - halfWidth) * data / 1024) << 0) + halfWidth;
-									b = (((y - halfHeight) * data / 1024) << 0) + halfHeight;
+									a = (((x - halfWidth) * (data - depthMap[mapIdx + 1]) / 1024) << 0) + halfWidth;
+									b = (((y - halfHeight) * (data - depthMap[mapIdx + 1]) / 1024) << 0) + halfHeight;
 									
 									// Don't go outside the image (i.e. boundary check)
 									if (a >= width) a = width - 1;

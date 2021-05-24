@@ -1,5 +1,5 @@
 var levelProgressInPixels = 0;
-var levelProgressRate = 0.45;
+var levelProgressRate = 0.6;
 var bgDrawY = 0; // also used for drawing and collision of surface enemies
 var currentLevelImageName = "level island"
 var nDefenseOrbs = 3;
@@ -97,7 +97,7 @@ function enemyToShieldCollision() {
 				//explode at impact site!
 				newSplode = new splodeClass(enemyList[e].x,enemyList[e].y);
 				splodeList.push(newSplode);
-				dropRippleAt(enemyList[e].x,enemyList[e].y);
+				dropRippleAt(enemyList[e].x,enemyList[e].y, 2);
 
 				//remove both the shot and the enemy
 				enemyList.splice(e,1);
@@ -154,8 +154,8 @@ function enemyShotToPlayerCollision() {
 		var dist1 = dx1+dy1; // no need to bring sqrt into this, but correct would be Math.sqrt(dx*dx+dy*dy);
 		if(dist1 < (SHOT_DIM + PLAYER_DIM) / 2) {
 			
-			p1.reset();
-			resetDefenseRing();
+			//p1.reset();
+			//resetDefenseRing();
 			//reset() // hit the player
 			
 			break; // break since don't compare against other enemies for this removed shot
@@ -183,8 +183,10 @@ function drawBackground() {
 
 	context.drawImage(images[currentLevelImageName],0,bgDrawY,GAME_W,GAME_H,
 											 0,0,GAME_W,GAME_H);
+	fxContext.drawImage(images['depth map'], 0, bgDrawY, GAME_W, GAME_H, 0, 0, GAME_W, GAME_H);
 	texture = context.getImageData(0, 0, GAME_W, GAME_H);
-	ripple = context.getImageData(0, 0, GAME_W, GAME_H);  
+	ripple = context.getImageData(0, 0, GAME_W, GAME_H);
+	depthTexture = fxContext.getImageData(0, 0, GAME_W, GAME_H);
 
 	
 }
@@ -197,6 +199,7 @@ function drawRippleEffect() {
 	rippleNewFrame();
 	
 	context.putImageData(ripple, 0, 0);
+	context.drawImage(canvas, -81*W_RATIO,-61*H_RATIO, GAME_W + (81*2*W_RATIO >> 0), GAME_H + (61*2*H_RATIO) >> 0);
 	
 	
 }

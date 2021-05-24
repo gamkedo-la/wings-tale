@@ -7,12 +7,16 @@ const GAME_H = 240;
 const SCALED_W = 800;
 const SCALED_H = 600;
 
+const W_RATIO = GAME_W / SCALED_W;
+const H_RATIO = GAME_H / SCALED_H;
+
 
 const TARGET_MOTION_FPS = 30;
 const SHARED_ANIMATION_FRAMES_PER_SEC = 8;
 
 var scaledCanvas, scaledCtx;
 var canvas, context;
+var fxCanvas, fxContext;
 
 
 function drawAnimFrame(picName,atX,atY, whichFrame, frameW,frameH) {
@@ -35,6 +39,12 @@ function setupCanvas() {
 	canvas.width=GAME_W;
 	canvas.height=GAME_H;
 	context=canvas.getContext("2d");
+
+	fxCanvas=document.createElement("canvas");
+	fxCanvas.style.display="none";
+	fxCanvas.width=GAME_W;
+	fxCanvas.height=GAME_H;
+	fxContext=fxCanvas.getContext("2d");
 
 	context.mozImageSmoothingEnabled = false;
 	context.imageSmoothingEnabled = false;
