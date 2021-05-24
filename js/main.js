@@ -169,6 +169,8 @@ function splodeCleanup() {
 }
 
 function drawBackground() {
+
+
 	bgDrawY = (images[currentLevelImageName].height-GAME_H)-levelProgressInPixels;
 	if(bgDrawY<0) {
 		bgDrawY = 0;
@@ -176,10 +178,28 @@ function drawBackground() {
 
 	context.drawImage(images[currentLevelImageName],0,bgDrawY,GAME_W,GAME_H,
 											 0,0,GAME_W,GAME_H);
+	texture = context.getImageData(0, 0, GAME_W, GAME_H);
+	ripple = context.getImageData(0, 0, GAME_W, GAME_H);  
+
+	
+}
+
+function drawRippleEffect() {
+
+	//dropAt(Math.random()*GAME_W << 0, Math.random()*GAME_H << 0);
+	dropAt(p1.x, p1.y)
+
+	rippleNewFrame();
+	
+	context.putImageData(ripple, 0, 0);
+	
+	
 }
 
 function update() {
 	levelProgressInPixels += levelProgressRate;
+
+		//testing out some real-time background effects here, meant to render before sprites are drawn
 
 	p1.move();
 	moveShots();
@@ -196,6 +216,7 @@ function update() {
 	splodeCleanup();
 
 	drawBackground();
+	drawRippleEffect();
 	drawSurfaceEnemies();
 	p1.draw();
 	drawShots();
