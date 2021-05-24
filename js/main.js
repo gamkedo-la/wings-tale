@@ -34,6 +34,7 @@ function animateSprites() {
 
 function reset() {
 	p1.reset();
+	rippleReset();
 	levelProgressInPixels = 0
 	shotList = [];
 	enemyList = [];
@@ -66,6 +67,7 @@ function enemyToShotCollision() {
 				//explode at impact site!
 				newSplode = new splodeClass(enemyList[e].x,enemyList[e].y);
 				splodeList.push(newSplode);
+				dropRippleAt(enemyList[e].x,enemyList[e].y)
 
 				//remove both the shot and the enemy
 				enemyList.splice(e,1);
@@ -96,6 +98,7 @@ function enemyToShieldCollision() {
 				//explode at impact site!
 				newSplode = new splodeClass(enemyList[e].x,enemyList[e].y);
 				splodeList.push(newSplode);
+				dropRippleAt(enemyList[e].x,enemyList[e].y);
 
 				//remove both the shot and the enemy
 				enemyList.splice(e,1);
@@ -126,6 +129,7 @@ function enemyShotToShieldCollision() {
 				//explode at impact site!
 				newSplode = new splodeClass(enemyShotList[e].x,enemyShotList[e].y);
 				splodeList.push(newSplode);
+				
 
 				//remove both the shot and the enemy
 				enemyShotList.splice(e,1);
@@ -150,8 +154,10 @@ function enemyShotToPlayerCollision() {
 		// var dy2 = Math.abs(enemyShotList[eShot].y - p2.y); // reserved for player 2
 		var dist1 = dx1+dy1; // no need to bring sqrt into this, but correct would be Math.sqrt(dx*dx+dy*dy);
 		if(dist1 < (SHOT_DIM + PLAYER_DIM) / 2) {
-				
-			reset() // hit the player
+			
+			
+			p1.reset();
+			//reset() // hit the player
 			
 			break; // break since don't compare against other enemies for this removed shot
 		}
@@ -187,7 +193,7 @@ function drawBackground() {
 function drawRippleEffect() {
 
 	//dropAt(Math.random()*GAME_W << 0, Math.random()*GAME_H << 0);
-	dropAt(p1.x, p1.y)
+	//dropAt(p1.x, p1.y)
 
 	rippleNewFrame();
 	

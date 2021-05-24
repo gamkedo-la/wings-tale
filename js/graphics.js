@@ -7,6 +7,7 @@ const GAME_H = 240;
 const SCALED_W = 800;
 const SCALED_H = 600;
 
+
 const TARGET_MOTION_FPS = 30;
 const SHARED_ANIMATION_FRAMES_PER_SEC = 8;
 

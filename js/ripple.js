@@ -17,18 +17,28 @@
 					var texture;
 	
 					// Initialize the maps
+
 					for (var i = 0; i < size; i++)
 					{
 						lastMap[i]   = 0;
 						rippleMap[i] = 0;
 					}
+
+                    function rippleReset() {
+                        for (var i = 0; i < size; i++)
+                        {
+                            lastMap[i]   = 0;
+                            rippleMap[i] = 0;
+                        }
+
+                    }
 					
 					
 					
 					// -------------------------------------------------------
 				// Drop something in the water at location: dx, dy
 					// -------------------------------------------------------
-					function dropAt(dx, dy)
+					function dropRippleAt(dx, dy)
 					{
 						// Make certain dx and dy are integers
 						// Shifting left 0 is slightly faster than parseInt and math.* (or used to be)
