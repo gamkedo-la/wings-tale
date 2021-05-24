@@ -50,7 +50,7 @@
 						{
 							for (var k = dx - rippleRad; k < dx + rippleRad; k++)
 							{
-								rippleMap[oldIdx + (j * width) + k] += 512;
+								rippleMap[oldIdx + (j * width) + k] += 700; ///this number right here controls how big the wave is
 							}
 						}
 					}
@@ -82,14 +82,14 @@
 										rippleMap[mapIdx - width] + 
 										rippleMap[mapIdx + width] + 
 										rippleMap[mapIdx - 1] + 
-										rippleMap[mapIdx + 1]) >> 1;    // right shift 1 is same as divide by 2
+										rippleMap[mapIdx + 1]) >> 1;    
 								
 						// Subtract 'previous' value (we are about to overwrite rippleMap[newIdx+i])
 								data -= rippleMap[newIdx + i];
 						
 						// Reduce value more -- for damping
 						// data = data - (data / 32)
-								data -= data >> 5;
+								data -= data >> 3;
 						
 						// Set new value
 								rippleMap[newIdx + i] = data;
