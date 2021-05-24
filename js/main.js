@@ -37,7 +37,7 @@ function reset() {
 	levelProgressInPixels = 0
 	shotList = [];
 	enemyList = [];
-	surfaceEnemyList = [];
+	surfaceList = [];
 	enemyShotList = [];
 	splodeList = [];
 	defenseRingUnitList = [];
