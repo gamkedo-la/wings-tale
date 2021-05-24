@@ -34,7 +34,6 @@ function animateSprites() {
 
 function reset() {
 	p1.reset();
-	rippleReset();
 	levelProgressInPixels = 0
 	shotList = [];
 	enemyList = [];
@@ -43,9 +42,9 @@ function reset() {
 	splodeList = [];
 	defenseRingUnitList = [];
 	spawnSurfaceEnemies();
-	for(var i = 0; i<nDefenseOrbs ; i++){
-		spawnDefenseRingUnit();
-	}
+	resetDefenseRing();
+	rippleReset();
+
 }
 
 function enemyToShotCollision() {
@@ -155,8 +154,8 @@ function enemyShotToPlayerCollision() {
 		var dist1 = dx1+dy1; // no need to bring sqrt into this, but correct would be Math.sqrt(dx*dx+dy*dy);
 		if(dist1 < (SHOT_DIM + PLAYER_DIM) / 2) {
 			
-			
 			p1.reset();
+			resetDefenseRing();
 			//reset() // hit the player
 			
 			break; // break since don't compare against other enemies for this removed shot

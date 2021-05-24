@@ -32,6 +32,13 @@ function animateDefenseRingUnits() {
 	}
 }
 
+function resetDefenseRing(){
+    defenseRingUnitList=[];
+    for(var i = 0; i<nDefenseOrbs ; i++){
+		spawnDefenseRingUnit();
+	}
+}
+
 function defenseRingClass() {
     this.x; this.y;
 	this.dfRingAngle = 0;
