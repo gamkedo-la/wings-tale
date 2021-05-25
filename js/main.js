@@ -184,7 +184,11 @@ function drawBackground() {
 	context.drawImage(images[currentLevelImageName],0,bgDrawY,GAME_W,GAME_H,
 											 0,0,GAME_W,GAME_H);
 	fxContext.drawImage(images['depth map'], 0, bgDrawY, GAME_W, GAME_H, 0, 0, GAME_W, GAME_H);
-	texture = context.getImageData(0, 0, GAME_W, GAME_H);
+	
+    // note: these functions require the game to run on a web server
+    // due to local file browser security - they will fail on file://
+    // unless you change default browser security settings
+    texture = context.getImageData(0, 0, GAME_W, GAME_H);
 	ripple = context.getImageData(0, 0, GAME_W, GAME_H);
 	depthTexture = fxContext.getImageData(0, 0, GAME_W, GAME_H);
 
