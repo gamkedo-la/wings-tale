@@ -9,12 +9,6 @@ function spawnSurfaceEnemies() {
 	surfaceList.push(new surfaceEnemyClass(201,831));
 }
 
-function animateSurfaceEnemies() {
-	for(var e=0;e<surfaceList.length;e++) {
-		surfaceList[e].animate();
-	}
-}
-
 surfaceEnemyClass.prototype = new moveDrawClass();
 
 function surfaceEnemyClass(startX,startY) {

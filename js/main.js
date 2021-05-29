@@ -24,12 +24,14 @@ function loadingDoneSoStartGame() {
 
 function animateSprites() {
 	p1.animate();
-	animateList();
+	animateList(enemyList);
+	animateList(surfaceList);
+	animateList(defenseRingUnitList);
+
+	// share common animation frame, so no list call:
 	animateShots();
 	animateEnemyShots();
 	animateSplodes();
-	animateSurfaceEnemies();
-	animateDefenseRingUnits();
 }
 
 function reset() {
@@ -188,7 +190,7 @@ function update() {
 	moveList(surfaceList);
 	moveList(enemyList);
 	moveList(enemyShotList);
-	moveDefenseRingUnits(p1.x, p1.y);
+	moveDefenseRingUnits(); // special handling, needs to know place within list for even radial spacing
 
 	enemyToShotCollision();
 	enemyToShieldCollision();
@@ -203,7 +205,7 @@ function update() {
 	drawList(enemyList);
 	drawList(enemyShotList);
 	drawList(splodeList);
-	drawDefenseRingUnits();
+	drawList(defenseRingUnitList);
 
 	scaledCtx.drawImage(canvas, 0, 0, canvas.width, canvas.height,
         					    0, 0, scaledCanvas.width, scaledCanvas.height);
