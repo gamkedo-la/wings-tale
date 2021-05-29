@@ -2,12 +2,12 @@ var shotGroundList=[];
 const SHOT_GROUND_DIM=5;
 const SHOT_GROUND_SPEED=10;
 const PLAYER_SHOT_GROUND_FRAMES = 4;
-const SHOT_GROUND_SPEED_PERC_FALLOFF = 0.9;
+const SHOT_GROUND_SPEED_PERC_FALLOFF = 0.87;
 const SHOT_GROUND_SPEED_DETONATE = -0.1;
 
-const BOMB_RADIUS = 25;
+const BOMB_RADIUS = 28;
 const BOMB_EXPLOSIONS = 10;
-const APPROX_BOMB_RANGE = 120;
+const APPROX_BOMB_RANGE = 95;
 // non-square to compensate for rectangular NES pixels (240x255 resolution stretched to 4:3 display)
 const BOMB_FRAME_W = 40;
 const BOMB_FRAME_H = 50;
@@ -34,7 +34,10 @@ function shotGroundClass(startX,startY, totalSpeed, angle, momentumX,momentumY) 
 				var blastDist = randRange(3,BOMB_RADIUS);
 				spawnSplode(this.x + Math.cos(blastAng)*blastDist,this.y + Math.sin(blastAng)*blastDist);
 			}
-			listCollideRangeOfPoint(surfaceList, this.x, this.y, BOMB_RADIUS, function () { console.log("bomb hit!"); } );
+			var that = this;
+			listCollideRangeOfPoint(surfaceList, this.x, this.y, BOMB_RADIUS, function () { 
+						powerupList.push(new powerupClass(that.x,that.y));
+					} );
 			this.readyToRemove = true;
 		}
 	}

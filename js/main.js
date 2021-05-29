@@ -8,6 +8,7 @@ var p1 = new playerClass();
 var readyToReset = false; // to avoid calling reset() mid list iterations
 
 var drawMoveList = []; // list of lists - note, drawn in this order, so should be filled closest to ground up towards sky last
+var animateEachLists = []; // subset of draw/move lists for which each object has its own separate animation frame to update
 
 window.onload = function() { // discord repo check
 	setupCanvas();
@@ -27,9 +28,9 @@ function loadingDoneSoStartGame() {
 
 function animateSprites() {
 	p1.animate();
-	animateList(enemyList);
-	animateList(surfaceList);
-	animateList(defenseRingUnitList);
+	for(var i=0;i<animateEachLists.length;i++) {
+		animateList(animateEachLists[i]);
+	}
 
 	// share common animation frame, so no list call:
 	animateShots();
@@ -50,7 +51,10 @@ function reset() {
 	rippleReset();
 
 	// repacking this list since reset above emplied
-	drawMoveList = [surfaceList,shotGroundList,shotList,enemyList,enemyShotList,splodeList,defenseRingUnitList];
+	drawMoveList = [surfaceList,powerupList,shotGroundList,shotList,enemyList,enemyShotList,splodeList,defenseRingUnitList];
+
+	// excludes lists which share a common animation frame to be in sync (ex. all shots show same animation frame at same time)
+	animateEachLists = [enemyList, powerupList, surfaceList, defenseRingUnitList];
 }
 
 function drawBackground() {
@@ -104,7 +108,9 @@ function update() {
 	listCollideExplode(shotList, enemyList, (SHOT_DIM+ENEMY_DIM)/2);
 	listCollideExplode(defenseRingUnitList, enemyList, (DEFENSE_RING_ORB_DIM+ENEMY_DIM)/2);
 	listCollideExplode(enemyShotList, defenseRingUnitList, (ENEMY_SHOT_DIM + DEFENSE_RING_ORB_DIM)/2);
+	listCollideRangeOfPoint(enemyList, p1.x, p1.y, (ENEMY_DIM + PLAYER_DIM) / 2, function () { readyToReset = true; } );
 	listCollideRangeOfPoint(enemyShotList, p1.x, p1.y, (SHOT_DIM + PLAYER_DIM) / 2, function () { readyToReset = true; } );
+	listCollideRangeOfPoint(powerupList, p1.x, p1.y, (POWERUP_H + PLAYER_DIM) / 2, function () { p1.shotsNumber+=4; } );
 
 	drawBackground();
 	drawRippleEffect();
@@ -121,6 +127,8 @@ function update() {
 	// debugging list isn't growing, removed when expected etc.
 	var debugLineY = 20;var debugLineSkip = 10;
 	scaledCtx.fillText("DEBUG/TEMPORARY TEXT",20,debugLineY+=debugLineSkip);
+	scaledCtx.fillText("Space/Z key: hold to fire",20,debugLineY+=debugLineSkip);
+	scaledCtx.fillText("X key: drop bomb",20,debugLineY+=debugLineSkip);
 	scaledCtx.fillText("C key: upgrade player shot, now: "+p1.shotsNumber,20,debugLineY+=debugLineSkip);
 	scaledCtx.fillText("V key: reset player shot",20,debugLineY+=debugLineSkip);
 	var percProgress = Math.floor( 100* levelProgressInPixels / (images[currentLevelImageName].height-GAME_H));
