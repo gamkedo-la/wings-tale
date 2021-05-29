@@ -5,6 +5,7 @@ function loadImages() {
     const imageList = [
         {imgName: "player", theFile: "player.png"},
         {imgName: "player shot", theFile: "playershot.png"},
+        {imgName: "player shot ground", theFile: "playershotground.png"},
         {imgName: "enemy shot", theFile: "enemyshot.png"},
         {imgName: "splode", theFile: "splode.png"},
         {imgName: "bug", theFile: "enemybug.png"},

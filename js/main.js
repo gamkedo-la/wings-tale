@@ -50,7 +50,7 @@ function reset() {
 	rippleReset();
 
 	// repacking this list since reset above emplied
-	drawMoveList = [surfaceList,shotList,enemyList,enemyShotList,splodeList,defenseRingUnitList];
+	drawMoveList = [surfaceList,shotGroundList,shotList,enemyList,enemyShotList,splodeList,defenseRingUnitList];
 }
 
 function enemyToShotCollision() {
@@ -62,9 +62,7 @@ function enemyToShotCollision() {
 			if(dist< (SHOT_DIM+ENEMY_DIM)/2) {
 				
 				//explode at impact site!
-				newSplode = new splodeClass(enemyList[e].x,enemyList[e].y);
-				splodeList.push(newSplode);
-				dropRippleAt(enemyList[e].x,enemyList[e].y)
+				spawnSplode(enemyList[e].x,enemyList[e].y);
 
 				//remove both the shot and the enemy
 				enemyList[e].readyToRemove = true;
@@ -85,9 +83,7 @@ function enemyToShieldCollision() {
 			if(dist< (DEFENSE_RING_ORB_DIM+ENEMY_DIM)/2) {
 				
 				//explode at impact site!
-				newSplode = new splodeClass(enemyList[e].x,enemyList[e].y);
-				splodeList.push(newSplode);
-				dropRippleAt(enemyList[e].x,enemyList[e].y, 2);
+				spawnSplode(enemyList[e].x,enemyList[e].y);
 
 				//remove both the shot and the enemy
 				enemyList[e].readyToRemove = true;
@@ -108,10 +104,8 @@ function enemyShotToShieldCollision() {
 			if(dist< (DEFENSE_RING_ORB_DIM+ENEMY_DIM)/2) {
 				
 				//explode at impact site!
-				newSplode = new splodeClass(enemyShotList[e].x,enemyShotList[e].y);
-				splodeList.push(newSplode);
+				spawnSplode(enemyShotList[e].x,enemyShotList[e].y);
 				
-
 				//remove both the shot and the enemy
 				enemyShotList[e].readyToRemove = true;
 				defenseRingUnitList[d].readyToRemove = true;

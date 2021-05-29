@@ -11,6 +11,12 @@ function animateSplodes() {
 	}
 }
 
+function spawnSplode(atX, atY) {
+	var newSplode = new splodeClass(atX, atY);
+	splodeList.push(newSplode);
+	dropRippleAt(atX, atY)
+}
+
 splodeClass.prototype = new moveDrawClass();
 
 function splodeClass(x,y) {

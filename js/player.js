@@ -70,16 +70,17 @@ function playerClass() {
 		}
 
 
+		// pmx = partial momentum, which part of player speed should impact projectiles being shot or dropped
+		var pmx = this.xv * 0.1;
+		var pmy = this.yv * (this.yv > 0 ? 0.2 : 0.9);
+
 		if(this.holdBomb && this.wasHoldingBomb != this.holdBomb) {
-			console.log("Not implemented: ground attack / drop bomb");
+			var newBomb = new shotGroundClass(this.x,this.y,SHOT_GROUND_SPEED,0,pmx,pmy);
+			shotGroundList.push(newBomb);
 		}
 		this.wasHoldingBomb = this.holdBomb;
 
 		if(this.holdFire) {
-			// pmx = partial momentum x, using part of current player speed to bunch up less
-			var pmx = this.xv * 0.1;
-			var pmy = this.yv * (this.yv > 0 ? 0.2 : 0.9);
-
 			var newShot, shotAngSpan = -(this.shotsNumber-1)*(shotDegSpread*0.5);
 
 			for(var i=0;i<this.shotsNumber;i++) {
