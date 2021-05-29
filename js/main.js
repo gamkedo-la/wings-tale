@@ -108,9 +108,9 @@ function update() {
 	listCollideExplode(shotList, enemyList, (SHOT_DIM+ENEMY_DIM)/2);
 	listCollideExplode(defenseRingUnitList, enemyList, (DEFENSE_RING_ORB_DIM+ENEMY_DIM)/2);
 	listCollideExplode(enemyShotList, defenseRingUnitList, (ENEMY_SHOT_DIM + DEFENSE_RING_ORB_DIM)/2);
-	listCollideRangeOfPoint(enemyList, p1.x, p1.y, (ENEMY_DIM + PLAYER_DIM) / 2, function () { readyToReset = true; } );
-	listCollideRangeOfPoint(enemyShotList, p1.x, p1.y, (SHOT_DIM + PLAYER_DIM) / 2, function () { readyToReset = true; } );
-	listCollideRangeOfPoint(powerupList, p1.x, p1.y, (POWERUP_H + PLAYER_DIM) / 2, function () { p1.shotsNumber+=4; } );
+	listCollideRangeOfPoint(enemyList, p1.x, p1.y, (ENEMY_DIM + PLAYER_DIM) / 2, function (listElement) { readyToReset = true; } );
+	listCollideRangeOfPoint(enemyShotList, p1.x, p1.y, (SHOT_DIM + PLAYER_DIM) / 2, function (listElement) { readyToReset = true; } );
+	listCollideRangeOfPoint(powerupList, p1.x, p1.y, (POWERUP_H + PLAYER_DIM) / 2, function (listElement) { listElement.doEffect(); } );
 
 	drawBackground();
 	drawRippleEffect();
@@ -129,8 +129,8 @@ function update() {
 	scaledCtx.fillText("DEBUG/TEMPORARY TEXT",20,debugLineY+=debugLineSkip);
 	scaledCtx.fillText("Space/Z key: hold to fire",20,debugLineY+=debugLineSkip);
 	scaledCtx.fillText("X key: drop bomb",20,debugLineY+=debugLineSkip);
-	scaledCtx.fillText("C key: upgrade player shot, now: "+p1.shotsNumber,20,debugLineY+=debugLineSkip);
-	scaledCtx.fillText("V key: reset player shot",20,debugLineY+=debugLineSkip);
+	scaledCtx.fillText("1-3 key: instant powerup cheat",20,debugLineY+=debugLineSkip);
+	scaledCtx.fillText("4 key: reset powerups",20,debugLineY+=debugLineSkip);
 	var percProgress = Math.floor( 100* levelProgressInPixels / (images[currentLevelImageName].height-GAME_H));
 	if(percProgress>100) {
 		percProgress = 100;

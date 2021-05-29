@@ -33,14 +33,16 @@ function listCollideExplode(listA, listB, collisionRange, optionalResultFunction
 				//explode at impact site!
 				spawnSplode(listB[b].x,listB[b].y);
 
+				if (listA[a].readyToRemove == false &&
+						listB[b].readyToRemove == false &&
+						typeof optionalResultFunction !== 'undefined') {
+					optionalResultFunction(listA[a],listB[b]);
+				}
+				
 				//remove both
 				listA[a].readyToRemove = true;
 				listB[b].readyToRemove = true;
-
-				if (typeof optionalResultFunction !== 'undefined') {
-					optionalResultFunction();
-				}
-				
+ 
 				break; // break since don't compare against any others for this removed one
 			}
 		} // listB
@@ -54,12 +56,13 @@ function listCollideRangeOfPoint(listA, atX, atY, collisionRange, optionalResult
 		var dist=dx+dy; // no need to bring sqrt into this, but correct would be Math.sqrt(dx*dx+dy*dy);
 		if(dist< collisionRange) {
 			spawnSplode(listA[a].x,listA[a].y);
-			listA[a].readyToRemove = true;			
 			
-			if (typeof optionalResultFunction !== 'undefined') {
-				optionalResultFunction();
+			if (listA[a].readyToRemove == false && // prevent multiple hits to same target in frame from spawning powerups etc
+					typeof optionalResultFunction !== 'undefined') {
+				optionalResultFunction(listA[a]);
 			}
 
+			listA[a].readyToRemove = true;			
 			// break; // NOTE: specifically no break, used for bomb etc. so same one could take out multiple!
 		}
 	} // listA

@@ -19,8 +19,14 @@ var canvas, context;
 var fxCanvas, fxContext;
 
 
-function drawAnimFrame(picName,atX,atY, whichFrame, frameW,frameH) {
-	context.drawImage(images[picName],whichFrame * frameW,0,frameW,frameH,
+function drawAnimFrame(picName,atX,atY, whichFrame, frameW,frameH,optionalRow) {
+	var offsetY;
+	if (typeof optionalRow !== 'undefined') {
+		offsetY = frameH * optionalRow;
+	} else {
+		offsetY = 0;
+	}
+	context.drawImage(images[picName],whichFrame * frameW,offsetY,frameW,frameH,
 									  atX-frameW/2,atY-frameH/2,frameW,frameH);
 }
 

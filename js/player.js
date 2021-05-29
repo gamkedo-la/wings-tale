@@ -5,14 +5,17 @@ const PLAYER_FRAMES = 3;
 const PLAYER_SPEED = 3;
 const EDGE_MARGIN = PLAYER_DIM;
 
-
 var shotDegSpread = 3.7;
+var bombDegSpread = 7;
+var GHOST_DIST_MULT = 7;
 
 function playerClass() {
 	this.x; this.y;
 	this.xv=0; this.yv=0;
 
 	this.shotsNumber = 1;
+	this.bombCount = 1;
+	this.ghostCount = 0;
 
 	this.frame=0;
 
@@ -28,10 +31,16 @@ function playerClass() {
 		this.x=GAME_W/2;
 		this.y=GAME_H-PLAYER_DIM*2;
 		this.xv=this.yv=0;
+
 		this.shotsNumber = 1;
+		this.bombCount = 1;
+		this.ghostCount = 0;
 	}
 
 	this.draw = function() {
+		for(var i=0;i<this.ghostCount;i++) {
+			drawAnimFrame("player",this.x-(i+1)*GHOST_DIST_MULT*this.xv,this.y-(i+1)*GHOST_DIST_MULT*this.yv, this.frame, PLAYER_FRAME_W,PLAYER_FRAME_H);
+		}
 		drawAnimFrame("player",this.x,this.y, this.frame, PLAYER_FRAME_W,PLAYER_FRAME_H);
 		drawAnimFrame("bomb sight",this.x,this.y-APPROX_BOMB_RANGE, this.frame%2, BOMB_FRAME_W,BOMB_FRAME_H);
 	}
@@ -71,25 +80,37 @@ function playerClass() {
 			this.y=GAME_H-EDGE_MARGIN-1;
 		}
 
-
 		// pmx = partial momentum, which part of player speed should impact projectiles being shot or dropped
 		var pmx = this.xv * 0.1;
 		var pmy = this.yv * (this.yv > 0 ? 0.2 : 0.9);
 
-		if(this.holdBomb && this.wasHoldingBomb != this.holdBomb) {
-			var newBomb = new shotGroundClass(this.x,this.y,SHOT_GROUND_SPEED,0,pmx,pmy);
-			shotGroundList.push(newBomb);
-		}
-		this.wasHoldingBomb = this.holdBomb;
+		var ghostsLeft = this.ghostCount;
+		var fromX = this.x;
+		var fromY = this.y;
+		do {
+			if(this.holdBomb && this.wasHoldingBomb != this.holdBomb) {
+				var bombAngSpan = -(this.bombCount-1)*(bombDegSpread*0.5);
 
-		if(this.holdFire) {
-			var newShot, shotAngSpan = -(this.shotsNumber-1)*(shotDegSpread*0.5);
-
-			for(var i=0;i<this.shotsNumber;i++) {
-				newShot = new shotClass(this.x,this.y,SHOT_SPEED,shotAngSpan+shotDegSpread*i,pmx,pmy);
-				shotList.push(newShot);
+				for(var i=0;i<this.bombCount;i++) {
+					var newBomb = new shotGroundClass(fromX,fromY,SHOT_GROUND_SPEED,bombAngSpan+bombDegSpread*i,pmx,pmy);
+					shotGroundList.push(newBomb);
+				}
 			}
-		}
+
+			if(this.holdFire) {
+				var newShot, shotAngSpan = -(this.shotsNumber-1)*(shotDegSpread*0.5);
+
+				for(var i=0;i<this.shotsNumber;i++) {
+					newShot = new shotClass(fromX,fromY,SHOT_SPEED,shotAngSpan+shotDegSpread*i,pmx,pmy);
+					shotList.push(newShot);
+				}
+			}
+
+			fromX -= GHOST_DIST_MULT*this.xv;
+			fromY -= GHOST_DIST_MULT*this.yv;
+		} while(ghostsLeft-- > 0);
+
+		this.wasHoldingBomb = this.holdBomb;
 	}
 
 	this.animate = function() {

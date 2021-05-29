@@ -2,7 +2,13 @@ var powerupList=[];
 const POWERUP_W = 10;
 const POWERUP_H = 12;
 const POWERUP_FRAMES = 2;
+const POWER_UP_FRAME_DRAG = 4; // slow down animation framerate
 const POWERUP_SPEED = 1;
+
+const POWER_UP_KIND_SHOTS = 0;
+const POWER_UP_KIND_BOMB = 1;
+const POWER_UP_KIND_GHOST = 2;
+const POWERUP_KINDS = 3;
 
 powerupClass.prototype = new moveDrawClass();
 
@@ -11,6 +17,7 @@ function powerupClass(atX,atY) {
 	this.x = atX;
 	this.y = atY;
 	this.frame = Math.floor(Math.random()*POWERUP_FRAMES);
+	this.kind = Math.floor(Math.random()*POWERUP_KINDS);
 	this.readyToRemove = false;
 
 	var ang = randAng();
@@ -25,11 +32,28 @@ function powerupClass(atX,atY) {
 		}
 	}
 
+	this.doEffect = function() {
+		switch(this.kind) {
+			case POWER_UP_KIND_SHOTS:
+				p1.shotsNumber+=4;
+				break;
+			case POWER_UP_KIND_BOMB:
+				p1.bombCount += 1;
+				break;
+			case POWER_UP_KIND_GHOST:
+				p1.ghostCount += 1;
+				break;
+			default:
+				console.log("missing powerup definition in doEffect for kind: " + this.kind);
+				break;
+		}		
+	}
+
 	this.draw = function() {
-		drawAnimFrame("powerup",this.x,this.y, this.frame, POWERUP_W,POWERUP_H);
+		drawAnimFrame("powerup",this.x,this.y, Math.floor(this.frame/POWER_UP_FRAME_DRAG), POWERUP_W,POWERUP_H, this.kind);
 	}
 	this.animate = function() {
-		if(++this.frame>=POWERUP_FRAMES) {
+		if(++this.frame >= POWERUP_FRAMES*POWER_UP_FRAME_DRAG) {
 			this.frame = 0;
 		}
 	}

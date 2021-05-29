@@ -4,8 +4,10 @@ const KEY_Z = 90;
 const KEY_X = 88;
 
 // debug keys for now
-const KEY_C = 67;
-const KEY_V = 86;
+const KEY_1 = 49;
+const KEY_2 = 50;
+const KEY_3 = 51;
+const KEY_4 = 52;
 
 const KEY_UP = 38;
 const KEY_RIGHT = 39;
@@ -51,15 +53,29 @@ function keyHoldUpdate(evt, setTo) {
 				levelProgressInPixels += images[currentLevelImageName].height / 10;
 			}
 			break;
-		case KEY_C:
+		case KEY_1:
 			if(setTo == false) { // key relase only, to avoid repeats
 				p1.shotsNumber++;
 				console.log("increasing player shot count");
 			}
 			break;
-		case KEY_V:
+		case KEY_2:
+			if(setTo == false) {
+				p1.bombCount++;
+				console.log("increasing player bomb count");
+			}
+			break;
+		case KEY_3:
+			if(setTo == false) {
+				p1.ghostCount++;
+				console.log("increasing player ghost count");
+			}
+			break;
+		case KEY_4:
 			if(setTo == false) {
 				p1.shotsNumber = 1;
+				p1.bombCount = 1;
+				p1.ghostCount = 1;
 			}
 			break;
 		default:
