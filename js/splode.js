@@ -4,18 +4,6 @@ const SPLODE_DIM=15;
 var splodeCommonFrame = 0;
 const SPLODE_FRAMES = 4;
 
-function drawSplodes() {
-	for(var s=0;s<splodeList.length;s++) {
-		splodeList[s].draw();
-	}
-}
-
-function moveSplodes() {
-	for(var s=0;s<splodeList.length;s++) {
-		splodeList[s].move();
-	}
-}
-
 function animateSplodes() {
 	if(++splodeCommonFrame>=SPLODE_FRAMES) {
         //these die after 1 round of animation
@@ -23,13 +11,14 @@ function animateSplodes() {
 	}
 }
 
+splodeClass.prototype = new moveDrawClass();
+
 function splodeClass(x,y) {
     this.currFrame = 0;
 	this.x = x;
 	this.y = y;
 	this.xv = 0; //level scroll speed maybe?
 	this.yv = -1;
-	this.readyToRemove = false;
 
 	this.move = function() {
         this.currFrame++;

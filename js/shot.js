@@ -20,7 +20,6 @@ function shotClass(startX,startY, totalSpeed, angle, momentumX,momentumY) {
 	this.y = startY;
 	this.xv = momentumX + Math.cos(this.ang)*totalSpeed;
 	this.yv = momentumY + Math.sin(this.ang)*totalSpeed;
-	this.readyToRemove = false;
 
 	this.move = function() {
 		this.x += this.xv;

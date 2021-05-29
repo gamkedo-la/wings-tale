@@ -24,7 +24,7 @@ function loadingDoneSoStartGame() {
 
 function animateSprites() {
 	p1.animate();
-	animateEnemies();
+	animateList();
 	animateShots();
 	animateEnemyShots();
 	animateSplodes();
@@ -49,15 +49,7 @@ function reset() {
 
 function enemyToShotCollision() {
 	for(var s=shotList.length-1;s>=0;s--) {
-		if(shotList[s].readyToRemove) { // out of bounds or otherwise
-			shotList.splice(s,1);
-			continue;
-		}
 		for(var e=enemyList.length-1;e>=0;e--) {
-			if(enemyList[e].readyToRemove) { // out of bounds or otherwise
-				enemyList.splice(e,1);
-				break;
-			}
 			var dx=Math.abs(enemyList[e].x-shotList[s].x);
 			var dy=Math.abs(enemyList[e].y-shotList[s].y);
 			var dist=dx+dy; // no need to bring sqrt into this, but correct would be Math.sqrt(dx*dx+dy*dy);
@@ -85,10 +77,6 @@ function enemyToShieldCollision() {
 			continue;
 		}
 		for(var e=enemyList.length-1;e>=0;e--) {
-			if(enemyList[e].readyToRemove) { // out of bounds or otherwise
-				enemyList.splice(e,1);
-				break;
-			}
 			var dx=Math.abs(enemyList[e].x-defenseRingUnitList[d].x);
 			var dy=Math.abs(enemyList[e].y-defenseRingUnitList[d].y);
 			var dist=dx+dy; // no need to bring sqrt into this, but correct would be Math.sqrt(dx*dx+dy*dy);
@@ -116,10 +104,6 @@ function enemyShotToShieldCollision() {
 			continue;
 		}
 		for(var e=enemyShotList.length-1;e>=0;e--) {
-			if(enemyShotList[e].readyToRemove) { // out of bounds or otherwise
-				enemyShotList.splice(e,1);
-				break;
-			}
 			var dx=Math.abs(enemyShotList[e].x-defenseRingUnitList[d].x);
 			var dy=Math.abs(enemyShotList[e].y-defenseRingUnitList[d].y);
 			var dist=dx+dy; // no need to bring sqrt into this, but correct would be Math.sqrt(dx*dx+dy*dy);
@@ -142,11 +126,6 @@ function enemyShotToShieldCollision() {
 
 function enemyShotToPlayerCollision() {
 	for (var eShot = enemyShotList.length - 1; eShot >= 0; eShot--) {
-		if (enemyShotList[eShot].readyToRemove) {
-			enemyShotList.splice(eShot, 1);
-			continue;
-		}
-
 		var dx1 = Math.abs(enemyShotList[eShot].x - p1.x);
 		var dy1 = Math.abs(enemyShotList[eShot].y - p1.y);
 		// var dx2 = Math.abs(enemyShotList[eShot].x - p2.x); // reserved for player 2
@@ -159,16 +138,6 @@ function enemyShotToPlayerCollision() {
 			//reset() // hit the player
 			
 			break; // break since don't compare against other enemies for this removed shot
-		}
-	}
-}
-
-function splodeCleanup() {
-	//splodes are marked ready to remove after they play animation once.
-	for(var i=splodeList.length-1;i>=0;i--) {
-		if(splodeList[i].readyToRemove) { // out of bounds or otherwise
-			splodeList.splice(i,1);
-			continue;
 		}
 	}
 }
@@ -215,9 +184,9 @@ function update() {
 
 	p1.move();
 	moveList(shotList);
-	moveSplodes();
-	moveSurfaceEnemies();
-	moveEnemies();
+	moveList(splodeList);
+	moveList(surfaceList);
+	moveList(enemyList);
 	moveList(enemyShotList);
 	moveDefenseRingUnits(p1.x, p1.y);
 
@@ -225,16 +194,15 @@ function update() {
 	enemyToShieldCollision();
 	enemyShotToShieldCollision();
 	enemyShotToPlayerCollision();
-	splodeCleanup();
 
 	drawBackground();
 	drawRippleEffect();
-	drawSurfaceEnemies();
+	drawList(surfaceList);
 	p1.draw();
 	drawList(shotList);
-	drawEnemies();
+	drawList(enemyList);
 	drawList(enemyShotList);
-	drawSplodes();
+	drawList(splodeList);
 	drawDefenseRingUnits();
 
 	scaledCtx.drawImage(canvas, 0, 0, canvas.width, canvas.height,

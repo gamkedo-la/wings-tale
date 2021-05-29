@@ -15,23 +15,7 @@ function spawnEnemy() {
 	enemyList.push(new enemyClass());
 }
 
-function drawEnemies() {
-	for(var e=0;e<enemyList.length;e++) {
-		enemyList[e].draw();
-	}
-}
-
-function moveEnemies() {
-	for(var e=0;e<enemyList.length;e++) {
-		enemyList[e].move();
-	}
-}
-
-function animateEnemies() {
-	for(var e=0;e<enemyList.length;e++) {
-		enemyList[e].animate();
-	}
-}
+enemyClass.prototype = new moveDrawClass();
 
  // note: so far, not yet a general enemy class, pretty specific to this enemy. we can generalize it when we add more types
 function enemyClass() {

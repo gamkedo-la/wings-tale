@@ -7,8 +7,6 @@ const RING_FRAME_H = 6;
 const RING_FRAMES = 4;
 const DEFENSE_RING_ORB_DIM = 6;
 
-
-
 function spawnDefenseRingUnit() {
 	defenseRingUnitList.push(new defenseRingClass());
     console.log("Number of defense ring units: " + defenseRingUnitList.length);
@@ -38,6 +36,8 @@ function resetDefenseRing(){
 		spawnDefenseRingUnit();
 	}
 }
+
+defenseRingClass.prototype = new moveDrawClass();
 
 function defenseRingClass() {
     this.x; this.y;
