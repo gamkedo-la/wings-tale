@@ -53,69 +53,6 @@ function reset() {
 	drawMoveList = [surfaceList,shotGroundList,shotList,enemyList,enemyShotList,splodeList,defenseRingUnitList];
 }
 
-function enemyToShotCollision() {
-	for(var s=shotList.length-1;s>=0;s--) {
-		for(var e=enemyList.length-1;e>=0;e--) {
-			var dx=Math.abs(enemyList[e].x-shotList[s].x);
-			var dy=Math.abs(enemyList[e].y-shotList[s].y);
-			var dist=dx+dy; // no need to bring sqrt into this, but correct would be Math.sqrt(dx*dx+dy*dy);
-			if(dist< (SHOT_DIM+ENEMY_DIM)/2) {
-				
-				//explode at impact site!
-				spawnSplode(enemyList[e].x,enemyList[e].y);
-
-				//remove both the shot and the enemy
-				enemyList[e].readyToRemove = true;
-				shotList[s].readyToRemove = true;
-				
-				break; // break since don't compare against other enemies for this removed shot
-			}
-		} // enemies
-	} // shots
-} // end of function
-
-function enemyToShieldCollision() {
-	for(var d=defenseRingUnitList.length-1;d>=0;d--) {
-		for(var e=enemyList.length-1;e>=0;e--) {
-			var dx=Math.abs(enemyList[e].x-defenseRingUnitList[d].x);
-			var dy=Math.abs(enemyList[e].y-defenseRingUnitList[d].y);
-			var dist=dx+dy; // no need to bring sqrt into this, but correct would be Math.sqrt(dx*dx+dy*dy);
-			if(dist< (DEFENSE_RING_ORB_DIM+ENEMY_DIM)/2) {
-				
-				//explode at impact site!
-				spawnSplode(enemyList[e].x,enemyList[e].y);
-
-				//remove both the shot and the enemy
-				enemyList[e].readyToRemove = true;
-				defenseRingUnitList[d].readyToRemove = true;
-				
-				break; // break since don't compare against other enemies for this removed shot
-			}
-		} // enemies
-	} // shots
-} // end of function
-
-function enemyShotToShieldCollision() {
-	for(var d=defenseRingUnitList.length-1;d>=0;d--) {
-		for(var e=enemyShotList.length-1;e>=0;e--) {
-			var dx=Math.abs(enemyShotList[e].x-defenseRingUnitList[d].x);
-			var dy=Math.abs(enemyShotList[e].y-defenseRingUnitList[d].y);
-			var dist=dx+dy; // no need to bring sqrt into this, but correct would be Math.sqrt(dx*dx+dy*dy);
-			if(dist< (DEFENSE_RING_ORB_DIM+ENEMY_DIM)/2) {
-				
-				//explode at impact site!
-				spawnSplode(enemyShotList[e].x,enemyShotList[e].y);
-				
-				//remove both the shot and the enemy
-				enemyShotList[e].readyToRemove = true;
-				defenseRingUnitList[d].readyToRemove = true;
-				
-				break; // break since don't compare against other enemies for this removed shot
-			}
-		} // enemies
-	} // shots
-} // end of function
-
 function enemyShotToPlayerCollision() {
 	for (var eShot = enemyShotList.length - 1; eShot >= 0; eShot--) {
 		var dx1 = Math.abs(enemyShotList[eShot].x - p1.x);
@@ -124,19 +61,13 @@ function enemyShotToPlayerCollision() {
 		// var dy2 = Math.abs(enemyShotList[eShot].y - p2.y); // reserved for player 2
 		var dist1 = dx1+dy1; // no need to bring sqrt into this, but correct would be Math.sqrt(dx*dx+dy*dy);
 		if(dist1 < (SHOT_DIM + PLAYER_DIM) / 2) {
-			
-			//p1.reset();
-			//resetDefenseRing();
-			//reset() // hit the player
-			
-			break; // break since don't compare against other enemies for this removed shot
+			readyToReset = true;			
+			break; // break since no more need to be tested
 		}
 	}
 }
 
 function drawBackground() {
-
-
 	bgDrawY = (images[currentLevelImageName].height-GAME_H)-levelProgressInPixels;
 	if(bgDrawY<0) {
 		bgDrawY = 0;
@@ -184,9 +115,10 @@ function update() {
 	}
 	p1.move();
 
-	enemyToShotCollision();
-	enemyToShieldCollision();
-	enemyShotToShieldCollision();
+	listCollideExplode(shotList, enemyList, (SHOT_DIM+ENEMY_DIM)/2);
+	listCollideExplode(defenseRingUnitList, enemyList, (DEFENSE_RING_ORB_DIM+ENEMY_DIM)/2);
+	listCollideExplode(enemyShotList, defenseRingUnitList, (ENEMY_SHOT_DIM + DEFENSE_RING_ORB_DIM)/2);
+
 	enemyShotToPlayerCollision();
 
 	drawBackground();
