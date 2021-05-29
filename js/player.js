@@ -32,6 +32,7 @@ function playerClass() {
 
 	this.draw = function() {
 		drawAnimFrame("player",this.x,this.y, this.frame, PLAYER_FRAME_W,PLAYER_FRAME_H);
+		drawAnimFrame("bomb sight",this.x,this.y-APPROX_BOMB_RANGE, this.frame%2, BOMB_FRAME_W,BOMB_FRAME_H);
 	}
 
 	this.move = function() {

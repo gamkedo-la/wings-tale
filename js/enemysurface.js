@@ -13,18 +13,21 @@ surfaceEnemyClass.prototype = new moveDrawClass();
 
 function surfaceEnemyClass(startX,startY) {
 	this.x = startX;
-	this.y = startY;
+	this.origY = startY;
+	this.y = 0;
 	this.frame = Math.random()*SURFACE_ENEMY_FRAMES;
+
 	this.draw = function() {
-		drawAnimFrame("turret",this.x,this.y-bgDrawY, this.frame, SURFACE_ENEMY_DIM,SURFACE_ENEMY_DIM);
+		this.y = this.origY-bgDrawY;
+		drawAnimFrame("turret",this.x,this.y, this.frame, SURFACE_ENEMY_DIM,SURFACE_ENEMY_DIM);
 	}
 
 	this.move = function() {
-		if(GAME_H - this.y > 0) {
+		if(this.y > GAME_H) {
 			this.readyToRemove = true;
 		} else {
 			if (120 * Math.random() < 1) {
-				new enemyShotClass(this.x, this.y - bgDrawY)
+				new enemyShotClass(this.x, this.y);
 			}
 		}
 	}

@@ -3,7 +3,14 @@ const SHOT_GROUND_DIM=5;
 const SHOT_GROUND_SPEED=10;
 const PLAYER_SHOT_GROUND_FRAMES = 4;
 const SHOT_GROUND_SPEED_PERC_FALLOFF = 0.9;
-const SHOT_SPEED_DETONATE = -0.1;
+const SHOT_GROUND_SPEED_DETONATE = -0.1;
+
+const BOMB_RADIUS = 25;
+const BOMB_EXPLOSIONS = 10;
+const APPROX_BOMB_RANGE = 120;
+// non-square to compensate for rectangular NES pixels (240x255 resolution stretched to 4:3 display)
+const BOMB_FRAME_W = 40;
+const BOMB_FRAME_H = 50;
 
 shotGroundClass.prototype = new moveDrawClass();
 
@@ -21,8 +28,13 @@ function shotGroundClass(startX,startY, totalSpeed, angle, momentumX,momentumY) 
 		this.yv *= SHOT_GROUND_SPEED_PERC_FALLOFF;
 		if(this.y<0 || this.x<0 || this.x>GAME_W || this.y>GAME_H) {
 			this.readyToRemove = true;
-		} else if(this.yv >= SHOT_SPEED_DETONATE) {
-			spawnSplode(this.x,this.y);
+		} else if(this.yv >= SHOT_GROUND_SPEED_DETONATE) {
+			for(var i=0; i<BOMB_EXPLOSIONS; i++) {
+				var blastAng = randAng();
+				var blastDist = randRange(3,BOMB_RADIUS);
+				spawnSplode(this.x + Math.cos(blastAng)*blastDist,this.y + Math.sin(blastAng)*blastDist);
+			}
+			listCollideRangeOfPoint(surfaceList, this.x, this.y, BOMB_RADIUS, function () { console.log("bomb hit!"); } );
 			this.readyToRemove = true;
 		}
 	}

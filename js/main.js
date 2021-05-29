@@ -20,7 +20,7 @@ window.onload = function() { // discord repo check
 
 function loadingDoneSoStartGame() {
 	startDisplayIntervals();
-	setInterval(spawnEnemy,30);
+	setInterval(spawnEnemy,140);
 	inputSetup();
 	reset();
 }
@@ -51,20 +51,6 @@ function reset() {
 
 	// repacking this list since reset above emplied
 	drawMoveList = [surfaceList,shotGroundList,shotList,enemyList,enemyShotList,splodeList,defenseRingUnitList];
-}
-
-function enemyShotToPlayerCollision() {
-	for (var eShot = enemyShotList.length - 1; eShot >= 0; eShot--) {
-		var dx1 = Math.abs(enemyShotList[eShot].x - p1.x);
-		var dy1 = Math.abs(enemyShotList[eShot].y - p1.y);
-		// var dx2 = Math.abs(enemyShotList[eShot].x - p2.x); // reserved for player 2
-		// var dy2 = Math.abs(enemyShotList[eShot].y - p2.y); // reserved for player 2
-		var dist1 = dx1+dy1; // no need to bring sqrt into this, but correct would be Math.sqrt(dx*dx+dy*dy);
-		if(dist1 < (SHOT_DIM + PLAYER_DIM) / 2) {
-			readyToReset = true;			
-			break; // break since no more need to be tested
-		}
-	}
 }
 
 function drawBackground() {
@@ -118,8 +104,7 @@ function update() {
 	listCollideExplode(shotList, enemyList, (SHOT_DIM+ENEMY_DIM)/2);
 	listCollideExplode(defenseRingUnitList, enemyList, (DEFENSE_RING_ORB_DIM+ENEMY_DIM)/2);
 	listCollideExplode(enemyShotList, defenseRingUnitList, (ENEMY_SHOT_DIM + DEFENSE_RING_ORB_DIM)/2);
-
-	enemyShotToPlayerCollision();
+	listCollideRangeOfPoint(enemyShotList, p1.x, p1.y, (SHOT_DIM + PLAYER_DIM) / 2, function () { readyToReset = true; } );
 
 	drawBackground();
 	drawRippleEffect();

@@ -21,7 +21,7 @@ function animateList(whichList) {
 	}
 }
 
-// note: for what it's worth, explosion side will be on center of B position, so make second list enemy etc. instead of shot
+// explosion will be on center of B position, so make second list enemy etc. instead of shot
 function listCollideExplode(listA, listB, collisionRange) {
 	for(var a=0;a<listA.length;a++) {
 		for(var b=0;b<listB.length;b++) {
@@ -40,6 +40,22 @@ function listCollideExplode(listA, listB, collisionRange) {
 				break; // break since don't compare against any others for this removed one
 			}
 		} // listB
+	} // listA
+}
+
+function listCollideRangeOfPoint(listA, atX, atY, collisionRange, resultFunction) {
+	for(var a=0;a<listA.length;a++) {
+		var dx=Math.abs(listA[a].x-atX);
+		var dy=Math.abs(listA[a].y-atY);
+		var dist=dx+dy; // no need to bring sqrt into this, but correct would be Math.sqrt(dx*dx+dy*dy);
+		if(dist< collisionRange) {
+			spawnSplode(listA[a].x,listA[a].y);
+			listA[a].readyToRemove = true;			
+			
+			resultFunction(); // for custom behavior like game end, screenshake, etc.
+
+			// break; // NOTE: specifically no break, used for bomb etc. so same one could take out multiple!
+		}
 	} // listA
 }
 
