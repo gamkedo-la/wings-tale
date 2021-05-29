@@ -8,17 +8,11 @@ const RING_FRAMES = 4;
 const DEFENSE_RING_ORB_DIM = 6;
 
 function spawnDefenseRingUnit() {
-	defenseRingUnitList.push(new defenseRingClass(p1));
-    console.log("Number of defense ring units: " + defenseRingUnitList.length);
+	defenseRingUnitList.push(new defenseRingClass(p1,defenseRingUnitList.length));
 }
 
-function moveDefenseRingUnits() {
-    for(var d=0;d<defenseRingUnitList.length;d++) {
-		defenseRingUnitList[d].move(d);
-	}
-}
 function resetDefenseRing(){
-    defenseRingUnitList=[];
+    defenseRingUnitList.length = 0;
     for(var i = 0; i<nDefenseOrbs ; i++){
 		spawnDefenseRingUnit();
 	}
@@ -26,9 +20,10 @@ function resetDefenseRing(){
 
 defenseRingClass.prototype = new moveDrawClass();
 
-function defenseRingClass(onPlayer) {
+function defenseRingClass(onPlayer, inPlace) {
     this.x; this.y;
     this.myPlayer = onPlayer;
+    this.myPlace = inPlace;
 	this.dfRingAngle = 0;
     this.frame = 0;
     this.readyToRemove = false;
@@ -43,9 +38,9 @@ function defenseRingClass(onPlayer) {
         drawAnimFrame("defense_ring_unit", this.x, this.y, this.frame, RING_FRAME_W, RING_FRAME_H);
     }
 
-    this.move = function(offset){
-        this.x = this.myPlayer.x + RADIUS * Math.cos(this.dfRingAngle + (offset * (2*Math.PI / defenseRingUnitList.length )));
-		this.y = this.myPlayer.y + RADIUS * Math.sin(this.dfRingAngle + (offset * (2*Math.PI / defenseRingUnitList.length )));
+    this.move = function(){
+        this.x = this.myPlayer.x + RADIUS * Math.cos(this.dfRingAngle + (this.myPlace * (2*Math.PI / defenseRingUnitList.length )));
+		this.y = this.myPlayer.y + RADIUS * Math.sin(this.dfRingAngle + (this.myPlace * (2*Math.PI / defenseRingUnitList.length )));
 
 		this.dfRingAngle+=RING_ANG_SPEED;
     }

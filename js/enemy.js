@@ -39,7 +39,7 @@ function enemyClass() {
 			this.readyToRemove = true;
 		}
 		if(dist< (PLAYER_DIM+ENEMY_DIM)/2) {
-			reset();
+			readyToReset = true;
 		}
 	}
 

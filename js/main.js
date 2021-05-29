@@ -5,6 +5,9 @@ var currentLevelImageName = "level island"
 var nDefenseOrbs = 3;
 
 var p1 = new playerClass();
+var readyToReset = false; // to avoid calling reset() mid list iterations
+
+var drawMoveList = []; // list of lists - note, drawn in this order, so should be filled closest to ground up towards sky last
 
 window.onload = function() { // discord repo check
 	setupCanvas();
@@ -37,16 +40,17 @@ function animateSprites() {
 function reset() {
 	p1.reset();
 	levelProgressInPixels = 0
-	shotList = [];
-	enemyList = [];
-	surfaceList = [];
-	enemyShotList = [];
-	splodeList = [];
-	defenseRingUnitList = [];
-	spawnSurfaceEnemies();
+
+	for(var i=0;i<drawMoveList.length;i++) {
+		drawMoveList[i].length = 0;
+	}
+
 	resetDefenseRing();
+	spawnSurfaceEnemies();
 	rippleReset();
 
+	// repacking this list since reset above emplied
+	drawMoveList = [surfaceList,shotList,enemyList,enemyShotList,splodeList,defenseRingUnitList];
 }
 
 function enemyToShotCollision() {
@@ -63,8 +67,8 @@ function enemyToShotCollision() {
 				dropRippleAt(enemyList[e].x,enemyList[e].y)
 
 				//remove both the shot and the enemy
-				enemyList.splice(e,1);
-				shotList.splice(s,1);
+				enemyList[e].readyToRemove = true;
+				shotList[s].readyToRemove = true;
 				
 				break; // break since don't compare against other enemies for this removed shot
 			}
@@ -74,10 +78,6 @@ function enemyToShotCollision() {
 
 function enemyToShieldCollision() {
 	for(var d=defenseRingUnitList.length-1;d>=0;d--) {
-		if(defenseRingUnitList[d].readyToRemove) { // out of bounds or otherwise
-			defenseRingUnitList.splice(d,1);
-			continue;
-		}
 		for(var e=enemyList.length-1;e>=0;e--) {
 			var dx=Math.abs(enemyList[e].x-defenseRingUnitList[d].x);
 			var dy=Math.abs(enemyList[e].y-defenseRingUnitList[d].y);
@@ -90,8 +90,8 @@ function enemyToShieldCollision() {
 				dropRippleAt(enemyList[e].x,enemyList[e].y, 2);
 
 				//remove both the shot and the enemy
-				enemyList.splice(e,1);
-				defenseRingUnitList.splice(d,1);
+				enemyList[e].readyToRemove = true;
+				defenseRingUnitList[d].readyToRemove = true;
 				
 				break; // break since don't compare against other enemies for this removed shot
 			}
@@ -101,10 +101,6 @@ function enemyToShieldCollision() {
 
 function enemyShotToShieldCollision() {
 	for(var d=defenseRingUnitList.length-1;d>=0;d--) {
-		if(defenseRingUnitList[d].readyToRemove) { // out of bounds or otherwise
-			defenseRingUnitList.splice(d,1);
-			continue;
-		}
 		for(var e=enemyShotList.length-1;e>=0;e--) {
 			var dx=Math.abs(enemyShotList[e].x-defenseRingUnitList[d].x);
 			var dy=Math.abs(enemyShotList[e].y-defenseRingUnitList[d].y);
@@ -117,8 +113,8 @@ function enemyShotToShieldCollision() {
 				
 
 				//remove both the shot and the enemy
-				enemyShotList.splice(e,1);
-				defenseRingUnitList.splice(d,1);
+				enemyShotList[e].readyToRemove = true;
+				defenseRingUnitList[d].readyToRemove = true;
 				
 				break; // break since don't compare against other enemies for this removed shot
 			}
@@ -180,17 +176,19 @@ function drawRippleEffect() {
 }
 
 function update() {
+	if(readyToReset) {
+		reset();
+		readyToReset = false;
+	}
+
 	levelProgressInPixels += levelProgressRate;
 
 		//testing out some real-time background effects here, meant to render before sprites are drawn
 
+	for(var i=0;i<drawMoveList.length;i++) {
+		moveList(drawMoveList[i]);
+	}
 	p1.move();
-	moveList(shotList);
-	moveList(splodeList);
-	moveList(surfaceList);
-	moveList(enemyList);
-	moveList(enemyShotList);
-	moveDefenseRingUnits(); // special handling, needs to know place within list for even radial spacing
 
 	enemyToShotCollision();
 	enemyToShieldCollision();
@@ -199,13 +197,10 @@ function update() {
 
 	drawBackground();
 	drawRippleEffect();
-	drawList(surfaceList);
+	for(var i=0;i<drawMoveList.length;i++) {
+		drawList(drawMoveList[i]);
+	}
 	p1.draw();
-	drawList(shotList);
-	drawList(enemyList);
-	drawList(enemyShotList);
-	drawList(splodeList);
-	drawList(defenseRingUnitList);
 
 	scaledCtx.drawImage(canvas, 0, 0, canvas.width, canvas.height,
         					    0, 0, scaledCanvas.width, scaledCanvas.height);
