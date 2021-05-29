@@ -4,28 +4,14 @@ const SHOT_SPEED=6;
 var playerShotCommonFrame = 0;
 const PLAYER_SHOT_FRAMES = 4;
 
-function drawShots() {
-	for(var s=0;s<shotList.length;s++) {
-		shotList[s].draw();
-	}
-}
-
-function moveShots() {
-	for(var s=0;s<shotList.length;s++) {
-		shotList[s].move();
-	}
-}
-
 function animateShots() {
+	// special case, not using animateList for shots so they all stay in sync
 	if(++playerShotCommonFrame>=PLAYER_SHOT_FRAMES) {
 		playerShotCommonFrame = 0;
 	}
 }
 
-// to go from -5 to "5 degrees left of player ship facing north"
-function degToShipRad(degAng) {
-	return ((degAng-90) * Math.PI/180.0);
-}
+shotClass.prototype = new moveDrawClass();
 
 // px+4,py,SHOT_SPEED,5.0,pmx,pmy
 function shotClass(startX,startY, totalSpeed, angle, momentumX,momentumY) {

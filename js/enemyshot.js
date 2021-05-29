@@ -4,23 +4,14 @@ const ENEMY_SHOT_SPEED=3;
 var enemyShotCommonFrame = 0;
 const ENEMY_SHOT_FRAMES = 4;
 
-function drawEnemyShots() {
-	for(var s = 0; s < enemyShotList.length; s++) {
-		enemyShotList[s].draw();
-	}
-}
-
-function moveEnemyShots() {
-	for(var s = 0; s < enemyShotList.length; s++) {
-		enemyShotList[s].move();
-	}
-}
-
 function animateEnemyShots() {
+	// special case, not using animateList for shots so they all stay in sync
 	if(++enemyShotCommonFrame >= ENEMY_SHOT_FRAMES) {
 		enemyShotCommonFrame = 0;
 	}
 }
+
+enemyShotClass.prototype = new moveDrawClass();
 
 function enemyShotClass(startX, startY, totalSpeed = ENEMY_SHOT_SPEED) {
 	this.ang = Math.atan2((p1.y - startY), (p1.x - startX))

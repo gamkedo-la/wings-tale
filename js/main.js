@@ -214,11 +214,11 @@ function update() {
 		//testing out some real-time background effects here, meant to render before sprites are drawn
 
 	p1.move();
-	moveShots();
+	moveList(shotList);
 	moveSplodes();
 	moveSurfaceEnemies();
 	moveEnemies();
-	moveEnemyShots();
+	moveList(enemyShotList);
 	moveDefenseRingUnits(p1.x, p1.y);
 
 	enemyToShotCollision();
@@ -231,9 +231,9 @@ function update() {
 	drawRippleEffect();
 	drawSurfaceEnemies();
 	p1.draw();
-	drawShots();
+	drawList(shotList);
 	drawEnemies();
-	drawEnemyShots();
+	drawList(enemyShotList);
 	drawSplodes();
 	drawDefenseRingUnits();
 
@@ -252,8 +252,4 @@ function update() {
 		percProgress = 100;
 	}
 	scaledCtx.fillText("Level progress: " + percProgress+"%",20,debugLineY+=debugLineSkip);
-}
-
-function randRange(min,max) {
-	return min+Math.random()*(max-min);
 }
