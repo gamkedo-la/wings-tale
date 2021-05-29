@@ -75,7 +75,7 @@ function keyHoldUpdate(evt, setTo) {
 			if(setTo == false) {
 				p1.shotsNumber = 1;
 				p1.bombCount = 1;
-				p1.ghostCount = 1;
+				p1.ghostCount = 0;
 			}
 			break;
 		default:

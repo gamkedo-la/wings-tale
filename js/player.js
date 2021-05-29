@@ -6,12 +6,17 @@ const PLAYER_SPEED = 3;
 const EDGE_MARGIN = PLAYER_DIM;
 
 var shotDegSpread = 3.7;
-var bombDegSpread = 7;
-var GHOST_DIST_MULT = 7;
+var bombDegSpread = 6;
+const GHOST_DIST_MULT = 9;
+const GHOST_MIN_MOVE_SPEED = 0.7;
 
 function playerClass() {
 	this.x; this.y;
 	this.xv=0; this.yv=0;
+
+	// used for ghost player sources
+	this.trailX = [];
+	this.trailY = [];
 
 	this.shotsNumber = 1;
 	this.bombCount = 1;
@@ -39,7 +44,14 @@ function playerClass() {
 
 	this.draw = function() {
 		for(var i=0;i<this.ghostCount;i++) {
-			drawAnimFrame("player",this.x-(i+1)*GHOST_DIST_MULT*this.xv,this.y-(i+1)*GHOST_DIST_MULT*this.yv, this.frame, PLAYER_FRAME_W,PLAYER_FRAME_H);
+			var ghostIdx = (i+1)*GHOST_DIST_MULT;
+			if(ghostIdx>=this.trailY.length) {
+				ghostIdx=this.trailY.length-1;
+			}
+			fromX = this.trailX[ghostIdx];
+			fromY = this.trailY[ghostIdx];
+
+			drawAnimFrame("player",fromX, fromY, this.frame, PLAYER_FRAME_W,PLAYER_FRAME_H);
 		}
 		drawAnimFrame("player",this.x,this.y, this.frame, PLAYER_FRAME_W,PLAYER_FRAME_H);
 		drawAnimFrame("bomb sight",this.x,this.y-APPROX_BOMB_RANGE, this.frame%2, BOMB_FRAME_W,BOMB_FRAME_H);
@@ -58,6 +70,17 @@ function playerClass() {
 		}
 		if(this.holdLeft) {
 			this.xv = -PLAYER_SPEED;
+		}
+
+		if(Math.abs(this.xv)+Math.abs(this.yv) > GHOST_MIN_MOVE_SPEED) {
+			this.trailX.unshift(this.x);
+			this.trailY.unshift(this.y);
+			while(this.trailX.length > this.ghostCount * GHOST_DIST_MULT) {
+				this.trailX.pop();
+			}
+			while(this.trailY.length > this.ghostCount * GHOST_DIST_MULT) {
+				this.trailY.pop();
+			}
 		}
 
 		this.x += this.xv;
@@ -85,6 +108,7 @@ function playerClass() {
 		var pmy = this.yv * (this.yv > 0 ? 0.2 : 0.9);
 
 		var ghostsLeft = this.ghostCount;
+		var ghostIdx=0;
 		var fromX = this.x;
 		var fromY = this.y;
 		do {
@@ -106,8 +130,12 @@ function playerClass() {
 				}
 			}
 
-			fromX -= GHOST_DIST_MULT*this.xv;
-			fromY -= GHOST_DIST_MULT*this.yv;
+			ghostIdx+=GHOST_DIST_MULT;
+			if(ghostIdx>=this.trailY.length) {
+				ghostIdx=this.trailY.length-1;
+			}
+			fromX = this.trailX[ghostIdx];
+			fromY = this.trailY[ghostIdx];
 		} while(ghostsLeft-- > 0);
 
 		this.wasHoldingBomb = this.holdBomb;
