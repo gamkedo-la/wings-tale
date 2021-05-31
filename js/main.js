@@ -11,6 +11,8 @@ var drawMoveList = []; // list of lists - note, drawn in this order, so should b
 var animateEachLists = []; // subset of draw/move lists for which each object has its own separate animation frame to update
 
 var playingGame = true;
+var gameMusic = {};
+
 
 window.onload = function() { // discord repo check
 	setupCanvas();
@@ -20,6 +22,7 @@ window.onload = function() { // discord repo check
 	}
 	loadSounds();
 	loadImages();
+	gameMusic = playSound(sounds.secondReality, 1, 0, 0.5, true);
 }
 
 function loadingDoneSoStartGame() {
@@ -64,6 +67,11 @@ function reset() {
 
 	// excludes lists which share a common animation frame to be in sync (ex. all shots show same animation frame at same time)
 	animateEachLists = [enemyList, powerupList, surfaceList, defenseRingUnitList];
+
+	gameMusic.sound.stop();
+	gameMusic = playSound(sounds.secondReality, 1, 0, 0.3, true);
+	
+
 }
 
 function drawBackground() {

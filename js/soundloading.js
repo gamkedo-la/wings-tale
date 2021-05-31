@@ -5,6 +5,7 @@ async function loadSounds() {
     const soundList = [
         {sndName: "playerShot", theFile: "shoot-06.mp3"},
         {sndName: "splode", theFile: "shoot-01.mp3"},
+        {sndName: "secondReality", theFile: "secondRealityCover-placeholderMusic.mp3"},
     ];
 
     soundsToLoad = soundList.length;
