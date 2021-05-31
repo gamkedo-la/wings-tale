@@ -1,15 +1,36 @@
 var surfaceList=[];
 const SURFACE_ENEMY_DIM = 10;
 const SURFACE_ENEMY_FRAMES = 2;
+const ENEMY_SPAWN_TRY_COUNT = 60;
 
 function spawnSurfaceEnemies() {
-	surfaceList.push(new surfaceEnemyClass(201,259));
-	surfaceList.push(new surfaceEnemyClass(110,592));
-	surfaceList.push(new surfaceEnemyClass(58,744));
-	surfaceList.push(new surfaceEnemyClass(131,631));
-	surfaceList.push(new surfaceEnemyClass(151,731));
-	surfaceList.push(new surfaceEnemyClass(201,831));
+	
+	for(let i = 0; i < ENEMY_SPAWN_TRY_COUNT; i++){
+		let w = images["depth map"].width;
+		let h = images["depth map"].height;
+		let atX = Math.random() * w >> 0;
+		let atY = Math.random() * h >> 0;
+
+		let index = atY * w + atX;
+		//we could easily use another channel of this image to place more specifically,
+		//right now I just check if the depth map has green value greater than an arbitrary threshold
+		//to make sure they don't spawn over water.  
+		let canSpawnHere = depthSpawnData.data[index*4+1] > 100;  //the green value at this pixel.
+
+		if(canSpawnHere){
+			surfaceList.push(new surfaceEnemyClass(atX,atY));
+		}
+
+	}
+	// surfaceList.push(new surfaceEnemyClass(201,259));
+	// surfaceList.push(new surfaceEnemyClass(110,592));
+	// surfaceList.push(new surfaceEnemyClass(58,744));
+	// surfaceList.push(new surfaceEnemyClass(131,631));
+	// surfaceList.push(new surfaceEnemyClass(151,731));
+	// surfaceList.push(new surfaceEnemyClass(201,831));
 }
+
+
 
 surfaceEnemyClass.prototype = new moveDrawClass();
 

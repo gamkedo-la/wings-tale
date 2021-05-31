@@ -20,6 +20,7 @@ const SHARED_ANIMATION_FRAMES_PER_SEC = 8;
 var scaledCanvas, scaledCtx;
 var canvas, context;
 var fxCanvas, fxContext;
+var depthSpawnCanvas, depthSpawnContext, depthSpawnData;
 
 
 function drawAnimFrame(picName,atX,atY, whichFrame, frameW,frameH,optionalRow) {

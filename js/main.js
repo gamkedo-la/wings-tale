@@ -26,11 +26,22 @@ window.onload = function() { // discord repo check
 }
 
 function loadingDoneSoStartGame() {
+	createDepthSpawnReference();
 	startDisplayIntervals();
 	setInterval(spawnEnemy,140);
 	inputSetup();
 	initializeControlsMenu();
 	reset();
+}
+
+function createDepthSpawnReference(){
+	depthSpawnCanvas = document.createElement('canvas');
+	depthSpawnContext = depthSpawnCanvas.getContext('2d');
+	let img = images["depth map"];
+	depthSpawnCanvas.width = img.width;
+	depthSpawnCanvas.height = img.height; 
+	depthSpawnContext.drawImage(img, 0, 0);
+	depthSpawnData = depthSpawnContext.getImageData(0,0, img.width, img.height);
 }
 
 function animateSprites() {
