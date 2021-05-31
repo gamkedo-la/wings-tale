@@ -13,7 +13,6 @@ var animateEachLists = []; // subset of draw/move lists for which each object ha
 var playingGame = true;
 var gameMusic = {};
 
-
 window.onload = function() { // discord repo check
 	setupCanvas();
 
