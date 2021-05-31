@@ -13,6 +13,7 @@ function animateSplodes() {
 
 function spawnSplode(atX, atY) {
 	var newSplode = new splodeClass(atX, atY);
+	SOUNDS.splode.play();
 	splodeList.push(newSplode);
 	dropRippleAt(atX, atY)
 }
@@ -25,6 +26,7 @@ function splodeClass(x,y) {
 	this.y = y;
 	this.xv = 0; //level scroll speed maybe?
 	this.yv = -1;
+	
 
 	this.move = function() {
         this.currFrame++;

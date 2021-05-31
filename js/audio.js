@@ -7,6 +7,9 @@ const VOLUME_INCREMENT = 0.05;
 
 
 //define sounds
+const SOUNDS = {}
+SOUNDS.playerShoot = new soundClass("sounds/shoot-06.mp3")
+SOUNDS.splode = new soundClass("sounds/shoot-01.mp3")
 
 
 

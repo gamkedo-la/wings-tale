@@ -87,13 +87,13 @@ function drawBackground() {
 
 function drawRippleEffect() {
 
-	//dropAt(Math.random()*GAME_W << 0, Math.random()*GAME_H << 0);
-	//dropAt(p1.x, p1.y)
-
 	rippleNewFrame();
 	
 	context.putImageData(ripple, 0, 0);
-	context.drawImage(canvas, -81*W_RATIO,-61*H_RATIO, GAME_W + (81*2*W_RATIO >> 0), GAME_H + (61*2*H_RATIO) >> 0);
+	context.drawImage(canvas, -PARALLAX_OFFSET_X*W_RATIO,
+							  -PARALLAX_OFFSET_Y*H_RATIO,
+							   GAME_W + (PARALLAX_OFFSET_X*2*W_RATIO >> 0),
+							   GAME_H + (PARALLAX_OFFSET_Y*2*H_RATIO) >> 0);
 	
 	
 }
