@@ -13,7 +13,8 @@ function animateSplodes() {
 
 function spawnSplode(atX, atY) {
 	var newSplode = new splodeClass(atX, atY);
-	SOUNDS.splode.play();
+	// SOUNDS.splode.play();
+	playSound(sounds.splode);
 	splodeList.push(newSplode);
 	dropRippleAt(atX, atY)
 }

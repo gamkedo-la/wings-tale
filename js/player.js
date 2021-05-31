@@ -123,7 +123,7 @@ function playerClass() {
 
 			if(this.holdFire) {
 				var newShot, shotAngSpan = -(this.shotsNumber-1)*(shotDegSpread*0.5);
-				SOUNDS.playerShoot.play();
+				playSound(sounds.playerShot);
 				for(var i=0;i<this.shotsNumber;i++) {
 					newShot = new shotClass(fromX,fromY,SHOT_SPEED,shotAngSpan+shotDegSpread*i,pmx,pmy);
 					shotList.push(newShot);

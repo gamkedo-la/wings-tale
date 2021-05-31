@@ -18,6 +18,7 @@ window.onload = function() { // discord repo check
 	if(debug_showHiddenCanvas) {
 		document.body.appendChild(canvas); // to debug hidden canvas
 	}
+	loadSounds();
 	loadImages();
 }
 

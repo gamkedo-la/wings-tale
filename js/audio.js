@@ -6,10 +6,12 @@ var firstGesture = false;
 const VOLUME_INCREMENT = 0.05;
 
 
+
 //define sounds
-const SOUNDS = {}
-SOUNDS.playerShoot = new soundClass("sounds/shoot-06.mp3")
-SOUNDS.splode = new soundClass("sounds/shoot-01.mp3")
+// const SOUNDS = {}
+
+// SOUNDS.playerShoot = new soundClass("sounds/shoot-06.mp3")
+// SOUNDS.splode = new soundClass("sounds/shoot-01.mp3")
 
 
 
@@ -19,10 +21,14 @@ function soundClass(fullFilenameWithPath) {
 
 	var fileName = fullFilenameWithPath;
 	var soundIndex = 0;
-	var sounds = [new Audio(fileName)];
+	var sounds = [new Audio(filename)];
+	// var poolSize = 10;
+	// for(let i = 0; i < poolSize; i++){
+	// 	sounds.push(new Audio(fileName))
+	// }
 
 	this.play = function() {
-		if(!sounds[soundIndex].paused) {
+		if(sounds[soundIndex].paused) {
 			sounds.splice(soundIndex, 0, new Audio(fileName));
 		}
 

@@ -1,5 +1,6 @@
-//shoot-06
 {
+"shoot-06" : 
+  {
     "oldParams": true,
     "wave_type": 0,
     "p_env_attack": 0,
@@ -28,3 +29,6 @@
     "sample_rate": 22050,
     "sample_size": 8
   }
+
+  
+}
