@@ -11,12 +11,21 @@ function animateSplodes() {
 	}
 }
 
-function spawnSplode(atX, atY) {
+function spawnSplode(atX, atY, delay=false) {
 	var newSplode = new splodeClass(atX, atY);
 	// SOUNDS.splode.play();
-	playSound(sounds.splode);
-	splodeList.push(newSplode);
-	dropRippleAt(atX, atY)
+	if(delay){
+		setTimeout(function(atX, atY){
+			playSound(sounds.splode);
+			splodeList.push(newSplode);
+			dropRippleAt(atX, atY)
+		}, Math.random()*250)
+	} else {
+		playSound(sounds.splode);
+		splodeList.push(newSplode);
+		dropRippleAt(atX, atY)
+	}
+	
 }
 
 splodeClass.prototype = new moveDrawClass();

@@ -32,7 +32,8 @@ function shotGroundClass(startX,startY, totalSpeed, angle, momentumX,momentumY) 
 			for(var i=0; i<BOMB_EXPLOSIONS; i++) {
 				var blastAng = randAng();
 				var blastDist = randRange(3,BOMB_RADIUS);
-				spawnSplode(this.x + Math.cos(blastAng)*blastDist,this.y + Math.sin(blastAng)*blastDist);
+
+				spawnSplode(this.x + Math.cos(blastAng)*blastDist,this.y + Math.sin(blastAng)*blastDist, true);
 			}
 			var that = this;
 			listCollideRangeOfPoint(surfaceList, this.x, this.y, BOMB_RADIUS, function () { 
