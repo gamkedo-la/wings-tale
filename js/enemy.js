@@ -12,6 +12,10 @@ const ENEMY_SPEED_MIN = 0.8;
 const ENEMY_SPEED_MAX = 2.5;
 
 function spawnEnemy() {
+	if (!playingGame)
+	{
+		return;
+	}
 	enemyList.push(new enemyClass());
 }
 

@@ -1,6 +1,8 @@
 const KEY_SPACE = 32;
 
 const KEY_A = 65;
+const KEY_C = 67;
+var cKeyFired = false;
 const KEY_D = 68;
 const KEY_M = 77;
 const KEY_N = 78;
@@ -28,10 +30,40 @@ const KEY_PLUS = 187;
 let twoPlayerGame = false;
 
 function keyPush(evt) {
+
+			
+	if (evt.keyCode === KEY_C)
+	{
+		if (!cKeyFired)
+			{
+				if (controlsMenuIsOn)
+				{
+					controlsMenuIsOn = false;
+					playingGame = true;
+					cKeyFired = false;
+				}
+				else if (!controlsMenuIsOn)
+				{
+					
+					controlsMenuIsOn = true;
+					playingGame = false;
+					cKeyFired = false;
+				}
+			}
+		return;
+	}
+
 	keyHoldUpdate(evt,true);
 }
 function keyRelease(evt) {
+	switch(evt.keyCode)
+	{
+		case KEY_C: 
+		cKeyFired = false;
+		break;
+	}
 	keyHoldUpdate(evt,false);
+
 }
 function inputSetup() {
 	document.addEventListener('keydown',keyPush);	
@@ -48,6 +80,7 @@ function keyHoldUpdate(evt, setTo) {
 
 function singlePlayerKeyHold (evt, setTo) {
 	var validGameKey = true;
+	
 	switch(evt.keyCode) {
 		case KEY_X:
 		case KEY_M:
@@ -74,6 +107,7 @@ function singlePlayerKeyHold (evt, setTo) {
 		case KEY_S:
 			p1.holdDown = setTo;
 			break;
+		
 		case KEY_PLUS:
 			if (!setTo) {
 				levelProgressInPixels += images[currentLevelImageName].height / 10;
@@ -113,6 +147,7 @@ function singlePlayerKeyHold (evt, setTo) {
 			break;
 	}
 	if(validGameKey) {
+		console.log("actually preventing default?");
 		evt.preventDefault();
 	}
 }

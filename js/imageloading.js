@@ -19,6 +19,7 @@ function loadImages() {
         // note: in order to getbitmapdata on this we need to be
         // running on a web server due to browser local file security 
         {imgName: "depth map", theFile: "islandLevelDepth.png"},
+        {imgName: "controls menu background", theFile: "controlsMenuBackground.png"},
     ];
 
     picsToLoad = imageList.length;
