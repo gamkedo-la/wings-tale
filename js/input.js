@@ -54,8 +54,11 @@ function keyHoldUpdate(evt, setTo) {
 		switch(evt.keyCode) {
 			case KEY_C:
 				if (!setTo) {
-					controlsMenuIsOn = !controlsMenuIsOn; // toggle
-					playingGame = !controlsMenuIsOn; // always opposite
+					if(gameState == GAME_STATE_PLAY) {
+						gameState = GAME_STATE_CONTROLS;
+					} else {
+						gameState = GAME_STATE_PLAY;
+					}
 				}
 				break;
 			default:

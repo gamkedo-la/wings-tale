@@ -1,4 +1,4 @@
-var controlsMenuIsOn = false;
+var controlsMenu;
 
 function ControlsMenu()
 {

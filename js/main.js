@@ -3,6 +3,7 @@ var levelProgressRate = 0.6;
 var bgDrawY = 0; // also used for drawing and collision of surface enemies
 var currentLevelImageName = "level island"
 var nDefenseOrbs = 3;
+var debuggingDisplay = true;
 
 var p1 = new playerClass();
 var readyToReset = false; // to avoid calling reset() mid list iterations
@@ -10,7 +11,10 @@ var readyToReset = false; // to avoid calling reset() mid list iterations
 var drawMoveList = []; // list of lists - note, drawn in this order, so should be filled closest to ground up towards sky last
 var animateEachLists = []; // subset of draw/move lists for which each object has its own separate animation frame to update
 
-var playingGame = true;
+const GAME_STATE_PLAY = 0;
+const GAME_STATE_CONTROLS = 1;
+var gameState = GAME_STATE_PLAY;
+
 var gameMusic = {};
 
 window.onload = function() { // discord repo check
@@ -44,7 +48,7 @@ function createDepthSpawnReference(){
 }
 
 function animateSprites() {
-	if (!playingGame)
+	if (gameState != GAME_STATE_PLAY)
 	{
 		return;
 	}
@@ -117,6 +121,11 @@ function drawRippleEffect() {
 	
 }
 
+function stretchLowResCanvasToVisibleCanvas() {
+	scaledCtx.drawImage(canvas, 0, 0, canvas.width, canvas.height,
+        					    0, 0, scaledCanvas.width, scaledCanvas.height);
+}
+
 function update() 
 {
 
@@ -127,61 +136,65 @@ function update()
 	}
 
 	context.clearRect(0,0, canvas.width,canvas.height);
-	if (controlsMenuIsOn)
-	{
-		// console.log("update call to controls menu draw");
-		// console.log("playingGame: " + playingGame);
-		controlsMenu.draw();
-		return;
-	}	
-	else if (playingGame)
-	{
-		levelProgressInPixels += levelProgressRate;
+	switch(gameState) {
+		case GAME_STATE_CONTROLS:
+			controlsMenu.draw();
+			break;
 
-		//testing out some real-time background effects here, meant to render before sprites are drawn
+		case GAME_STATE_PLAY:
+			levelProgressInPixels += levelProgressRate;
 
-		for(var i=0;i<drawMoveList.length;i++) 
-		{
-			moveList(drawMoveList[i]);
-		}
-		p1.move();
+			//testing out some real-time background effects here, meant to render before sprites are drawn
 
-		listCollideExplode(shotList, enemyList, (SHOT_DIM+ENEMY_DIM)/2);
-		listCollideExplode(defenseRingUnitList, enemyList, (DEFENSE_RING_ORB_DIM+ENEMY_DIM)/2);
-		listCollideExplode(enemyShotList, defenseRingUnitList, (ENEMY_SHOT_DIM + DEFENSE_RING_ORB_DIM)/2);
-		listCollideRangeOfPoint(enemyList, p1.x, p1.y, (ENEMY_DIM + PLAYER_DIM) / 2, function (listElement) { readyToReset = true; } );
-		listCollideRangeOfPoint(enemyShotList, p1.x, p1.y, (SHOT_DIM + PLAYER_DIM) / 2, function (listElement) { readyToReset = true; } );
-		listCollideRangeOfPoint(powerupList, p1.x, p1.y, (POWERUP_H + PLAYER_DIM) / 2, function (listElement) { listElement.doEffect(); } );
+			for(var i=0;i<drawMoveList.length;i++) 
+			{
+				moveList(drawMoveList[i]);
+			}
+			p1.move();
 
-		drawBackground();
-		drawRippleEffect();
-		for(var i=0;i<drawMoveList.length;i++) 
-		{
-			drawList(drawMoveList[i]);
-		}
-		p1.draw();
+			listCollideExplode(shotList, enemyList, (SHOT_DIM+ENEMY_DIM)/2);
+			listCollideExplode(defenseRingUnitList, enemyList, (DEFENSE_RING_ORB_DIM+ENEMY_DIM)/2);
+			listCollideExplode(enemyShotList, defenseRingUnitList, (ENEMY_SHOT_DIM + DEFENSE_RING_ORB_DIM)/2);
+			listCollideRangeOfPoint(enemyList, p1.x, p1.y, (ENEMY_DIM + PLAYER_DIM) / 2, function (listElement) { readyToReset = true; } );
+			listCollideRangeOfPoint(enemyShotList, p1.x, p1.y, (SHOT_DIM + PLAYER_DIM) / 2, function (listElement) { readyToReset = true; } );
+			listCollideRangeOfPoint(powerupList, p1.x, p1.y, (POWERUP_H + PLAYER_DIM) / 2, function (listElement) { listElement.doEffect(); } );
 
-		scaledCtx.drawImage(canvas, 0, 0, canvas.width, canvas.height,
-	        					    0, 0, scaledCanvas.width, scaledCanvas.height);
-
-		// text after stretch, for sharpness, proportion, readability
-		scaledCtx.fillStyle = "white";
-		// debugging list isn't growing, removed when expected etc.
-		var debugLineY = 20;var debugLineSkip = 10;
-		scaledCtx.fillText("DEBUG/TEMPORARY TEXT",20,debugLineY+=debugLineSkip);
-		scaledCtx.fillText("Space/Z key: hold to fire",20,debugLineY+=debugLineSkip);
-		scaledCtx.fillText("X key: drop bomb",20,debugLineY+=debugLineSkip);
-		scaledCtx.fillText("1-3 key: instant powerup cheat",20,debugLineY+=debugLineSkip);
-		scaledCtx.fillText("4 key: reset powerups",20,debugLineY+=debugLineSkip);
-		/*for(var i=0;i<p1.trailY.length;i++) {
-			scaledCtx.fillText(""+p1.trailY[i],20,debugLineY+=debugLineSkip);
-		}*/
-
-		var percProgress = Math.floor( 100* levelProgressInPixels / (images[currentLevelImageName].height-GAME_H));
-		if(percProgress>100) 
-		{
-			percProgress = 100;
-		}
-		scaledCtx.fillText("Level progress: " + percProgress+"%",20,debugLineY+=debugLineSkip);
+			drawBackground();
+			drawRippleEffect();
+			for(var i=0;i<drawMoveList.length;i++) 
+			{
+				drawList(drawMoveList[i]);
+			}
+			p1.draw();
+			break;
 	}
+
+	// necessary to see what's on the low res canvas
+	stretchLowResCanvasToVisibleCanvas();
+
+	// debug text after stretch, mainly for sharpness, proportion, readability
+	if(gameState == GAME_STATE_PLAY && debuggingDisplay) {
+		gameDebugSharpText();
+	}
+}
+
+function gameDebugSharpText() {
+	scaledCtx.fillStyle = "white";
+	// debugging list isn't growing, removed when expected etc.
+	var debugLineY = 20;var debugLineSkip = 10;
+	scaledCtx.fillText("DEBUG/TEMPORARY TEXT",20,debugLineY+=debugLineSkip);
+	scaledCtx.fillText("Space/Z key: hold to fire",20,debugLineY+=debugLineSkip);
+	scaledCtx.fillText("X key: drop bomb",20,debugLineY+=debugLineSkip);
+	scaledCtx.fillText("1-3 key: instant powerup cheat",20,debugLineY+=debugLineSkip);
+	scaledCtx.fillText("4 key: reset powerups",20,debugLineY+=debugLineSkip);
+	/*for(var i=0;i<p1.trailY.length;i++) {
+		scaledCtx.fillText(""+p1.trailY[i],20,debugLineY+=debugLineSkip);
+	}*/
+
+	var percProgress = Math.floor( 100* levelProgressInPixels / (images[currentLevelImageName].height-GAME_H));
+	if(percProgress>100) 
+	{
+		percProgress = 100;
+	}
+	scaledCtx.fillText("Level progress: " + percProgress+"%",20,debugLineY+=debugLineSkip);
 }
