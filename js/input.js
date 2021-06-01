@@ -2,7 +2,6 @@ const KEY_SPACE = 32;
 
 const KEY_A = 65;
 const KEY_C = 67;
-var cKeyFired = false;
 const KEY_D = 68;
 const KEY_M = 77;
 const KEY_N = 78;
@@ -30,38 +29,9 @@ const KEY_PLUS = 187;
 let twoPlayerGame = false;
 
 function keyPush(evt) {
-
-			
-	if (evt.keyCode === KEY_C)
-	{
-		if (!cKeyFired)
-			{
-				if (controlsMenuIsOn)
-				{
-					controlsMenuIsOn = false;
-					playingGame = true;
-					cKeyFired = false;
-				}
-				else if (!controlsMenuIsOn)
-				{
-					
-					controlsMenuIsOn = true;
-					playingGame = false;
-					cKeyFired = false;
-				}
-			}
-		return;
-	}
-
 	keyHoldUpdate(evt,true);
 }
 function keyRelease(evt) {
-	switch(evt.keyCode)
-	{
-		case KEY_C: 
-		cKeyFired = false;
-		break;
-	}
 	keyHoldUpdate(evt,false);
 
 }
@@ -71,10 +41,31 @@ function inputSetup() {
 }
 
 function keyHoldUpdate(evt, setTo) {
+	var validGameKey = false;
+	
 	if (!twoPlayerGame) {
-		singlePlayerKeyHold(evt, setTo)
+		validGameKey = singlePlayerKeyHold(evt, setTo)
 	} else {
-		twoPlayerKeyHold(evt, setTo)
+		validGameKey = twoPlayerKeyHold(evt, setTo)
+	}
+
+	if(validGameKey == false) { // not a player 1 or player 2 key? universal key checks here
+		validGameKey = true; // assume true until we rule out otherwise
+		switch(evt.keyCode) {
+			case KEY_C:
+				if (!setTo) {
+					controlsMenuIsOn = !controlsMenuIsOn; // toggle
+					playingGame = !controlsMenuIsOn; // always opposite
+				}
+				break;
+			default:
+				validGameKey = false;
+				break;
+		}
+	}
+
+	if(validGameKey) {
+		evt.preventDefault();
 	}
 }
 
@@ -146,10 +137,7 @@ function singlePlayerKeyHold (evt, setTo) {
 			validGameKey = false;
 			break;
 	}
-	if(validGameKey) {
-		console.log("actually preventing default?");
-		evt.preventDefault();
-	}
+	return validGameKey
 }
 
 function twoPlayerKeyHold (evt, setTo) {
@@ -248,7 +236,5 @@ function twoPlayerKeyHold (evt, setTo) {
 			validGameKey = false;
 			break;
 	}
-	if(validGameKey) {
-		evt.preventDefault();
-	}
+	return validGameKey;
 }
