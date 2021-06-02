@@ -7,6 +7,7 @@ var debuggingDisplay = true;
 
 var p1 = new playerClass();
 var readyToReset = false; // to avoid calling reset() mid list iterations
+var octopusBoss = new octopusClass();
 
 var drawMoveList = []; // list of lists - note, drawn in this order, so should be filled closest to ground up towards sky last
 var animateEachLists = []; // subset of draw/move lists for which each object has its own separate animation frame to update
@@ -16,6 +17,8 @@ const GAME_STATE_CONTROLS = 1;
 var gameState = GAME_STATE_PLAY;
 
 var gameMusic = {};
+
+var bossFight = false;
 
 window.onload = function() { // discord repo check
 	setupCanvas();
@@ -165,6 +168,10 @@ function update()
 			{
 				drawList(drawMoveList[i]);
 			}
+
+			if(bossFight){
+				octopusBoss.draw();
+			}
 			p1.draw();
 			break;
 	}
@@ -200,6 +207,9 @@ function gameDebugSharpText() {
 	if(percProgress>100) 
 	{
 		percProgress = 100;
+		bossFight = true;
+	}else{
+		bossFight = false;
 	}
 	scaledCtx.fillText("Level progress: " + percProgress+"%",20,debugLineY+=debugLineSkip);
 }
