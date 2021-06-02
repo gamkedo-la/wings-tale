@@ -2,7 +2,7 @@ var levelProgressInPixels = 0;
 var levelProgressRate = 0.6;
 var bgDrawY = 0; // also used for drawing and collision of surface enemies
 var currentLevelImageName = "level island"
-var nDefenseOrbs = 3;
+var nDefenseOrbs = 33;
 var debuggingDisplay = true;
 
 var p1 = new playerClass();

@@ -8,11 +8,11 @@ function spawnSurfaceEnemies() {
 	for(let i = 0; i < ENEMY_SPAWN_TRY_COUNT; i++){
 		let w = images["depth map"].width;
 		let h = images["depth map"].height;
-		let atX = Math.random() * w >> 0;
+		let atX = Math.random() * w >> 0; //bitshift to get rid of float
 		let atY = Math.random() * h >> 0;
 
 		let index = atY * w + atX;
-		//we could easily use another channel of this image to place more specifically,
+		//we could easily use another channel of this image and paint to place more specifically,
 		//right now I just check if the depth map has green value greater than an arbitrary threshold
 		//to make sure they don't spawn over water.  
 		let canSpawnHere = depthSpawnData.data[index*4+1] > 100;  //the green value at this pixel.
