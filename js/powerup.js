@@ -32,16 +32,16 @@ function powerupClass(atX,atY) {
 		}
 	}
 
-	this.doEffect = function() {
+	this.doEffect = function(onPlayer) {
 		switch(this.kind) {
 			case POWER_UP_KIND_SHOTS:
-				p1.shotsNumber+=4;
+				onPlayer.shotsNumber+=4;
 				break;
 			case POWER_UP_KIND_BOMB:
-				p1.bombCount += 1;
+				onPlayer.bombCount += 1;
 				break;
 			case POWER_UP_KIND_GHOST:
-				p1.ghostCount += 1;
+				onPlayer.ghostCount += 1;
 				break;
 			default:
 				console.log("missing powerup definition in doEffect for kind: " + this.kind);

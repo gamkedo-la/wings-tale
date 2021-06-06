@@ -160,9 +160,9 @@ function update()
 			listCollideExplode(defenseRingUnitList, enemyList, (DEFENSE_RING_ORB_DIM+ENEMY_DIM)/2);
 			listCollideExplode(enemyShotList, defenseRingUnitList, (ENEMY_SHOT_DIM + DEFENSE_RING_ORB_DIM)/2);
 
-			listCollideExplode(playerList, enemyList, (ENEMY_DIM + PLAYER_DIM) / 2, function (elementA,elementB) { readyToReset = true; } );
-			listCollideExplode(playerList, enemyShotList, (SHOT_DIM + PLAYER_DIM) / 2, function (elementA,elementB) { readyToReset = true; } );
-			listCollideExplode(playerList, powerupList, (POWERUP_H + PLAYER_DIM) / 2, function (elementA,elementB) { elementB.doEffect(); } );
+			listCollideExplode(playerList, enemyList, (ENEMY_DIM + PLAYER_DIM) / 2, function (elementA,elementB) { elementA.reset(); } );
+			listCollideExplode(playerList, enemyShotList, (SHOT_DIM + PLAYER_DIM) / 2, function (elementA,elementB) { elementA.reset(); } );
+			listCollideExplode(playerList, powerupList, (POWERUP_H + PLAYER_DIM) / 2, function (elementA,elementB) { elementB.doEffect(elementA); } );
 
 			drawBackground();
 			drawRippleEffect();

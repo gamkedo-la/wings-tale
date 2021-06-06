@@ -9,3 +9,7 @@ function randAng() {
 function degToShipRad(degAng) {
 	return ((degAng-90) * Math.PI/180.0);
 }
+
+function approxDist(x1,y1, x2,y2) {
+	return Math.abs(x1-x2)+Math.abs(y1-y2);
+}

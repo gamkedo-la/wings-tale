@@ -36,14 +36,8 @@ function enemyClass() {
 		this.x = this.startX + this.waveSize*
 						 Math.cos(this.phaseOff*Math.PI+this.y*this.freq);
 		this.y += this.speed;
-		var dx=Math.abs(this.x-p1.x);
-		var dy=Math.abs(this.y-p1.y);
-		var dist=dx+dy; // close enough instead of Math.sqrt(dx*dx+dy*dy);
 		if(this.y>GAME_H) {
 			this.readyToRemove = true;
-		}
-		if(dist< (PLAYER_DIM+ENEMY_DIM)/2) {
-			readyToReset = true;
 		}
 	}
 

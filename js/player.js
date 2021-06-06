@@ -32,6 +32,8 @@ function playerClass() {
 	this.wasHoldingBomb=false; // to tell when state toggles, since not repeat fire
 
 	this.reset = function() {
+		this.neverRemove = true; // respawn only
+
 		this.readyToRemove = false;
 		this.x=GAME_W/2;
 		this.y=GAME_H-PLAYER_DIM*2;
