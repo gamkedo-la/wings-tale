@@ -10,6 +10,10 @@ const KEY_W = 87;
 const KEY_X = 88;
 const KEY_Z = 90;
 
+const KEY_T = 84;
+
+const KEY_H = 72;
+
 // debug keys for now
 const KEY_1 = 49;
 const KEY_2 = 50;
@@ -94,7 +98,13 @@ function keyHoldUpdate(evt, setTo) {
 	if(validGameKey == false) { // not a player 1 or player 2 key? universal key checks here
 		validGameKey = true; // assume true until we rule out otherwise
 		switch(evt.keyCode) {
-			case KEY_C:
+			case KEY_T:
+				if (!setTo) {
+					twoPlayerGame = !twoPlayerGame;
+					readyToReset = true;
+				}
+				break;
+			case KEY_H:
 				if (!setTo) {
 					if(gameState == GAME_STATE_PLAY) {
 						gameState = GAME_STATE_CONTROLS;
@@ -104,7 +114,9 @@ function keyHoldUpdate(evt, setTo) {
 				}
 				break;
 			case KEY_PLUS:
-				levelProgressInPixels += images[currentLevelImageName].height / 10;
+				if (!setTo) {
+					levelProgressInPixels += images[currentLevelImageName].height / 10;
+				}
 				break;
 			default:
 				validGameKey = false;

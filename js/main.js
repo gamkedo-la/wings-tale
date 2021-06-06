@@ -199,14 +199,12 @@ function gameDebugSharpText() {
 	// debugging list isn't growing, removed when expected etc.
 	var debugLineY = 20;var debugLineSkip = 10;
 	scaledCtx.fillText("DEBUG/TEMPORARY TEXT",20,debugLineY+=debugLineSkip);
-	scaledCtx.fillText("Space/Z key: hold to fire",20,debugLineY+=debugLineSkip);
-	scaledCtx.fillText("X key: drop bomb",20,debugLineY+=debugLineSkip);
-	scaledCtx.fillText("1-3 key: instant powerup cheat",20,debugLineY+=debugLineSkip);
-	scaledCtx.fillText("4 key: reset powerups",20,debugLineY+=debugLineSkip);
+	scaledCtx.fillText("check H for help",20,debugLineY+=debugLineSkip);
+	scaledCtx.fillText("1-4,7-0: cheats",20,debugLineY+=debugLineSkip);
 
 	// scaledCtx.fillStyle = 'white';
 	scaledCtx.font = '15px Helvetica';
-	scaledCtx.fillText("C for controls", scaledCanvas.width - 150, scaledCanvas.height - 20);
+	scaledCtx.fillText("H for help", scaledCanvas.width - 90, scaledCanvas.height - 20);
 
 	var percProgress = Math.floor( 100* levelProgressInPixels / (images[currentLevelImageName].height-GAME_H));
 	if(percProgress>100) 

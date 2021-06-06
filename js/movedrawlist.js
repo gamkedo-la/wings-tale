@@ -11,7 +11,6 @@ function moveList(whichList) {
 		if (whichList[i].readyToRemove) {
 			if(whichList[i].neverRemove) {
 				whichList[i].readyToRemove = false;
-				console.log("not removing (sound effect?)");
 			} else {
 				whichList.splice(i, 1);
 			}
