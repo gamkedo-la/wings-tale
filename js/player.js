@@ -31,6 +31,8 @@ function playerClass() {
 	this.holdBomb=false;
 	this.wasHoldingBomb=false; // to tell when state toggles, since not repeat fire
 
+	this.defenseRingUnitList = [];
+
 	this.reset = function() {
 		this.neverRemove = true; // respawn only
 
@@ -42,6 +44,8 @@ function playerClass() {
 		this.shotsNumber = 1;
 		this.bombCount = 1;
 		this.ghostCount = 0;
+
+		resetDefenseRing(this);
 	}
 
 	this.draw = function() {
@@ -57,6 +61,8 @@ function playerClass() {
 		}
 		drawAnimFrame("player",this.x,this.y, this.frame, PLAYER_FRAME_W,PLAYER_FRAME_H);
 		drawAnimFrame("bomb sight",this.x,this.y-APPROX_BOMB_RANGE, this.frame%2, BOMB_FRAME_W,BOMB_FRAME_H);
+
+		drawList(this.defenseRingUnitList);
 	}
 
 	this.move = function() {
@@ -141,6 +147,8 @@ function playerClass() {
 		} while(ghostsLeft-- > 0);
 
 		this.wasHoldingBomb = this.holdBomb;
+
+		moveList(this.defenseRingUnitList);
 	}
 
 	this.animate = function() {
@@ -148,5 +156,6 @@ function playerClass() {
 		if(this.frame>=PLAYER_FRAMES) {
 			this.frame = 0;
 		}
+		animateList(this.defenseRingUnitList);
 	}
 }

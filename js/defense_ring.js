@@ -7,14 +7,14 @@ const RING_FRAME_H = 6;
 const RING_FRAMES = 4;
 const DEFENSE_RING_ORB_DIM = 6;
 
-function spawnDefenseRingUnit() {
-	defenseRingUnitList.push(new defenseRingClass(p1,defenseRingUnitList.length));
+function spawnDefenseRingUnit(forPlayer) {
+	forPlayer.defenseRingUnitList.push(new defenseRingClass(forPlayer,forPlayer.defenseRingUnitList.length));
 }
 
-function resetDefenseRing(){
-    defenseRingUnitList.length = 0;
+function resetDefenseRing(forPlayer){
+    forPlayer.defenseRingUnitList.length = 0;
     for(var i = 0; i<nDefenseOrbs ; i++){
-		spawnDefenseRingUnit();
+        spawnDefenseRingUnit(forPlayer);
 	}
 }
 
@@ -39,8 +39,8 @@ function defenseRingClass(onPlayer, inPlace) {
     }
 
     this.move = function(){
-        this.x = this.myPlayer.x + RADIUS * Math.cos(this.dfRingAngle + (this.myPlace * (2*Math.PI / defenseRingUnitList.length )));
-		this.y = this.myPlayer.y + RADIUS * Math.sin(this.dfRingAngle + (this.myPlace * (2*Math.PI / defenseRingUnitList.length )));
+        this.x = this.myPlayer.x + RADIUS * Math.cos(this.dfRingAngle + (this.myPlace * (2*Math.PI / this.myPlayer.defenseRingUnitList.length )));
+		this.y = this.myPlayer.y + RADIUS * Math.sin(this.dfRingAngle + (this.myPlace * (2*Math.PI / this.myPlayer.defenseRingUnitList.length )));
 
 		this.dfRingAngle+=RING_ANG_SPEED;
     }

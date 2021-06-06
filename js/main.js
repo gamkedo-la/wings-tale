@@ -5,9 +5,9 @@ var currentLevelImageName = "level island"
 var nDefenseOrbs = 33;
 var debuggingDisplay = true;
 
-var p1 = new playerClass();
-var p2 = new playerClass();
-var playerList = [p1, p2];
+let twoPlayerGame = true;
+
+var playerList = [new playerClass(), new playerClass()];
 var readyToReset = false; // to avoid calling reset() mid list iterations
 var octopusBoss = new octopusClass();
 
@@ -69,7 +69,13 @@ function animateSprites() {
 }
 
 function reset() {
-	playerList = [p1, p2];
+	if(twoPlayerGame) {
+		playerList = [new playerClass(),new playerClass()];
+	} else {
+		playerList = [new playerClass()];
+	}
+	assignKeyMapping();
+
 	for(var i=0;i<playerList.length;i++) {
 		playerList[i].reset();
 	}
@@ -79,15 +85,14 @@ function reset() {
 		drawMoveList[i].length = 0;
 	}
 
-	resetDefenseRing();
 	spawnSurfaceEnemies();
 	rippleReset();
 
 	// repacking this list since reset above emplied
-	drawMoveList = [surfaceList,powerupList,shotGroundList,enemyList,enemyShotList,shotList,playerList,splodeList,defenseRingUnitList];
+	drawMoveList = [surfaceList,powerupList,shotGroundList,enemyList,enemyShotList,shotList,playerList,splodeList];
 
 	// excludes lists which share a common animation frame to be in sync (ex. all shots show same animation frame at same time)
-	animateEachLists = [playerList, enemyList, powerupList, surfaceList, defenseRingUnitList];
+	animateEachLists = [playerList, enemyList, powerupList, surfaceList];
 
 	gameMusic.sound.stop();
 	gameMusic = playSound(sounds.secondReality, 1, 0, 0.3, true);
@@ -157,9 +162,11 @@ function update()
 			}
 
 			listCollideExplode(shotList, enemyList, (SHOT_DIM+ENEMY_DIM)/2);
-			listCollideExplode(defenseRingUnitList, enemyList, (DEFENSE_RING_ORB_DIM+ENEMY_DIM)/2);
-			listCollideExplode(enemyShotList, defenseRingUnitList, (ENEMY_SHOT_DIM + DEFENSE_RING_ORB_DIM)/2);
 
+			for(var i=0;i<playerList.length;i++) {
+				listCollideExplode(enemyList, playerList[i].defenseRingUnitList, (DEFENSE_RING_ORB_DIM+ENEMY_DIM)/2);
+				listCollideExplode(enemyShotList, playerList[i].defenseRingUnitList, (ENEMY_SHOT_DIM + DEFENSE_RING_ORB_DIM)/2);
+			}
 			listCollideExplode(playerList, enemyList, (ENEMY_DIM + PLAYER_DIM) / 2, function (elementA,elementB) { elementA.reset(); } );
 			listCollideExplode(playerList, enemyShotList, (SHOT_DIM + PLAYER_DIM) / 2, function (elementA,elementB) { elementA.reset(); } );
 			listCollideExplode(playerList, powerupList, (POWERUP_H + PLAYER_DIM) / 2, function (elementA,elementB) { elementB.doEffect(elementA); } );
