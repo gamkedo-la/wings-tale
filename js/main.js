@@ -23,6 +23,9 @@ var gameMusic = {};
 
 var bossFight = false;
 
+var gameFirstClickedToStart = false;
+var imagesLoaded = false;
+
 window.onload = function() { // discord repo check
 	setupCanvas();
 
@@ -31,10 +34,27 @@ window.onload = function() { // discord repo check
 	}
 	loadSounds();
 	loadImages();
-	gameMusic = playSound(sounds.secondReality, 1, 0, 0.5, true);
+
+	document.addEventListener("mousedown",function() { loadedAndClicked(); });
+	scaledCtx.fillStyle = "black";
+	scaledCtx.fillRect(0,0,scaledCanvas.width,scaledCanvas.height);
+	scaledCtx.fillStyle = "white";
+	scaledCtx.font = '14px Helvetica';
+	scaledCtx.fillText("click anywhere on game to start (audio workaround, will remove before release/itch)",50,50);
 }
 
 function loadingDoneSoStartGame() {
+	imagesLoaded = true;
+}
+function loadedAndClicked() {
+	if(imagesLoaded == false) { // invalid unless loading finished
+		return;
+	}
+	if(gameFirstClickedToStart) { // lock it from happening multiple times
+		return;
+	}
+	gameFirstClickedToStart = true;
+	gameMusic = playSound(sounds.secondReality, 1, 0, 0.5, true);
 	createDepthSpawnReference();
 	startDisplayIntervals();
 	inputSetup();
@@ -70,7 +90,7 @@ function animateSprites() {
 
 function reset() {
 	startLevel(level1SpawnSeq);
-	
+
 	if(twoPlayerGame) {
 		playerList = [new playerClass(),new playerClass()];
 	} else {
