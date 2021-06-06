@@ -26,7 +26,7 @@ const KEY_DOWN = 40;
 const KEY_LEFT = 37;
 const KEY_PLUS = 187;
 
-let twoPlayerGame = false;
+let twoPlayerGame = true;
 
 function keyPush(evt) {
 	keyHoldUpdate(evt,true);

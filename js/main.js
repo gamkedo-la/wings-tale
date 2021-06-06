@@ -6,6 +6,8 @@ var nDefenseOrbs = 33;
 var debuggingDisplay = true;
 
 var p1 = new playerClass();
+var p2 = new playerClass();
+var playerList = [p1, p2];
 var readyToReset = false; // to avoid calling reset() mid list iterations
 var octopusBoss = new octopusClass();
 
@@ -56,7 +58,6 @@ function animateSprites() {
 		return;
 	}
 
-	p1.animate();
 	for(var i=0;i<animateEachLists.length;i++) {
 		animateList(animateEachLists[i]);
 	}
@@ -68,7 +69,10 @@ function animateSprites() {
 }
 
 function reset() {
-	p1.reset();
+	playerList = [p1, p2];
+	for(var i=0;i<playerList.length;i++) {
+		playerList[i].reset();
+	}
 	levelProgressInPixels = 0
 
 	for(var i=0;i<drawMoveList.length;i++) {
@@ -80,15 +84,13 @@ function reset() {
 	rippleReset();
 
 	// repacking this list since reset above emplied
-	drawMoveList = [surfaceList,powerupList,shotGroundList,shotList,enemyList,enemyShotList,splodeList,defenseRingUnitList];
+	drawMoveList = [surfaceList,powerupList,shotGroundList,enemyList,enemyShotList,shotList,playerList,splodeList,defenseRingUnitList];
 
 	// excludes lists which share a common animation frame to be in sync (ex. all shots show same animation frame at same time)
-	animateEachLists = [enemyList, powerupList, surfaceList, defenseRingUnitList];
+	animateEachLists = [playerList, enemyList, powerupList, surfaceList, defenseRingUnitList];
 
 	gameMusic.sound.stop();
 	gameMusic = playSound(sounds.secondReality, 1, 0, 0.3, true);
-	
-
 }
 
 function drawBackground() {
@@ -153,14 +155,14 @@ function update()
 			{
 				moveList(drawMoveList[i]);
 			}
-			p1.move();
 
 			listCollideExplode(shotList, enemyList, (SHOT_DIM+ENEMY_DIM)/2);
 			listCollideExplode(defenseRingUnitList, enemyList, (DEFENSE_RING_ORB_DIM+ENEMY_DIM)/2);
 			listCollideExplode(enemyShotList, defenseRingUnitList, (ENEMY_SHOT_DIM + DEFENSE_RING_ORB_DIM)/2);
-			listCollideRangeOfPoint(enemyList, p1.x, p1.y, (ENEMY_DIM + PLAYER_DIM) / 2, function (listElement) { readyToReset = true; } );
-			listCollideRangeOfPoint(enemyShotList, p1.x, p1.y, (SHOT_DIM + PLAYER_DIM) / 2, function (listElement) { readyToReset = true; } );
-			listCollideRangeOfPoint(powerupList, p1.x, p1.y, (POWERUP_H + PLAYER_DIM) / 2, function (listElement) { listElement.doEffect(); } );
+
+			listCollideExplode(playerList, enemyList, (ENEMY_DIM + PLAYER_DIM) / 2, function (elementA,elementB) { readyToReset = true; } );
+			listCollideExplode(playerList, enemyShotList, (SHOT_DIM + PLAYER_DIM) / 2, function (elementA,elementB) { readyToReset = true; } );
+			listCollideExplode(playerList, powerupList, (POWERUP_H + PLAYER_DIM) / 2, function (elementA,elementB) { elementB.doEffect(); } );
 
 			drawBackground();
 			drawRippleEffect();
@@ -172,7 +174,6 @@ function update()
 			if(bossFight){
 				octopusBoss.draw();
 			}
-			p1.draw();
 			break;
 	}
 
@@ -199,9 +200,6 @@ function gameDebugSharpText() {
 	// scaledCtx.fillStyle = 'white';
 	scaledCtx.font = '15px Helvetica';
 	scaledCtx.fillText("C for controls", scaledCanvas.width - 150, scaledCanvas.height - 20);
-	/*for(var i=0;i<p1.trailY.length;i++) {
-		scaledCtx.fillText(""+p1.trailY[i],20,debugLineY+=debugLineSkip);
-	}*/
 
 	var percProgress = Math.floor( 100* levelProgressInPixels / (images[currentLevelImageName].height-GAME_H));
 	if(percProgress>100) 

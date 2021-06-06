@@ -10,10 +10,9 @@ var bombDegSpread = 6;
 const GHOST_DIST_MULT = 9;
 const GHOST_MIN_MOVE_SPEED = 0.7;
 
-function playerClass() {
-	this.x; this.y;
-	this.xv=0; this.yv=0;
+playerClass.prototype = new moveDrawClass();
 
+function playerClass() {
 	// used for ghost player sources
 	this.trailX = [];
 	this.trailY = [];
@@ -33,6 +32,7 @@ function playerClass() {
 	this.wasHoldingBomb=false; // to tell when state toggles, since not repeat fire
 
 	this.reset = function() {
+		this.readyToRemove = false;
 		this.x=GAME_W/2;
 		this.y=GAME_H-PLAYER_DIM*2;
 		this.xv=this.yv=0;
