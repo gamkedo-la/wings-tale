@@ -1,4 +1,5 @@
 var levelProgressInPixels = 0;
+var levelProgressPerc = 0; // gets updated based on levelProgressInPixels
 var levelProgressRate = 0.6;
 var bgDrawY = 0; // also used for drawing and collision of surface enemies
 var currentLevelImageName = "level island"
@@ -36,7 +37,6 @@ window.onload = function() { // discord repo check
 function loadingDoneSoStartGame() {
 	createDepthSpawnReference();
 	startDisplayIntervals();
-	setInterval(spawnEnemy,140);
 	inputSetup();
 	initializeControlsMenu();
 	reset();
@@ -69,6 +69,8 @@ function animateSprites() {
 }
 
 function reset() {
+	startLevel(level1SpawnSeq);
+	
 	if(twoPlayerGame) {
 		playerList = [new playerClass(),new playerClass()];
 	} else {
@@ -153,8 +155,11 @@ function update()
 
 		case GAME_STATE_PLAY:
 			levelProgressInPixels += levelProgressRate;
-
-			//testing out some real-time background effects here, meant to render before sprites are drawn
+			levelProgressPerc = levelProgressInPixels / images[currentLevelImageName].height;
+			if(levelProgressPerc>1.0) {
+				levelProgressPerc=1.0;
+			}
+			spawnEnemyUpdate();
 
 			for(var i=0;i<drawMoveList.length;i++) 
 			{
@@ -201,11 +206,9 @@ function gameDebugSharpText() {
 	scaledCtx.fillText("DEBUG/TEMPORARY TEXT",20,debugLineY+=debugLineSkip);
 	scaledCtx.fillText("check H for help",20,debugLineY+=debugLineSkip);
 	scaledCtx.fillText("1-4,7-0: cheats",20,debugLineY+=debugLineSkip);
-
-	// scaledCtx.fillStyle = 'white';
-	scaledCtx.font = '15px Helvetica';
-	scaledCtx.fillText("H for help", scaledCanvas.width - 90, scaledCanvas.height - 20);
-
+	scaledCtx.fillText("LEVEL STEP: "+spawnSeqStep,20,debugLineY+=debugLineSkip);
+	scaledCtx.fillText("STEP PERC: "+Math.floor(stepPerc*100)+"%",20,debugLineY+=debugLineSkip);
+	
 	var percProgress = Math.floor( 100* levelProgressInPixels / (images[currentLevelImageName].height-GAME_H));
 	if(percProgress>100) 
 	{
@@ -215,4 +218,7 @@ function gameDebugSharpText() {
 		bossFight = false;
 	}
 	scaledCtx.fillText("Level progress: " + percProgress+"%",20,debugLineY+=debugLineSkip);
+
+	scaledCtx.font = '15px Helvetica';
+	scaledCtx.fillText("H for help", scaledCanvas.width - 90, scaledCanvas.height - 20);
 }

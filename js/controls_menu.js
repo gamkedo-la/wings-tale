@@ -20,7 +20,7 @@ function ControlsMenu()
 		var lineY = 50;
 		context.fillText("W/Up =  Move Up    A/Left = Move Left", canvas.width/2, lineY+=lineSkip);
 		context.fillText("S/Down = Move Down    D/Right = Move Right", canvas.width/2, lineY+=lineSkip);
-		context.fillText("Z/N = Shoot Gun", canvas.width/2, lineY+=lineSkip);
+		context.fillText("Space/N = Shoot Gun", canvas.width/2, lineY+=lineSkip);
 		context.fillText("X/M = Throw Bomb", canvas.width/2, lineY+=lineSkip);
 		lineY+=lineSkip
 		context.fillText("T = Two Player toggle", canvas.width/2, lineY+=lineSkip);

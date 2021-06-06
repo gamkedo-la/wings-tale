@@ -48,7 +48,7 @@ var inputList = [new inputPlayerClass(),new inputPlayerClass()];
 
 function assignKeyMapping() {
 	inputList[0].bombKey = KEY_M;
-	inputList[0].fireKey = KEY_N;
+	inputList[0].fireKey = KEY_SPACE; // maybe N
 	inputList[0].leftKey = KEY_LEFT;
 	inputList[0].upKey = KEY_UP;
 	inputList[0].downKey = KEY_DOWN;
