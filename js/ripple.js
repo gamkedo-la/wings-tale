@@ -71,8 +71,8 @@
 							for (var k = 0; k < width; k++)
 							{
 								let index = j * width + k
-								let depth = depthMap[oldIdx + index] = depthTexture.data[index*4+1]*2.5 - 255*1.25 >> 0 
-								;
+								let depth = depthMap[oldIdx + index] = depthTexture.data[index*4+1]*2 - 16 >> 0;
+								//let depth = depthMap[oldIdx + index] = depthTexture.data[index*4+1]*2.5 - 255*1.25 >> 0;
 								depthMap[newIdx + (j * width) + k] = depth;
 							}
 						}

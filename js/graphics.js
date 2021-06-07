@@ -56,9 +56,9 @@ function setupCanvas() {
 	fxCanvas.height=GAME_H;
 	fxContext=fxCanvas.getContext("2d");
 
-	// context.mozImageSmoothingEnabled = false;
-	// context.imageSmoothingEnabled = false;
-	// context.msImageSmoothingEnabled = false;
+	context.mozImageSmoothingEnabled = false;
+	context.imageSmoothingEnabled = false;
+	context.msImageSmoothingEnabled = false;
 	scaledCtx.mozImageSmoothingEnabled = false;
 	scaledCtx.imageSmoothingEnabled = false;
 	scaledCtx.msImageSmoothingEnabled = false;

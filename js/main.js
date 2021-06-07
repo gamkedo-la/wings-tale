@@ -145,10 +145,10 @@ function drawRippleEffect() {
 	rippleNewFrame();
 	
 	context.putImageData(ripple, 0, 0);
-	context.drawImage(canvas, -PARALLAX_OFFSET_X*W_RATIO,
-							  -PARALLAX_OFFSET_Y*H_RATIO,
-							   GAME_W + (PARALLAX_OFFSET_X*2*W_RATIO >> 0),
-							   GAME_H + (PARALLAX_OFFSET_Y*2*H_RATIO) >> 0);
+	// context.drawImage(canvas, -PARALLAX_OFFSET_X*W_RATIO,
+	// 						  -PARALLAX_OFFSET_Y*H_RATIO,
+	// 						   GAME_W + (PARALLAX_OFFSET_X*2*W_RATIO >> 0),
+	// 						   GAME_H + (PARALLAX_OFFSET_Y*2*H_RATIO) >> 0);
 	
 	
 }
