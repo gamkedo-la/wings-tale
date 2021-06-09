@@ -15,10 +15,13 @@ function spawnSurfaceEnemies() {
 		//we could easily use another channel of this image and paint to place more specifically,
 		//right now I just check if the depth map has green value greater than an arbitrary threshold
 		//to make sure they don't spawn over water.  
-		let canSpawnHere = depthSpawnData.data[index*4+1] > 100;  //the green value at this pixel.
+		let canSpawnHere = depthSpawnData.data[index*4+1] > 60;  //the green value at this pixel.
 
 		if(canSpawnHere){
 			surfaceList.push(new surfaceEnemyClass(atX,atY));
+				
+		}else {
+			surfaceList.push(new tentacleClass(atX, atY));
 		}
 
 	}

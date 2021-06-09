@@ -1,0 +1,38 @@
+tentacleClass.prototype = new moveDrawClass();
+
+ // note: so far, not yet a general enemy class, pretty specific to this enemy. we can generalize it when we add more types
+function tentacleClass(atX, atY) {
+    this.frameDim = 16;
+	this.startY = atY;
+	this.x = atX;
+	this.y = 0;
+    this.xtip = 0;
+    this.ytip = -50;
+	this.drawEndY = 0;
+    this.splatCount = 16;
+	this.y = -ENEMY_DIM;
+	this.readyToRemove = false;
+	this.phaseOffset = Math.random();
+
+	this.move = function() {
+		this.y = this.startY - bgDrawY;
+		this.xtip = Math.cos(this.y/3)*10;
+		// if(this.y>GAME_H) {
+		// 	this.readyToRemove = true;
+		// }
+	}
+
+	this.draw = function() {
+        for(let i = 0; i < this.splatCount; i++){
+			this.xtip = this.xtip + Math.cos(i+this.y)*5;
+            drawX = lerp(this.x, this.x+this.xtip, i / this.splatCount);
+			drawY = lerp(this.y, this.y+this.ytip, i / this.splatCount);
+            drawAnimFrame("tentacle",drawX, drawY, i, this.frameDim, this.frameDim);
+        }
+	}
+	this.animate = function() {
+		if(++this.frame>=ENEMY_FRAMES) {
+			this.frame = 0;
+		}
+	}
+}
