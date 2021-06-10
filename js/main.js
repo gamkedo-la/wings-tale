@@ -17,6 +17,7 @@ var animateEachLists = []; // subset of draw/move lists for which each object ha
 
 const GAME_STATE_PLAY = 0;
 const GAME_STATE_CONTROLS = 1;
+const GAME_STATE_TITLE = 2;
 var gameState = GAME_STATE_PLAY;
 
 var gameMusic = {};
