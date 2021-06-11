@@ -11,6 +11,7 @@ let twoPlayerGame = true;
 var playerList = [new playerClass(), new playerClass()];
 var readyToReset = false; // to avoid calling reset() mid list iterations
 var octopusBoss = new octopusClass();
+var PlayerScore = 0; // Added 1 by 1 each time an enemy is killed. Or at least, Thats how it should be. 
 
 var drawMoveList = []; // list of lists - note, drawn in this order, so should be filled closest to ground up towards sky last
 var animateEachLists = []; // subset of draw/move lists for which each object has its own separate animation frame to update
@@ -227,6 +228,7 @@ function gameDebugSharpText() {
 	scaledCtx.fillText("DEBUG/TEMPORARY TEXT",20,debugLineY+=debugLineSkip);
 	scaledCtx.fillText("check H for help",20,debugLineY+=debugLineSkip);
 	scaledCtx.fillText("1-4,7-0: cheats",20,debugLineY+=debugLineSkip);
+	scaledCtx.fillText("Score: "+PlayerScore,20,debugLineY+=debugLineSkip);
 	scaledCtx.fillText("LEVEL STEP: "+spawnSeqStep,20,debugLineY+=debugLineSkip);
 	scaledCtx.fillText("STEP PERC: "+Math.floor(stepPerc*100)+"%",20,debugLineY+=debugLineSkip);
 	

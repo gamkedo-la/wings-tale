@@ -36,7 +36,7 @@ function splodeClass(x,y) {
 	this.y = y;
 	this.xv = 0; //level scroll speed maybe?
 	this.yv = -1;
-	
+	PlayerScore++; // Needs work, goes off everytime splode animation plays.
 
 	this.move = function() {
         this.currFrame++;
