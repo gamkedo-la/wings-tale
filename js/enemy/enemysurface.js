@@ -6,8 +6,8 @@ const ENEMY_SPAWN_TRY_COUNT = 60;
 function spawnSurfaceEnemies() {
 	
 	for(let i = 0; i < ENEMY_SPAWN_TRY_COUNT; i++){
-		let w = images["depth map"].width;
-		let h = images["depth map"].height;
+		let w = images[curDepthMap].width;
+		let h = images[curDepthMap].height;
 		let atX = Math.random() * w >> 0; //bitshift to get rid of float
 		let atY = Math.random() * h >> 0;
 

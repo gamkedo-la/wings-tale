@@ -32,7 +32,7 @@ var bgDrawY = 0; // also used for drawing and collision of surface enemies
 
 const LEVEL_ISLAND = 0;
 const LEVEL_SPACE = 1;
-const LEVEL_MOON = 0;
+const LEVEL_MOON = 2;
 var levNow = 0;
 var levNames = ['level island','level space','level moon'];
 var currentLevelImageName = levNames[levNow];

@@ -25,6 +25,8 @@ var bossFight = false;
 
 var gameFirstClickedToStart = false;
 var imagesLoaded = false;
+
+var curDepthMap = "depth map";
 // Practice Commit - will remove
 
 window.onload = function() { // discord repo check
@@ -94,9 +96,24 @@ function loadedAndClicked(evt) {
 function createDepthSpawnReference(){
 	depthSpawnCanvas = document.createElement('canvas');
 	depthSpawnContext = depthSpawnCanvas.getContext('2d');
-	let img = images["depth map"];
+	let img = [];
+	console.log("LevNow: ", levNow)
+	switch (levNow) {
+		case LEVEL_ISLAND:
+			img = images["depth map"];
+			curDepthMap = "depth map";
+			break;
+		case LEVEL_SPACE:
+			img = images["depth map"];
+			curDepthMap = "depth map";
+			break;
+		case LEVEL_MOON:
+			img = images["depth moon"];
+			curDepthMap = "depth moon";
+			break;
+	}		
 	depthSpawnCanvas.width = img.width;
-	depthSpawnCanvas.height = img.height; 
+	depthSpawnCanvas.height = img.height;
 	depthSpawnContext.drawImage(img, 0, 0);
 	depthSpawnData = depthSpawnContext.getImageData(0,0, img.width, img.height);
 }
