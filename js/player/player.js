@@ -4,6 +4,8 @@ const PLAYER_FRAME_H = 20;
 const PLAYER_FRAMES = 3;
 const PLAYER_SPEED = 3;
 const EDGE_MARGIN = PLAYER_DIM;
+const INVULNERABLE_DURATION = 5;
+const INVULNERABLE_DURATION_DECREMENT = 0.1;
 
 var shotDegSpread = 3.7;
 var bombDegSpread = 6;
@@ -21,6 +23,9 @@ function playerClass() {
 	this.bombCount = 1;
 	this.ghostCount = 0;
 
+	this.invulnerableTimeLeft = INVULNERABLE_DURATION;
+	this.invulnerableBlinkToggle = false;
+
 	this.frame=0;
 
 	this.holdLeft=false;
@@ -34,6 +39,8 @@ function playerClass() {
 	this.defenseRingUnitList = [];
 
 	this.reset = function() {
+		this.invulnerableTimeLeft = INVULNERABLE_DURATION;
+
 		this.neverRemove = true; // respawn only
 
 		this.readyToRemove = false;
@@ -49,23 +56,35 @@ function playerClass() {
 	}
 
 	this.draw = function() {
-		for(var i=0;i<this.ghostCount;i++) {
-			var ghostIdx = (i+1)*GHOST_DIST_MULT;
-			if(ghostIdx>=this.trailY.length) {
-				ghostIdx=this.trailY.length-1;
+		if (this.invulnerableTimeLeft > 0) {			
+			if (Math.round(this.invulnerableTimeLeft * 10) % 4 == 0) {
+				this.invulnerableBlinkToggle = !this.invulnerableBlinkToggle;
 			}
-			fromX = this.trailX[ghostIdx];
-			fromY = this.trailY[ghostIdx];
-
-			drawAnimFrame("player",fromX, fromY, this.frame, PLAYER_FRAME_W,PLAYER_FRAME_H);
 		}
-		drawAnimFrame("player",this.x,this.y, this.frame, PLAYER_FRAME_W,PLAYER_FRAME_H);
-		drawAnimFrame("bomb sight",this.x,this.y-APPROX_BOMB_RANGE, this.frame%2, BOMB_FRAME_W,BOMB_FRAME_H);
 
-		drawList(this.defenseRingUnitList);
+		if (this.invulnerableBlinkToggle || this.invulnerableTimeLeft < 0) {
+			for(var i=0;i<this.ghostCount;i++) {
+				var ghostIdx = (i+1)*GHOST_DIST_MULT;
+				if(ghostIdx>=this.trailY.length) {
+					ghostIdx=this.trailY.length-1;
+				}
+				fromX = this.trailX[ghostIdx];
+				fromY = this.trailY[ghostIdx];
+
+				drawAnimFrame("player",fromX, fromY, this.frame, PLAYER_FRAME_W,PLAYER_FRAME_H);
+			}
+			drawAnimFrame("player",this.x,this.y, this.frame, PLAYER_FRAME_W,PLAYER_FRAME_H);
+			drawAnimFrame("bomb sight",this.x,this.y-APPROX_BOMB_RANGE, this.frame%2, BOMB_FRAME_W,BOMB_FRAME_H);
+
+			drawList(this.defenseRingUnitList);
+		}
 	}
 
 	this.move = function() {
+		if (this.invulnerableTimeLeft > 0) {
+			this.invulnerableTimeLeft -= INVULNERABLE_DURATION_DECREMENT;			
+		}
+
 		// input handling
 		if(this.holdUp) {
 			this.yv = -PLAYER_SPEED;
