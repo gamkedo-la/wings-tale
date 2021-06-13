@@ -12,6 +12,7 @@ var levNames = ['level island','level space'];
 var currentLevelImageName = levNames[levNow];
 
 let twoPlayerGame = true;
+let p2AI = true;
 
 var playerList = [new playerClass(), new playerClass()];
 var readyToReset = false; // to avoid calling reset() mid list iterations
@@ -208,6 +209,10 @@ function update()
 				levelProgressPerc=1.0;
 			}
 			spawnEnemyUpdate();
+
+			if(twoPlayerGame && p2AI) {
+				playerList[1].doAI();
+			}
 
 			for(var i=0;i<drawMoveList.length;i++) 
 			{

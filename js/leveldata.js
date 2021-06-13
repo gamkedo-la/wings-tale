@@ -25,6 +25,7 @@ var spawnSeqStep = 0; // which step of the spawner have we progressed to
 var enemyList=[];
 
 function startLevel(whichLevel) {
+    spawnSeqStep = 0;
 	levData = JSON.parse(JSON.stringify(whichLevel)); // deep/clean copy since we'll modify it during loading
 	var accumPerc = 0; // for recalculating percDuration per section into total up to that point
 	for(var i=0; i<levData.length;i++) {

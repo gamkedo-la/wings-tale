@@ -158,4 +158,29 @@ function playerClass() {
 		}
 		animateList(this.defenseRingUnitList);
 	}
+
+	// any AI specific variables
+	this.AI_dir_right = true;
+	this.AI_margin = 50;
+
+	this.doAI = function() {
+		this.holdFire = true; // always
+		if(Math.random()<0.02) {
+			this.holdBomb = !this.holdBomb;
+		}
+		if(this.AI_dir_right) {
+			this.holdRight = true;
+			this.holdLeft = false;
+			if(this.x>GAME_W-this.AI_margin) {
+				this.AI_dir_right = !this.AI_dir_right;
+			}
+		} else {
+			this.holdRight = false;
+			this.holdLeft = true;
+
+			if(this.x<this.AI_margin) {
+				this.AI_dir_right = !this.AI_dir_right;
+			}
+		}
+	}
 }
