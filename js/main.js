@@ -25,7 +25,6 @@ var bossFight = false;
 
 var gameFirstClickedToStart = false;
 var imagesLoaded = false;
-// Practice Commit - will remove
 
 window.onload = function() { // discord repo check
 	setupCanvas();
