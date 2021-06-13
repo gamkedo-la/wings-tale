@@ -19,6 +19,7 @@ function loadImages() {
         //{imgName: "level island", theFile: "level-islands.png"},
         {imgName: "level island", theFile: "islandLevelPaint.png"},
         {imgName: "level space", theFile: "spaceLevelPaint.png"},
+        {imgName: "level moon", theFile: "moonLevelPaint.png"},
         
         // note: in order to getbitmapdata on this we need to be
         // running on a web server due to browser local file security 

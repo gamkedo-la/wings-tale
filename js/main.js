@@ -1,15 +1,6 @@
-var levelProgressInPixels = 0;
-var levelProgressPerc = 0; // gets updated based on levelProgressInPixels
-var levelProgressRate = 0.6;
-var bgDrawY = 0; // also used for drawing and collision of surface enemies
+
 var nDefenseOrbs = 33;
 var debuggingDisplay = true;
-
-const LEVEL_ISLAND = 0;
-const LEVEL_SPACE = 1;
-var levNow = 0;
-var levNames = ['level island','level space'];
-var currentLevelImageName = levNames[levNow];
 
 let twoPlayerGame = true;
 let p2AI = true;
@@ -62,8 +53,14 @@ function loadingDoneSoStartGame() {
 		levX+=levWid;
 	}
 	scaledCtx.fillStyle = "white";
-	scaledCtx.font = '14px Helvetica';
-	scaledCtx.fillText("click level to start",levX+30,50);
+	scaledCtx.font = '10px Helvetica';
+	var lineX = levX+6;
+	var lineY = 50;
+	var lineSkip = 10;
+	scaledCtx.fillText("click",lineX,lineY+=lineSkip);
+	scaledCtx.fillText("level",lineX,lineY+=lineSkip);
+	scaledCtx.fillText("to",lineX,lineY+=lineSkip);
+	scaledCtx.fillText("start",lineX,lineY+=lineSkip);
 
 	imagesLoaded = true;
 }
@@ -159,7 +156,9 @@ function drawBackground() {
 	}
 	context.drawImage(images[currentLevelImageName],0,bgDrawY,GAME_W,GAME_H,
 											 0,0,GAME_W,GAME_H);
-	fxContext.drawImage(images['depth map'], 0, bgDrawY, GAME_W, GAME_H, 0, 0, GAME_W, GAME_H);
+	if(levNow == LEVEL_ISLAND) {
+		fxContext.drawImage(images['depth map'], 0, bgDrawY, GAME_W, GAME_H, 0, 0, GAME_W, GAME_H);
+	}
 	
     // note: these functions require the game to run on a web server
     // due to local file browser security - they will fail on file://
