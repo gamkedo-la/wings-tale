@@ -5,6 +5,7 @@ var debuggingDisplay = true;
 let twoPlayerGame = true;
 let p2AI = true;
 
+//Test commit will remove
 var playerList = [new playerClass(), new playerClass()];
 var readyToReset = false; // to avoid calling reset() mid list iterations
 var octopusBoss = new octopusClass();
@@ -24,6 +25,7 @@ var bossFight = false;
 
 var gameFirstClickedToStart = false;
 var imagesLoaded = false;
+// Practice Commit - will remove
 
 window.onload = function() { // discord repo check
 	setupCanvas();
