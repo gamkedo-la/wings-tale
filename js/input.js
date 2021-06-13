@@ -1,3 +1,5 @@
+var mouseX=-1, mouseY=-1;
+
 const KEY_SPACE = 32;
 
 const KEY_A = 65;
@@ -80,6 +82,7 @@ function keyRelease(evt) {
 function inputSetup() {
 	document.addEventListener('keydown',keyPush);	
 	document.addEventListener('keyup', keyRelease);	
+	document.addEventListener("mousemove", mousemoved);
 }
 
 function keyHoldUpdate(evt, setTo) {
@@ -169,3 +172,12 @@ function playerKeyHold (evt, keyFrom, whichPlayer, setTo) {
 	}
 	return validGameKey
 }
+
+function mousemoved(evt) {
+	var rect = scaledCanvas.getBoundingClientRect();
+	var root = document.documentElement;
+  
+	// account for the margins, canvas position on page, scroll amount, etc.
+	mouseX = evt.clientX - rect.left - root.scrollLeft;
+	mouseY = evt.clientY - rect.top - root.scrollTop;  
+  }

@@ -2,9 +2,14 @@ var levelProgressInPixels = 0;
 var levelProgressPerc = 0; // gets updated based on levelProgressInPixels
 var levelProgressRate = 0.6;
 var bgDrawY = 0; // also used for drawing and collision of surface enemies
-var currentLevelImageName = "level island"
 var nDefenseOrbs = 33;
 var debuggingDisplay = true;
+
+const LEVEL_ISLAND = 0;
+const LEVEL_SPACE = 1;
+var levNow = 0;
+var levNames = ['level island','level space'];
+var currentLevelImageName = levNames[levNow];
 
 let twoPlayerGame = true;
 
@@ -37,24 +42,47 @@ window.onload = function() { // discord repo check
 	loadSounds();
 	loadImages();
 
-	document.addEventListener("mousedown",function() { loadedAndClicked(); });
+	document.addEventListener("mousedown",function(evt) { loadedAndClicked(evt); });
 	scaledCtx.fillStyle = "black";
 	scaledCtx.fillRect(0,0,scaledCanvas.width,scaledCanvas.height);
-	scaledCtx.fillStyle = "white";
-	scaledCtx.font = '14px Helvetica';
-	scaledCtx.fillText("click anywhere on game to start (audio workaround, will remove before release/itch)",50,50);
 }
 
 function loadingDoneSoStartGame() {
+	var levX = 0;
+	var levWid= images[levNames[0]].width;
+	for(var i=0;i<levNames.length;i++) {
+		scaledCtx.drawImage(images[ levNames[i] ], levX, 0);
+		
+		scaledCtx.lineWidth = "6";
+		scaledCtx.strokeStyle = "lime";
+		scaledCtx.beginPath();
+		scaledCtx.rect(levX,0,levWid,scaledCanvas.height);
+		scaledCtx.stroke();
+		levX+=levWid;
+	}
+	scaledCtx.fillStyle = "white";
+	scaledCtx.font = '14px Helvetica';
+	scaledCtx.fillText("click level to start",levX+30,50);
+
 	imagesLoaded = true;
 }
-function loadedAndClicked() {
+function loadedAndClicked(evt) {
+	mousemoved(evt); // catch coordinate of even first click, for level select menu
+
 	if(imagesLoaded == false) { // invalid unless loading finished
 		return;
 	}
 	if(gameFirstClickedToStart) { // lock it from happening multiple times
 		return;
 	}
+	var levWid= images[levNames[0]].width;
+	levNow = Math.floor(mouseX / levWid);
+	if(levNow>=levNames.length) {
+		return;
+	}
+	currentLevelImageName = levNames[levNow];
+	console.log(currentLevelImageName, levNow);
+
 	gameFirstClickedToStart = true;
 	gameMusic = playSound(sounds.secondReality, 1, 0, 0.5, true);
 	createDepthSpawnReference();
@@ -127,7 +155,6 @@ function drawBackground() {
 	if(bgDrawY<0) {
 		bgDrawY = 0;
 	}
-
 	context.drawImage(images[currentLevelImageName],0,bgDrawY,GAME_W,GAME_H,
 											 0,0,GAME_W,GAME_H);
 	fxContext.drawImage(images['depth map'], 0, bgDrawY, GAME_W, GAME_H, 0, 0, GAME_W, GAME_H);
@@ -138,8 +165,6 @@ function drawBackground() {
     texture = context.getImageData(0, 0, GAME_W, GAME_H);
 	ripple = context.getImageData(0, 0, GAME_W, GAME_H);
 	depthTexture = fxContext.getImageData(0, 0, GAME_W, GAME_H);
-
-	
 }
 
 function drawRippleEffect() {
