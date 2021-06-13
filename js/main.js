@@ -42,7 +42,7 @@ window.onload = function() { // discord repo check
 	loadSounds();
 	loadImages();
 
-	document.addEventListener("mousedown",function(evt) { loadedAndClicked(evt); });
+	document.addEventListener("mousedown",loadedAndClicked);
 	scaledCtx.fillStyle = "black";
 	scaledCtx.fillRect(0,0,scaledCanvas.width,scaledCanvas.height);
 }
@@ -81,8 +81,7 @@ function loadedAndClicked(evt) {
 		return;
 	}
 	currentLevelImageName = levNames[levNow];
-	console.log(currentLevelImageName, levNow);
-
+	
 	gameFirstClickedToStart = true;
 	gameMusic = playSound(sounds.secondReality, 1, 0, 0.5, true);
 	createDepthSpawnReference();
@@ -119,7 +118,7 @@ function animateSprites() {
 }
 
 function reset() {
-	startLevel(level1SpawnSeq);
+	startLevel(levSeq[levNow]);
 
 	if(twoPlayerGame) {
 		playerList = [new playerClass(),new playerClass()];
@@ -137,7 +136,9 @@ function reset() {
 		drawMoveList[i].length = 0;
 	}
 
-	spawnSurfaceEnemies();
+	if(levNow == LEVEL_ISLAND) {
+		spawnSurfaceEnemies();
+	}
 	rippleReset();
 
 	// repacking this list since reset above emplied
