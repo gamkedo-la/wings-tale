@@ -27,7 +27,6 @@ var gameFirstClickedToStart = false;
 var imagesLoaded = false;
 
 var curDepthMap = "depth map";
-// Practice Commit - will remove
 
 window.onload = function() { // discord repo check
 	setupCanvas();
