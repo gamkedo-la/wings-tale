@@ -91,7 +91,7 @@ function keyHoldUpdate(evt, setTo) {
 	validGameKey = playerKeyHold(evt, 0,0, setTo);
 
 	if (validGameKey == false) {
-		if(twoPlayerGame) {
+		if(twoPlayerGame && p2AI==false) {
 			validGameKey = playerKeyHold(evt, 1,1, setTo);
 		} else { // let player 2 keys work for p1
 			validGameKey = playerKeyHold(evt, 1,0, setTo);

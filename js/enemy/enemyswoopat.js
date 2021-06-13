@@ -23,7 +23,6 @@ function enemySwoopAtClass() {
 	}
 
 	this.move = function() {
-		// only going at player 1 for now
 		var angAt = Math.atan2(this.myTarget.y-this.y,this.myTarget.x-this.x);
 		this.xv *= ENEMY_SWOOP_SPEED_DECAY;
 		this.yv *= ENEMY_SWOOP_SPEED_DECAY;
