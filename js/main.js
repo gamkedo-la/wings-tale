@@ -1,3 +1,4 @@
+var gameDevelopmentMode = true;//skip intro stuff
 
 var nDefenseOrbs = 33;
 var debuggingDisplay = true;
@@ -17,7 +18,17 @@ var animateEachLists = []; // subset of draw/move lists for which each object ha
 const GAME_STATE_PLAY = 0;
 const GAME_STATE_CONTROLS = 1;
 const GAME_STATE_TITLE = 2;
-var gameState = GAME_STATE_PLAY;
+const GAME_STATE_LEVEL_SELECT = 3;
+const GAME_STATE_LOADING_SPLASH = 4;
+var gameState;
+if (!gameDevelopmentMode)
+{
+	gameState = GAME_STATE_LOADING_SPLASH;
+}
+else
+{
+	gameState = GAME_STATE_LEVEL_SELECT;
+}
 
 var gameMusic = {};
 
@@ -37,38 +48,68 @@ window.onload = function() { // discord repo check
 	loadSounds();
 	loadImages();
 
-	document.addEventListener("mousedown",loadedAndClicked);
-	scaledCtx.fillStyle = "black";
-	scaledCtx.fillRect(0,0,scaledCanvas.width,scaledCanvas.height);
-}
+	document.addEventListener("mousedown",handleMouseClick);
 
-function loadingDoneSoStartGame() {
-	var levX = 0;
-	var levWid= images[levNames[0]].width;
-	for(var i=0;i<levNames.length;i++) {
-		scaledCtx.drawImage(images[ levNames[i] ], levX, 0);
-		
-		scaledCtx.lineWidth = "6";
-		scaledCtx.strokeStyle = "lime";
-		scaledCtx.beginPath();
-		scaledCtx.rect(levX,0,levWid,scaledCanvas.height);
-		scaledCtx.stroke();
-		levX+=levWid;
+	if (!gameDevelopmentMode)
+	{
+		context.fillStyle = 'black';
+		context.fillRect(0,0, canvas.width,canvas.height);
+
+		context.fillStyle = 'white';
+		context.textAlign = 'center';
+		context.font = "15px Georgia";
+		context.fillText("Loaded. Click to Start", canvas.width/2, canvas.height/2);
+		stretchLowResCanvasToVisibleCanvas();
 	}
-	scaledCtx.fillStyle = "white";
-	scaledCtx.font = '10px Helvetica';
-	var lineX = levX+6;
-	var lineY = 50;
-	var lineSkip = 10;
-	scaledCtx.fillText("click",lineX,lineY+=lineSkip);
-	scaledCtx.fillText("level",lineX,lineY+=lineSkip);
-	scaledCtx.fillText("to",lineX,lineY+=lineSkip);
-	scaledCtx.fillText("start",lineX,lineY+=lineSkip);
-
-	imagesLoaded = true;
+	else
+	{
+		
+	}
+	
+	// scaledCtx.fillStyle = "black";
+	// scaledCtx.fillRect(0,0,scaledCanvas.width,scaledCanvas.height);
 }
+
+function loadingDoneSoStartGame() 
+{
+	imagesLoaded = true;
+
+	if (gameDevelopmentMode)
+    {
+        console.log("scaledCtx: " + scaledCtx);
+		console.log("images:" + images);
+		//draw level select screen when in game dev mode
+		var levX = 0;
+        var levWid= images[levNames[0]].width;
+        for(var i=0;i<levNames.length;i++) 
+        {
+            scaledCtx.drawImage(images[ levNames[i] ], levX, 0);
+            
+            scaledCtx.lineWidth = "6";
+            scaledCtx.strokeStyle = "lime";
+            scaledCtx.beginPath();
+            scaledCtx.rect(levX,0,levWid,scaledCanvas.height);
+            scaledCtx.stroke();
+            levX+=levWid;
+        }
+        scaledCtx.fillStyle = "white";
+        scaledCtx.font = '10px Helvetica';
+        var lineX = levX+6;
+        var lineY = 50;
+        var lineSkip = 10;
+        scaledCtx.fillText("click",lineX,lineY+=lineSkip);
+        scaledCtx.fillText("level",lineX,lineY+=lineSkip);
+        scaledCtx.fillText("to",lineX,lineY+=lineSkip);
+        scaledCtx.fillText("start",lineX,lineY+=lineSkip);
+
+		stretchLowResCanvasToVisibleCanvas();
+    }
+}
+
 function loadedAndClicked(evt) {
 	mousemoved(evt); // catch coordinate of even first click, for level select menu
+	
+	
 
 	if(imagesLoaded == false) { // invalid unless loading finished
 		return;
@@ -76,20 +117,32 @@ function loadedAndClicked(evt) {
 	if(gameFirstClickedToStart) { // lock it from happening multiple times
 		return;
 	}
-	var levWid= images[levNames[0]].width;
-	levNow = Math.floor(mouseX / levWid);
-	if(levNow>=levNames.length) {
-		return;
-	}
-	currentLevelImageName = levNames[levNow];
-	
+
 	gameFirstClickedToStart = true;
+
 	gameMusic = playSound(sounds.secondReality, 1, 0, 0.5, true);
 	createDepthSpawnReference();
 	startDisplayIntervals();
 	inputSetup();
+	initializeTitleScreen();
+	initializeLevelSelectScreen();
 	initializeControlsMenu();
 	reset();
+
+	if (!gameDevelopmentMode)
+	{
+		gameState = GAME_STATE_TITLE;
+	}
+	else
+	{
+		gameState = GAME_STATE_PLAY;
+		var levWid= images[levNames[0]].width;
+		levNow = Math.floor(mouseX / levWid);
+		if(levNow>=levNames.length) {
+			return;
+		}
+		currentLevelImageName = levNames[levNow];
+	}
 }
 
 function createDepthSpawnReference(){
@@ -206,7 +259,6 @@ function stretchLowResCanvasToVisibleCanvas() {
 
 function update() 
 {
-
 	if(readyToReset) 
 	{
 		reset();
@@ -215,6 +267,14 @@ function update()
 
 	context.clearRect(0,0, canvas.width,canvas.height);
 	switch(gameState) {
+		case GAME_STATE_TITLE:
+			titleScreen.draw();
+			break;
+		
+		case GAME_STATE_LEVEL_SELECT:
+			levelSelectScreen.draw();
+			break;
+
 		case GAME_STATE_CONTROLS:
 			controlsMenu.draw();
 			break;

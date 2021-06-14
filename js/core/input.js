@@ -1,5 +1,6 @@
 var mouseX=-1, mouseY=-1;
 
+const KEY_ENTER = 13;
 const KEY_SPACE = 32;
 
 const KEY_A = 65;
@@ -124,6 +125,18 @@ function keyHoldUpdate(evt, setTo) {
 			default:
 				validGameKey = false;
 				break;
+			case KEY_ENTER:
+				if (!setTo)
+				{
+					if (gameState != GAME_STATE_TITLE)
+					{
+						return;
+					}
+					else
+					{
+						gameState = GAME_STATE_PLAY;
+					}
+				}
 		}
 	}
 
@@ -181,3 +194,19 @@ function mousemoved(evt) {
 	mouseX = evt.clientX - rect.left - root.scrollLeft;
 	mouseY = evt.clientY - rect.top - root.scrollTop;  
   }
+
+function handleMouseClick(evt)
+{
+	if (!gameFirstClickedToStart)
+	{
+		loadedAndClicked(evt);
+	}
+	else if (gameState == GAME_STATE_TITLE)
+	{
+		gameState = GAME_STATE_LEVEL_SELECT;
+	}
+	else if (gameState == GAME_STATE_LEVEL_SELECT)
+	{
+		gameState = GAME_STATE_PLAY;
+	}
+}
