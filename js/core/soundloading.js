@@ -22,6 +22,10 @@ async function loadSounds() {
 }
 
 async function beginLoadingSound(sndName, fileName) {
+    if (!audioCtx) {
+        console.log("ERROR: beginLoadingSound has no auaudioCtx: "+fileName);
+        return;
+    }
     src = "sounds/" + fileName;
     const response = await fetch(src);
     const arrayBuffer = await response.arrayBuffer();

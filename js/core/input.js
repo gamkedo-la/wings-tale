@@ -204,7 +204,8 @@ function handleMouseClick(evt)
 {
 	if (!gameFirstClickedToStart)
 	{
-		loadedAndClicked(evt);
+		initSounds();
+        loadedAndClicked(evt);
 	}
 	else if (gameState == GAME_STATE_TITLE)
 	{
