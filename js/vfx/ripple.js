@@ -66,7 +66,9 @@
 					// -------------------------------------------------------
 					function rippleNewFrame()
 					{
-						for (var j = 0; j < height; j++)
+						if (!texture || !depthTexture) return;
+
+                        for (var j = 0; j < height; j++)
 						{
 							for (var k = 0; k < width; k++)
 							{

@@ -167,7 +167,12 @@ function createDepthSpawnReference(){
 	depthSpawnCanvas.width = img.width;
 	depthSpawnCanvas.height = img.height;
 	depthSpawnContext.drawImage(img, 0, 0);
-	depthSpawnData = depthSpawnContext.getImageData(0,0, img.width, img.height);
+    try {
+	    depthSpawnData = depthSpawnContext.getImageData(0,0, img.width, img.height);
+    } catch(e) {
+        console.log("unable to create depthSpawnData due to missing webserver. Ingoring.");
+        depthSpawnData = {data:[]}; // fake it lol
+    }
 }
 
 function animateSprites() {
@@ -234,14 +239,23 @@ function drawBackground() {
     // note: these functions require the game to run on a web server
     // due to local file browser security - they will fail on file://
     // unless you change default browser security settings
-    texture = context.getImageData(0, 0, GAME_W, GAME_H);
-	ripple = context.getImageData(0, 0, GAME_W, GAME_H);
-	depthTexture = fxContext.getImageData(0, 0, GAME_W, GAME_H);
+    try {
+        texture = context.getImageData(0, 0, GAME_W, GAME_H);
+	    ripple = context.getImageData(0, 0, GAME_W, GAME_H);
+	    depthTexture = fxContext.getImageData(0, 0, GAME_W, GAME_H);
+    } catch(e) {
+        if (!window.complained) {
+            console.log("No webserver found: ripple/depth effects disabled.");
+            window.complained = true;
+        }
+    }
 }
 
 function drawRippleEffect() {
 
-	rippleNewFrame();
+	if (!ripple) return;
+
+    rippleNewFrame();
 	
 	context.putImageData(ripple, 0, 0);
 	// context.drawImage(canvas, -PARALLAX_OFFSET_X*W_RATIO,
