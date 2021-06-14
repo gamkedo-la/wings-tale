@@ -220,7 +220,7 @@ function reset() {
 	// excludes lists which share a common animation frame to be in sync (ex. all shots show same animation frame at same time)
 	animateEachLists = [playerList, enemyList, powerupList, surfaceList];
 
-	gameMusic.sound.stop();
+	if (gameMusic && gameMusic.sound) gameMusic.sound.stop();
 	gameMusic = playSound(sounds.secondReality, 1, 0, 0.3, true);
 }
 

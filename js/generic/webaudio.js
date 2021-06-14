@@ -12,6 +12,8 @@ compressor.connect(audioCtx.destination);
 
 function playSound(buffer, playbackRate = 1, pan = 0, volume = .5, loop = false) {
 
+    if (!buffer) return;
+    
     var source = audioCtx.createBufferSource();
     var gainNode = audioCtx.createGain();
     var panNode = audioCtx.createStereoPanner();

@@ -1,6 +1,12 @@
 var sounds = [];
 
 async function loadSounds() {
+    
+    if (location.protocol=='file:') {
+        console.log("not using a web server: unable to download sounds. ignoring.");
+        return; // no sound if no web server
+    }
+    
     startedLoading = true
     const soundList = [
         {sndName: "playerShot", theFile: "shoot-06.mp3"},
@@ -22,5 +28,4 @@ async function beginLoadingSound(sndName, fileName) {
     const audioBuffer = await audioCtx.decodeAudioData(arrayBuffer);
     soundsToLoad--;
     return audioBuffer;
-    
 }
