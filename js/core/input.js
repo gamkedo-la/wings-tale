@@ -6,22 +6,21 @@ const KEY_SPACE = 32;
 const KEY_A = 65;
 const KEY_C = 67;
 const KEY_D = 68;
+const KEY_H = 72;
 const KEY_M = 77;
 const KEY_N = 78;
 const KEY_S = 83;
+const KEY_T = 84;
 const KEY_W = 87;
 const KEY_X = 88;
 const KEY_Z = 90;
-
-const KEY_T = 84;
-
-const KEY_H = 72;
 
 // debug keys for now
 const KEY_1 = 49;
 const KEY_2 = 50;
 const KEY_3 = 51;
 const KEY_4 = 52;
+const KEY_5 = 53;
 const KEY_7 = 55;
 const KEY_8 = 56;
 const KEY_9 = 57;
@@ -102,6 +101,12 @@ function keyHoldUpdate(evt, setTo) {
 	if(validGameKey == false) { // not a player 1 or player 2 key? universal key checks here
 		validGameKey = true; // assume true until we rule out otherwise
 		switch(evt.keyCode) {
+			case KEY_5: 	
+				if (!setTo) {
+					cheatKeepPowerupsOnDeath = !cheatKeepPowerupsOnDeath;
+					console.log("cheatKeepPowerupsOnDeath: "+cheatKeepPowerupsOnDeath);
+				}
+				break;
 			case KEY_T:
 				if (!setTo) {
 					twoPlayerGame = !twoPlayerGame;
