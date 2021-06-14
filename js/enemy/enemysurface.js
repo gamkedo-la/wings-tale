@@ -15,7 +15,7 @@ function spawnSurfaceEnemies() {
 		//we could easily use another channel of this image and paint to place more specifically,
 		//right now I just check if the depth map has green value greater than an arbitrary threshold
 		//to make sure they don't spawn over water.  
-		let canSpawnHere = depthSpawnData.data[index*4+1];  //the green value at this pixel.
+		let canSpawnHere = depthSpawnData?depthSpawnData.data[index*4+1]:true;  //the green value at this pixel (if missing, assume yes)
 
 		if(canSpawnHere > 60){ //definitely land
 			surfaceList.push(new surfaceEnemyClass(atX,atY));

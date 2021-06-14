@@ -171,7 +171,6 @@ function createDepthSpawnReference(){
 	    depthSpawnData = depthSpawnContext.getImageData(0,0, img.width, img.height);
     } catch(e) {
         console.log("unable to create depthSpawnData due to missing webserver. Ingoring.");
-        depthSpawnData = {data:[]}; // fake it lol
     }
 }
 
