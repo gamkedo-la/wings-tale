@@ -24,7 +24,7 @@ function ControlsMenu()
 		context.fillText("X/M = Throw Bomb", canvas.width/2, lineY+=lineSkip);
 		lineY+=lineSkip
 		context.fillText("T = Two Player toggle", canvas.width/2, lineY+=lineSkip);
-
+		// We could use a cheat menu right on this line, describing what numbers correspond to which cheats. Looks exactly or very visually similar to this menu.
 		context.fillText("Press H to return to the game.", canvas.width/2,canvas.height - 5);
 	}
 }

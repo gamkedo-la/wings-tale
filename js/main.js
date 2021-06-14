@@ -15,6 +15,8 @@ var PlayerScore = 0; // Added 1 by 1 each time an enemy is killed. Or at least, 
 var drawMoveList = []; // list of lists - note, drawn in this order, so should be filled closest to ground up towards sky last
 var animateEachLists = []; // subset of draw/move lists for which each object has its own separate animation frame to update
 
+var cheatKeepPowerupsOnDeath = false;
+
 const GAME_STATE_PLAY = 0;
 const GAME_STATE_CONTROLS = 1;
 const GAME_STATE_TITLE = 2;
@@ -41,6 +43,10 @@ var curDepthMap = "depth map";
 
 window.onload = function() { // discord repo check
 	setupCanvas();
+
+	if(cheatKeepPowerupsOnDeath) {
+		console.log("The cheat/debug feature KeepPowerupsOnDeath is on!");
+	}
 
 	if(debug_showHiddenCanvas) {
 		document.body.appendChild(canvas); // to debug hidden canvas

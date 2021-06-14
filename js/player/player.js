@@ -47,10 +47,15 @@ function playerClass() {
 		this.x=GAME_W/2;
 		this.y=GAME_H-PLAYER_DIM*2;
 		this.xv=this.yv=0;
-
-		this.shotsNumber = 1;
-		this.bombCount = 1;
-		this.ghostCount = 0;
+		
+		if(cheatKeepPowerupsOnDeath) {
+			console.log("The cheat/debug feature KeepPowerupsOnDeath is on!");
+		}
+		else {
+			this.shotsNumber = 1;
+			this.bombCount = 1;
+			this.ghostCount = 0;
+		}
 
 		resetDefenseRing(this);
 	}
