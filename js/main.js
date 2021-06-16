@@ -103,12 +103,14 @@ function loadingDoneSoStartGame()
         scaledCtx.font = '30px Georgia';
         var lineX = 60
         var lineY = 500;
-        var lineSkip = 10;
 		var wordSpacing = 350;
-        /*scaledCtx.fillText("Space",lineX+wordSpacing,lineY+=lineSkip);
+        scaledCtx.fillText("Space",lineX+wordSpacing-65,lineY-=20);
 		scaledCtx.fillStyle = "green";
-        scaledCtx.fillText("Island",lineX,lineY+=lineSkip);
-        scaledCtx.fillText("Moon",lineX+wordSpacing,lineY+=lineSkip);*/
+
+        scaledCtx.fillText("Island",lineX+18,lineY);
+		scaledCtx.fillStyle = "Red";
+
+        scaledCtx.fillText("Moon",lineX+wordSpacing+200,lineY);
 
 		stretchLowResCanvasToVisibleCanvas();
     }
