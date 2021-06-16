@@ -10,7 +10,8 @@ let p2AI = true;
 var playerList = [new playerClass(), new playerClass()];
 var readyToReset = false; // to avoid calling reset() mid list iterations
 var octopusBoss = new octopusClass();
-var PlayerScore = 0; // Added 1 by 1 each time an enemy is killed. Or at least, Thats how it should be. 
+
+var playerScore = 0; // Player Score, Getting powerups adds to it. 
 
 var drawMoveList = []; // list of lists - note, drawn in this order, so should be filled closest to ground up towards sky last
 var animateEachLists = []; // subset of draw/move lists for which each object has its own separate animation frame to update
@@ -99,14 +100,15 @@ function loadingDoneSoStartGame()
             levX+=levWid;
         }
         scaledCtx.fillStyle = "white";
-        scaledCtx.font = '10px Helvetica';
-        var lineX = levX+6;
-        var lineY = 50;
+        scaledCtx.font = '30px Georgia';
+        var lineX = 60
+        var lineY = 500;
         var lineSkip = 10;
-        scaledCtx.fillText("click",lineX,lineY+=lineSkip);
-        scaledCtx.fillText("level",lineX,lineY+=lineSkip);
-        scaledCtx.fillText("to",lineX,lineY+=lineSkip);
-        scaledCtx.fillText("start",lineX,lineY+=lineSkip);
+		var wordSpacing = 350;
+        /*scaledCtx.fillText("Space",lineX+wordSpacing,lineY+=lineSkip);
+		scaledCtx.fillStyle = "green";
+        scaledCtx.fillText("Island",lineX,lineY+=lineSkip);
+        scaledCtx.fillText("Moon",lineX+wordSpacing,lineY+=lineSkip);*/
 
 		stretchLowResCanvasToVisibleCanvas();
     }
@@ -292,6 +294,7 @@ function update()
 		
 		case GAME_STATE_LEVEL_SELECT:
 			levelSelectScreen.draw();
+			console.log("Help me!");
 			break;
 
 		case GAME_STATE_CONTROLS:
@@ -355,7 +358,7 @@ function gameDebugSharpText() {
 	scaledCtx.fillText("DEBUG/TEMPORARY TEXT",20,debugLineY+=debugLineSkip);
 	scaledCtx.fillText("check H for help",20,debugLineY+=debugLineSkip);
 	scaledCtx.fillText("1-4,7-0: cheats",20,debugLineY+=debugLineSkip);
-	scaledCtx.fillText("Score: "+PlayerScore,20,debugLineY+=debugLineSkip);
+	scaledCtx.fillText("Score :"+playerScore,20,debugLineY+=debugLineSkip);
 	scaledCtx.fillText("LEVEL STEP: "+spawnSeqStep,20,debugLineY+=debugLineSkip);
 	scaledCtx.fillText("STEP PERC: "+Math.floor(stepPerc*100)+"%",20,debugLineY+=debugLineSkip);
 	
@@ -371,4 +374,5 @@ function gameDebugSharpText() {
 
 	scaledCtx.font = '15px Helvetica';
 	scaledCtx.fillText("H for help", scaledCanvas.width - 90, scaledCanvas.height - 20);
+
 }

@@ -25,7 +25,6 @@ function ControlsMenu()
 		lineY+=lineSkip
 		context.fillText("T = Two Player toggle", canvas.width/2, lineY+=lineSkip);
 		context.fillText("Number Row Keys to use cheats! 4 clears all cheats.", canvas.width/2, lineY+=lineSkip);
-		// We could use a cheat menu right on this line, describing what numbers correspond to which cheats. Looks exactly or very visually similar to this menu.
 		context.fillText("Press H to return to the game.", canvas.width/2,canvas.height - 5);
 	}
 }

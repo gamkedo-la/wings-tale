@@ -17,7 +17,7 @@ function LevelSelectScreen()
             scaledCtx.stroke();
             levX+=levWid;
         }
-        scaledCtx.fillStyle = "white";
+        scaledCtx.fillStyle = "black";
         scaledCtx.font = '10px Helvetica';
         var lineX = levX+6;
         var lineY = 50;
