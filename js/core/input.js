@@ -214,5 +214,11 @@ function handleMouseClick(evt)
 	else if (gameState == GAME_STATE_LEVEL_SELECT)
 	{
 		gameState = GAME_STATE_PLAY;
+		var levWid= images[levNames[0]].width;
+		levNow = Math.floor(mouseX / levWid);
+		if(levNow>=levNames.length) {
+			return;
+		}
+		currentLevelImageName = levNames[levNow];
 	}
 }

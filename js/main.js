@@ -99,6 +99,17 @@ function loadingDoneSoStartGame()
             scaledCtx.stroke();
             levX+=levWid;
         }
+		//level select screen header text
+		scaledCtx.fillStyle = "black";
+        scaledCtx.font = '10px Helvetica';
+        var lineX = levX+6;
+        var lineY = 50;
+        var lineSkip = 10;
+        scaledCtx.fillText("click",lineX,lineY+=lineSkip);
+        scaledCtx.fillText("level",lineX,lineY+=lineSkip);
+        scaledCtx.fillText("to",lineX,lineY+=lineSkip);
+        scaledCtx.fillText("start",lineX,lineY+=lineSkip);
+		//level select levels text
         scaledCtx.fillStyle = "white";
         scaledCtx.font = '30px Georgia';
         var lineX = 60
