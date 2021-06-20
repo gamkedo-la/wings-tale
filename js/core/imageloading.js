@@ -11,7 +11,7 @@ function loadImages() {
         {imgName: "bomb sight", theFile: "bombsight.png"},
         {imgName: "splode", theFile: "splode.png"},
         {imgName: "bug", theFile: "enemybug.png"},
-        {imgName: "swoop", theFile: "enemyswoop.png"},
+        {imgName: "swoop", theFile: "space-pineapple.png"},
         {imgName: "stallchase", theFile: "enemystallchase.png"},
         {imgName: "octopus", theFile: "GiantOctopus.png"},
         {imgName: "tentacle", theFile: "tentacle.png"},

@@ -6,7 +6,7 @@ var enemySpawnDebugColor = ["lime","yellow","cyan"];
 const SPAWN_WITH_NEXT = 0.0;
 
 var islandSpawnSeq = [
-	{percDuration:0.1,kind:ENEMY_STALL_CHASE,driftX:0.3,percXMin:0.3,percXMax:0.4,speed:3.0,wave:10,ticksBetween:20},
+	{percDuration:0.05,kind:ENEMY_STALL_CHASE,driftX:0.3,percXMin:0.3,percXMax:0.4,speed:3.0,wave:10,ticksBetween:20},
 	{percDuration:SPAWN_WITH_NEXT,kind:ENEMY_BUG,driftX:-0.7,percXMin:0.8,percXMax:0.9,speed:1.0,wave:10,ticksBetween:20},
 	{percDuration:SPAWN_WITH_NEXT,kind:ENEMY_SWOOP,driftX:0.0,percXMin:0.5,percXMax:0.5,speed:2.5,wave:0,ticksBetween:1},
 	{percDuration:0.02,kind:ENEMY_BUG,driftX:0.7,percXMin:0.1,percXMax:0.2,speed:1.0,wave:10,ticksBetween:20},
