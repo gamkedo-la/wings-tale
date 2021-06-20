@@ -12,15 +12,15 @@ const ENEMY_SPEED_MAX = 2.5;
 
 enemyWaveBugClass.prototype = new moveDrawClass();
 
-function enemyWaveBugClass() {
-	this.startX = this.x = (levData[spawnSeqStep].driftX*stepPerc + levData[spawnSeqStep].percXMin+
-		Math.random()*(levData[spawnSeqStep].percXMax-levData[spawnSeqStep].percXMin))*canvas.width;
+function enemyWaveBugClass(usingStep) {
+	this.startX = this.x = (usingStep.driftX*stepPerc + usingStep.percXMin+
+		Math.random()*(usingStep.percXMax-usingStep.percXMin))*canvas.width;
 	this.y = -ENEMY_DIM;
 	this.frame = Math.floor(Math.random()*ENEMY_FRAMES);
 	this.phaseOff = Math.random();
-	this.waveSize = levData[spawnSeqStep].wave;
+	this.waveSize = usingStep.wave;
 	this.freq = randRange(ENEMY_WAVES_FREQ_MIN,ENEMY_WAVES_FREQ_MAX);
-	this.speed = levData[spawnSeqStep].speed;
+	this.speed = usingStep.speed;
 
 	this.move = function() {
 		this.x = this.startX + this.waveSize*

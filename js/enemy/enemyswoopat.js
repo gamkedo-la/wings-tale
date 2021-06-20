@@ -5,9 +5,9 @@ const ENEMY_SWOOP_SPEED_DECAY = 0.99;
 
 enemySwoopAtClass.prototype = new moveDrawClass();
 
-function enemySwoopAtClass() {
-	this.x = (levData[spawnSeqStep].driftX*stepPerc + levData[spawnSeqStep].percXMin+
-		Math.random()*(levData[spawnSeqStep].percXMax-levData[spawnSeqStep].percXMin))*canvas.width;
+function enemySwoopAtClass(usingStep) {
+	this.x = (usingStep.driftX*stepPerc + usingStep.percXMin+
+		Math.random()*(usingStep.percXMax-usingStep.percXMin))*canvas.width;
 	this.y = -ENEMY_SWOOP_DIM;
 	this.xv = 0;
 	this.yv = 0;
