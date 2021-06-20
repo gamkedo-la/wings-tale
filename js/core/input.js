@@ -100,14 +100,14 @@ function keyHoldUpdate(evt, setTo) {
 	}
 
 	if(gameState == GAME_STATE_LEVEL_DEBUG) {
-		if(evt.keyCode == KEY_UP) {
-			levelProgressInPixels -= GAME_H * 0.35;
+		if(evt.keyCode == KEY_DOWN) {
+			levelProgressInPixels -= GAME_H * 0.3;
 			if(levelProgressInPixels < 0) {
 				levelProgressInPixels = 0;
 			}
 			validGameKey = true;
-		} else if(evt.keyCode == KEY_DOWN) {
-			levelProgressInPixels += GAME_H * 0.35;
+		} else if(evt.keyCode == KEY_UP) {
+			levelProgressInPixels += GAME_H * 0.3;
 			if(levelProgressInPixels > images[currentLevelImageName].height-1) {
 				levelProgressInPixels = images[currentLevelImageName].height-1;
 			}

@@ -67,13 +67,12 @@ function startLevel(whichLevel) {
 
 function drawLevelSpawnData() { // for level debug display (may become editable later)
 	// stopping 1 from end to draw line forward to next data point
-	context.lineWidth = "1";
 	var mapLength = images[currentLevelImageName].height;
 	var frontEdge, backEdge;
 	var prevNonSkipI = levData.length-1;
-	frontEdge=backEdge=(1.0-levData[prevNonSkipI].percDuration)*mapLength-bgDrawY;
+	frontEdge=backEdge=-bgDrawY;
 	context.fillStyle = "white";
-	for(var i=levData.length-2; i>=0;i--) { // not bothering to cull yet, debug draw only
+	for(var i=levData.length-1; i>=0;i--) { // not bothering to cull yet, debug draw only
 		if(levData[i].percDuration != SPAWN_WITH_NEXT) {
 			frontEdge = backEdge;
 			backEdge = (1.0-levData[i].percDuration)*mapLength-bgDrawY;
@@ -81,6 +80,13 @@ function drawLevelSpawnData() { // for level debug display (may become editable 
 		}
 
 		context.strokeStyle = enemySpawnDebugColor[levData[i].kind];
+
+		context.lineWidth = "4"; // thick for spaced markers showing spawn density
+		if(levData[i].ticksBetween > 1) {
+			context.setLineDash([1, levData[i].ticksBetween]);
+		} else {
+			context.setLineDash([]);
+		}
 		context.beginPath();
 		context.moveTo(levData[i].percXMin*GAME_W,backEdge);
 		context.lineTo((levData[i].percXMin+levData[i].driftX)*GAME_W,frontEdge);
@@ -88,6 +94,17 @@ function drawLevelSpawnData() { // for level debug display (may become editable 
 		context.lineTo(levData[i].percXMax*GAME_W,backEdge);
 		context.closePath();
 		context.stroke();
+
+		context.lineWidth = "1"; // thin for line drawing the min/max/drift edges
+		context.setLineDash([]);
+		context.beginPath();
+		context.moveTo(levData[i].percXMin*GAME_W,backEdge);
+		context.lineTo((levData[i].percXMin+levData[i].driftX)*GAME_W,frontEdge);
+		context.lineTo((levData[i].percXMax+levData[i].driftX)*GAME_W,frontEdge);
+		context.lineTo(levData[i].percXMax*GAME_W,backEdge);
+		context.closePath();
+		context.stroke();
+
 		context.fillText(i,levData[i].percXMin*GAME_W,backEdge);
 	}
 }
