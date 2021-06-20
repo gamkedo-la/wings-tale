@@ -186,25 +186,64 @@ function playerClass() {
 	// any AI specific variables
 	this.AI_dir_right = true;
 	this.AI_margin = 50;
+	this.AI_powerup_chasing = null;
+	this.AI_target = null;
+
+	this.chaseAI = function(toX,toY) {
+
+	}
 
 	this.doAI = function() {
 		this.holdFire = true; // always
-		if(Math.random()<0.02) {
+		if(Math.random()<0.01) {
 			this.holdBomb = !this.holdBomb;
 		}
-		if(this.AI_dir_right) {
-			this.holdRight = true;
-			this.holdLeft = false;
-			if(this.x>GAME_W-this.AI_margin) {
-				this.AI_dir_right = !this.AI_dir_right;
+		if(this.AI_powerup_chasing != null) {
+			this.holdDown = (this.y<this.AI_powerup_chasing.y-PLAYER_SPEED);
+			this.holdUp = (this.y>this.AI_powerup_chasing.y+PLAYER_SPEED);
+
+			this.holdLeft = (this.x>this.AI_powerup_chasing.x+PLAYER_SPEED);
+			this.holdRight = (this.x<this.AI_powerup_chasing.x-PLAYER_SPEED);
+
+			var dist = approxDist(this.x,this.y,this.AI_powerup_chasing.x,this.AI_powerup_chasing.y);
+			if(dist>0.5*GAME_W || this.AI_powerup_chasing.readyToRemove || powerupList.length==0) {
+				this.AI_powerup_chasing = null;
+			}
+		} else if(this.AI_target != null) {
+			this.holdDown = (this.y<GAME_H*0.7);
+			this.holdUp = (this.y>GAME_H*0.95);
+
+			this.holdLeft = (this.x>this.AI_target.x+PLAYER_SPEED*3);
+			this.holdRight = (this.x<this.AI_target.x-PLAYER_SPEED*3);
+			if(this.AI_target.y > this.y || this.AI_target.readyToRemove || enemyList.length==0) {
+				this.AI_target = null;
 			}
 		} else {
-			this.holdRight = false;
-			this.holdLeft = true;
+			this.holdDown = (this.y<GAME_H*0.75);
+			this.holdUp = (this.y>GAME_H*0.9);
+			if(this.AI_dir_right) {
+				this.holdRight = true;
+				this.holdLeft = !this.holdRight;
+				if(this.x>GAME_W-this.AI_margin) {
+					this.AI_dir_right = !this.AI_dir_right;
+				}
+			} else {
+				this.holdRight = false;
+				this.holdLeft = !this.holdRight;
 
-			if(this.x<this.AI_margin) {
-				this.AI_dir_right = !this.AI_dir_right;
+				if(this.x<this.AI_margin) {
+					this.AI_dir_right = !this.AI_dir_right;
+				}
 			}
-		}
-	}
-}
+
+			if(powerupList.length > 0) {
+				this.AI_powerup_chasing = powerupList[0];
+			} // end of powerup check
+			else if(enemyList.length > 0) {
+				this.AI_target = enemyList[0];
+			} // end of powerup check
+
+		} // end of AI wander case
+	} // end of doAI function
+
+} // end of player class
