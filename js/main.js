@@ -253,8 +253,14 @@ function drawBackground() {
 	}
 	context.drawImage(images[currentLevelImageName],0,bgDrawY,GAME_W,GAME_H,
 											 0,0,GAME_W,GAME_H);
-	if(levNow == LEVEL_ISLAND) {
-		fxContext.drawImage(images['depth map'], 0, bgDrawY, GAME_W, GAME_H, 0, 0, GAME_W, GAME_H);
+	switch(levNow)
+	{
+		case LEVEL_ISLAND:
+			fxContext.drawImage(images['depth map'], 0, bgDrawY, GAME_W, GAME_H, 0, 0, GAME_W, GAME_H);
+			break;
+		case LEVEL_MOON:
+			fxContext.drawImage(images['depth moon'], 0, bgDrawY, GAME_W, GAME_H, 0, 0, GAME_W, GAME_H);
+			break;
 	}
 	
     // note: these functions require the game to run on a web server
