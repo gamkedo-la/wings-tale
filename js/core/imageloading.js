@@ -6,6 +6,7 @@ function loadImages() {
         {imgName: "player", theFile: "player01.png"},
         // {imgName: "player", theFile: "player.png"},
         {imgName: "player shot", theFile: "playershot.png"},
+        {imgName: "player shot 2", theFile: "playershot2.png"},
         {imgName: "player shot ground", theFile: "playershotground.png"},
         {imgName: "enemy shot", theFile: "enemyshot.png"},
         {imgName: "bomb sight", theFile: "bombsight.png"},
