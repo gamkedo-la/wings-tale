@@ -1,6 +1,7 @@
 const ENEMY_BUG = 0;
 const ENEMY_SWOOP = 1;
 const ENEMY_STALL_CHASE = 2;
+var enemySpawnDebugColor = ["lime","yellow","cyan"];
 
 const SPAWN_WITH_NEXT = 0.0;
 
@@ -62,6 +63,33 @@ function startLevel(whichLevel) {
 			levData[i].percDuration = accumPerc;
 		}
 	}	
+}
+
+function drawLevelSpawnData() { // for level debug display (may become editable later)
+	// stopping 1 from end to draw line forward to next data point
+	context.lineWidth = "1";
+	var mapLength = images[currentLevelImageName].height;
+	var frontEdge, backEdge;
+	var prevNonSkipI = levData.length-1;
+	frontEdge=backEdge=(1.0-levData[prevNonSkipI].percDuration)*mapLength-bgDrawY;
+	context.fillStyle = "white";
+	for(var i=levData.length-2; i>=0;i--) { // not bothering to cull yet, debug draw only
+		if(levData[i].percDuration != SPAWN_WITH_NEXT) {
+			frontEdge = backEdge;
+			backEdge = (1.0-levData[i].percDuration)*mapLength-bgDrawY;
+			prevNonSkipI = i;
+		}
+
+		context.strokeStyle = enemySpawnDebugColor[levData[i].kind];
+		context.beginPath();
+		context.moveTo(levData[i].percXMin*GAME_W,backEdge);
+		context.lineTo((levData[i].percXMin+levData[i].driftX)*GAME_W,frontEdge);
+		context.lineTo((levData[i].percXMax+levData[i].driftX)*GAME_W,frontEdge);
+		context.lineTo(levData[i].percXMax*GAME_W,backEdge);
+		context.closePath();
+		context.stroke();
+		context.fillText(i,levData[i].percXMin*GAME_W,backEdge);
+	}
 }
 
 var enemySpawnTickCount = 0;

@@ -23,6 +23,7 @@ const GAME_STATE_CONTROLS = 1;
 const GAME_STATE_TITLE = 2;
 const GAME_STATE_LEVEL_SELECT = 3;
 const GAME_STATE_LOADING_SPLASH = 4;
+const GAME_STATE_LEVEL_DEBUG = 5;
 var gameState;
 if (!gameDevelopmentMode)
 {
@@ -351,6 +352,10 @@ function update()
 			if(bossFight){
 				octopusBoss.draw();
 			}
+			break;
+		case GAME_STATE_LEVEL_DEBUG:
+			drawBackground();
+			drawLevelSpawnData();
 			break;
 	}
 

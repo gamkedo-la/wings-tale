@@ -7,6 +7,7 @@ const KEY_A = 65;
 const KEY_C = 67;
 const KEY_D = 68;
 const KEY_H = 72;
+const KEY_L = 76;
 const KEY_M = 77;
 const KEY_N = 78;
 const KEY_S = 83;
@@ -98,6 +99,22 @@ function keyHoldUpdate(evt, setTo) {
 		}
 	}
 
+	if(gameState == GAME_STATE_LEVEL_DEBUG) {
+		if(evt.keyCode == KEY_UP) {
+			levelProgressInPixels -= GAME_H * 0.35;
+			if(levelProgressInPixels < 0) {
+				levelProgressInPixels = 0;
+			}
+			validGameKey = true;
+		} else if(evt.keyCode == KEY_DOWN) {
+			levelProgressInPixels += GAME_H * 0.35;
+			if(levelProgressInPixels > images[currentLevelImageName].height-1) {
+				levelProgressInPixels = images[currentLevelImageName].height-1;
+			}
+			validGameKey = true;
+		}
+	}
+
 	if(validGameKey == false) { // not a player 1 or player 2 key? universal key checks here
 		validGameKey = true; // assume true until we rule out otherwise
 		switch(evt.keyCode) {
@@ -110,6 +127,16 @@ function keyHoldUpdate(evt, setTo) {
 			case KEY_T:
 				if (!setTo) {
 					twoPlayerGame = !twoPlayerGame;
+					readyToReset = true;
+				}
+				break;
+			case KEY_L:
+				if (!setTo) {
+					if(gameState == GAME_STATE_LEVEL_DEBUG) {
+						gameState = GAME_STATE_PLAY;
+					} else {
+						gameState = GAME_STATE_LEVEL_DEBUG;
+					}
 					readyToReset = true;
 				}
 				break;

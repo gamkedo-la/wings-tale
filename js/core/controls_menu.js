@@ -22,8 +22,9 @@ function ControlsMenu()
 		context.fillText("S/Down = Move Down    D/Right = Move Right", canvas.width/2, lineY+=lineSkip);
 		context.fillText("Space/N = Shoot Gun", canvas.width/2, lineY+=lineSkip);
 		context.fillText("X/M = Throw Bomb", canvas.width/2, lineY+=lineSkip);
-		lineY+=lineSkip
+		//lineY+=lineSkip
 		context.fillText("T = Two Player toggle", canvas.width/2, lineY+=lineSkip);
+		context.fillText("L (then up/down arrows) = Level spawn debug", canvas.width/2, lineY+=lineSkip);
 		context.fillText("Number Row Keys to use cheats! 4 clears all cheats.", canvas.width/2, lineY+=lineSkip);
 		context.fillText("Press H to return to the game.", canvas.width/2,canvas.height - 5);
 	}
