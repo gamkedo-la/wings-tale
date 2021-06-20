@@ -1,5 +1,5 @@
-const ENEMY_SWOOP_DIM = SPLODE_DIM;
-const ENEMY_SWOOP_FRAMES = SPLODE_FRAMES;
+const ENEMY_SWOOP_DIM = 10;
+const ENEMY_SWOOP_FRAMES = 2;
 const ENEMY_SWOOP_SPEED = 0.4;
 const ENEMY_SWOOP_SPEED_DECAY = 0.99;
 
@@ -36,7 +36,7 @@ function enemySwoopAtClass() {
 	}
 
 	this.draw = function() { // splode graphic just as placeholder
-		drawAnimFrame("splode",this.x,this.y, this.frame, ENEMY_SWOOP_DIM,ENEMY_SWOOP_DIM);
+		drawAnimFrame("swoop",this.x,this.y, this.frame, ENEMY_SWOOP_DIM,ENEMY_SWOOP_DIM);
 	}
 	this.animate = function() {
 		if(++this.frame>=ENEMY_SWOOP_FRAMES) {
