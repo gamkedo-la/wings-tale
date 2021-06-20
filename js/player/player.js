@@ -23,7 +23,7 @@ function playerClass() {
 	this.bombCount = 1;
 	this.ghostCount = 0;
 
-	this.invulnerableTimeLeft = INVULNERABLE_DURATION;
+	this.invulnerableTimeLeft = 0;
 	this.invulnerableBlinkToggle = false;
 
 	this.frame=0;
@@ -39,25 +39,27 @@ function playerClass() {
 	this.defenseRingUnitList = [];
 
 	this.reset = function() {
-		this.invulnerableTimeLeft = INVULNERABLE_DURATION;
+		if (this.invulnerableTimeLeft <= 0) {
+			this.invulnerableTimeLeft = INVULNERABLE_DURATION;
 
-		this.neverRemove = true; // respawn only
+			this.neverRemove = true; // respawn only
 
-		this.readyToRemove = false;
-		this.x=GAME_W/2;
-		this.y=GAME_H-PLAYER_DIM*2;
-		this.xv=this.yv=0;
-		
-		if(cheatKeepPowerupsOnDeath) {
-			console.log("The cheat/debug feature KeepPowerupsOnDeath is on!");
+			this.readyToRemove = false;
+			this.x=GAME_W/2;
+			this.y=GAME_H-PLAYER_DIM*2;
+			this.xv=this.yv=0;
+			
+			if(cheatKeepPowerupsOnDeath) {
+				console.log("The cheat/debug feature KeepPowerupsOnDeath is on!");
+			}
+			else {
+				this.shotsNumber = 1;
+				this.bombCount = 1;
+				this.ghostCount = 0;
+			}
+
+			resetDefenseRing(this);
 		}
-		else {
-			this.shotsNumber = 1;
-			this.bombCount = 1;
-			this.ghostCount = 0;
-		}
-
-		resetDefenseRing(this);
 	}
 
 	this.draw = function() {
@@ -80,6 +82,10 @@ function playerClass() {
 			}
 			drawAnimFrame("player",this.x,this.y, this.frame, PLAYER_FRAME_W,PLAYER_FRAME_H);
 			drawAnimFrame("bomb sight",this.x,this.y-APPROX_BOMB_RANGE, this.frame%2, BOMB_FRAME_W,BOMB_FRAME_H);
+
+			if (this.invulnerableTimeLeft > 0) {			
+				return;
+			}
 
 			drawList(this.defenseRingUnitList);
 		}
@@ -133,6 +139,11 @@ function playerClass() {
 		}
 		if(this.y>=GAME_H-EDGE_MARGIN) {
 			this.y=GAME_H-EDGE_MARGIN-1;
+		}
+
+		if (this.invulnerableTimeLeft > 0) {
+			this.invulnerableTimeLeft -= INVULNERABLE_DURATION_DECREMENT;
+			return;
 		}
 
 		// pmx = partial momentum, which part of player speed should impact projectiles being shot or dropped
