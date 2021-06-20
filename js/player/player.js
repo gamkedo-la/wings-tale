@@ -139,12 +139,7 @@ function playerClass() {
 		}
 		if(this.y>=GAME_H-EDGE_MARGIN) {
 			this.y=GAME_H-EDGE_MARGIN-1;
-		}
-
-		if (this.invulnerableTimeLeft > 0) {
-			this.invulnerableTimeLeft -= INVULNERABLE_DURATION_DECREMENT;
-			return;
-		}
+		}		
 
 		// pmx = partial momentum, which part of player speed should impact projectiles being shot or dropped
 		var pmx = this.xv * 0.1;
@@ -182,6 +177,11 @@ function playerClass() {
 		} while(ghostsLeft-- > 0);
 
 		this.wasHoldingBomb = this.holdBomb;
+
+		if (this.invulnerableTimeLeft > 0) {
+			this.invulnerableTimeLeft -= INVULNERABLE_DURATION_DECREMENT;
+			return;
+		}
 
 		moveList(this.defenseRingUnitList);
 	}
