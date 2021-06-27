@@ -66,9 +66,10 @@ function shotGroundClass(startX,startY, totalSpeed, angle, momentumX,momentumY, 
 
 				spawnSplode(this.x + Math.cos(blastAng)*blastDist,this.y + Math.sin(blastAng)*blastDist, true);
 			}
-			var that = this;
-			listCollideRangeOfPoint(surfaceList, this.x, this.y, BOMB_RADIUS, function () { 
-						powerupList.push(new powerupClass(that.x,that.y));
+			listCollideRangeOfPoint(surfaceList, this.x, this.y, BOMB_RADIUS, function (at) { 
+						if(Math.random() < GROUND_POWERUP_DROP_PERCENT) {
+							powerupList.push(new powerupClass(at.x,at.y));
+						}
 					} );
 			this.readyToRemove = true;
 		}

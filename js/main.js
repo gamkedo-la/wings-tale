@@ -338,7 +338,11 @@ function update()
 				moveList(drawMoveList[i]);
 			}
 
-			listCollideExplode(shotList, enemyList, (SHOT_DIM+ENEMY_DIM)/2);
+			listCollideExplode(shotList, enemyList, (SHOT_DIM+ENEMY_DIM)/2, function (at,to) { 
+						if(Math.random() < SKY_POWERUP_DROP_PERCENT) {
+							powerupList.push(new powerupClass(at.x,to.y));
+						}
+					});
 
 			for(var i=0;i<playerList.length;i++) {
 				listCollideExplode(enemyList, playerList[i].defenseRingUnitList, (DEFENSE_RING_ORB_DIM+ENEMY_DIM)/2);

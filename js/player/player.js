@@ -7,6 +7,9 @@ const EDGE_MARGIN = PLAYER_DIM;
 const INVULNERABLE_DURATION = 5;
 const INVULNERABLE_DURATION_DECREMENT = 0.1;
 
+const GROUND_POWERUP_DROP_PERCENT = 0.5;
+const SKY_POWERUP_DROP_PERCENT = 0.02;
+
 var shotDegSpread = 3.7;
 var bombDegSpread = 6;
 const GHOST_DIST_MULT = 9;
