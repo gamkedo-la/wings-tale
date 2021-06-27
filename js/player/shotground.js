@@ -15,16 +15,47 @@ const BOMB_FRAME_H = 50;
 shotGroundClass.prototype = new moveDrawClass();
 
 // px+4,py,SHOT_SPEED,5.0,pmx,pmy
-function shotGroundClass(startX,startY, totalSpeed, angle, momentumX,momentumY) {
+function shotGroundClass(startX,startY, totalSpeed, angle, momentumX,momentumY, isHoming) {
 	this.ang = degToShipRad(angle);
 	this.x = startX+Math.cos(this.ang)*12; // for lateral spacing when there's a spread
 	this.y = startY;
 	this.xv = momentumX + Math.cos(this.ang)*totalSpeed;
 	this.yv = momentumY + Math.sin(this.ang)*totalSpeed;
+	this.homingTarget = null;
+	if(isHoming) {
+		var bestDist = GAME_W;
+		for(var i=0;i<surfaceList.length;i++) {
+			if(surfaceList[i].bombLockedOn == false) {
+				var compareDist = approxDist(this.x,this.y,surfaceList[i].x,surfaceList[i].y)
+				if(bestDist > compareDist) {
+					bestDist = compareDist;
+					this.homingTarget = surfaceList[i];
+				} // end of closest found yet if
+			} // end of not locked to yet
+		} // end of each target considered
+		if(this.homingTarget) {
+			this.homingTarget.bombLockedOn = true;
+		}
+	} // end of homing target search
 
 	this.move = function() {
+		if(this.homingTarget != null) {
+			if(this.homingTarget.readyToRemove) {
+				this.homingTarget = null;
+			} else {		
+				var angAt = Math.atan2((this.homingTarget.y - startY), (this.homingTarget.x - startX));
+				if ( approxDist(this.x,this.y,this.homingTarget.x,this.homingTarget.y) < BOMB_RADIUS ) { // near, drop faster
+					this.xv *= SHOT_GROUND_SPEED_PERC_FALLOFF;
+					this.yv *= SHOT_GROUND_SPEED_PERC_FALLOFF;
+				} else {
+					this.xv=Math.cos(angAt);
+					this.yv=Math.sin(angAt);
+				}
+			}
+		}
 		this.x += this.xv;
 		this.y += this.yv;
+		this.xv *= SHOT_GROUND_SPEED_PERC_FALLOFF;
 		this.yv *= SHOT_GROUND_SPEED_PERC_FALLOFF;
 		if(this.y<0 || this.x<0 || this.x>GAME_W || this.y>GAME_H) {
 			this.readyToRemove = true;

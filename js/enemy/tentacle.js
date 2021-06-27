@@ -13,6 +13,7 @@ function tentacleClass(atX, atY) {
 	this.y = -ENEMY_DIM;
 	this.readyToRemove = false;
 	this.phaseOffset = Math.random();
+	this.bombLockedOn = false; // used to keep upgraded split bombs from homing on same ground target
 
 	this.move = function() {
 		this.y = this.startY - bgDrawY;

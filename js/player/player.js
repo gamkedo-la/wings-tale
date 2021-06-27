@@ -12,6 +12,8 @@ var bombDegSpread = 6;
 const GHOST_DIST_MULT = 9;
 const GHOST_MIN_MOVE_SPEED = 0.7;
 
+const HOMING_POWERUP_FRAMES = 300;
+
 playerClass.prototype = new moveDrawClass();
 
 function playerClass() {
@@ -22,6 +24,7 @@ function playerClass() {
 	this.shotsNumber = 1;
 	this.bombCount = 1;
 	this.ghostCount = 0;
+	this.homingBombFramesLeft = HOMING_POWERUP_FRAMES;
 
 	this.invulnerableTimeLeft = 0;
 	this.invulnerableBlinkToggle = false;
@@ -56,6 +59,7 @@ function playerClass() {
 				this.shotsNumber = 1;
 				this.bombCount = 1;
 				this.ghostCount = 0;
+				this.homingBombFramesLeft = HOMING_POWERUP_FRAMES;
 			}
 
 			resetDefenseRing(this);
@@ -89,9 +93,16 @@ function playerClass() {
 
 			drawList(this.defenseRingUnitList);
 		}
+
+		if(this.homingBombFramesLeft>0) {
+			drawFilledBar(this.x-10,this.y+10,20,5,this.homingBombFramesLeft/HOMING_POWERUP_FRAMES,"lime");
+		}
 	}
 
 	this.move = function() {
+		if(this.homingBombFramesLeft > 0) {
+			this.homingBombFramesLeft--;
+		}
 		if (this.invulnerableTimeLeft > 0) {
 			this.invulnerableTimeLeft -= INVULNERABLE_DURATION_DECREMENT;			
 		}
@@ -154,7 +165,7 @@ function playerClass() {
 				var bombAngSpan = -(this.bombCount-1)*(bombDegSpread*0.5);
 
 				for(var i=0;i<this.bombCount;i++) {
-					var newBomb = new shotGroundClass(fromX,fromY,SHOT_GROUND_SPEED,bombAngSpan+bombDegSpread*i,pmx,pmy);
+					var newBomb = new shotGroundClass(fromX,fromY,SHOT_GROUND_SPEED,bombAngSpan+bombDegSpread*i,pmx,pmy, this.homingBombFramesLeft>0);
 					shotGroundList.push(newBomb);
 				}
 			}

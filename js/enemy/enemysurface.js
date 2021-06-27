@@ -42,6 +42,7 @@ function surfaceEnemyClass(startX,startY) {
 	this.origY = startY;
 	this.y = 0;
 	this.frame = Math.random()*SURFACE_ENEMY_FRAMES;
+	this.bombLockedOn = false; // used to keep upgraded split bombs from homing on same ground target
 
 	this.draw = function() {
 		this.y = this.origY-bgDrawY;

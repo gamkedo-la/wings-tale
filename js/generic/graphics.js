@@ -34,6 +34,15 @@ function drawAnimFrame(picName,atX,atY, whichFrame, frameW,frameH,optionalRow) {
 									  atX-frameW/2,atY-frameH/2,frameW,frameH);
 }
 
+function drawFilledBar(cornerX,cornerY,width,height,fillPerc,color) {
+	context.beginPath();
+	context.fillStyle = color;
+	context.strokeStyle = color;
+	context.rect(cornerX,cornerY,width,height);
+	context.stroke();
+	context.fillRect(cornerX,cornerY,width*fillPerc,height);
+}
+
 function startDisplayIntervals() {
 	setInterval(update,1000/TARGET_MOTION_FPS);
 	setInterval(animateSprites, 1000/SHARED_ANIMATION_FRAMES_PER_SEC);
