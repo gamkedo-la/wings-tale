@@ -130,40 +130,40 @@ function loadingDoneSoStartGame()
 
 function loadedAndClicked(evt) {
 	mousemoved(evt); // catch coordinate of even first click, for level select menu
-	
-	
 
-	if(imagesLoaded == false) { // invalid unless loading finished
-		return;
-	}
-	if(gameFirstClickedToStart) { // lock it from happening multiple times
-		return;
-	}
-
-	gameFirstClickedToStart = true;
-
-	gameMusic = playSound(sounds.secondReality, 1, 0, 0.5, true);
-	createDepthSpawnReference();
-	startDisplayIntervals();
-	inputSetup();
-	initializeTitleScreen();
-	initializeLevelSelectScreen();
-	initializeControlsMenu();
-	reset();
-
-	if (!gameDevelopmentMode)
-	{
-		gameState = GAME_STATE_TITLE;
-	}
-	else
-	{
-		gameState = GAME_STATE_PLAY;
-		var levWid= images[levNames[0]].width;
-		levNow = Math.floor(mouseX / levWid);
-		if(levNow>=levNames.length) {
+	if (mouseX > 0 && mouseX < images[levNames[0]].width * levNames.length && mouseY > 0 && mouseY < scaledCanvas.height) {
+		if(imagesLoaded == false) { // invalid unless loading finished
 			return;
 		}
-		currentLevelImageName = levNames[levNow];
+		if(gameFirstClickedToStart) { // lock it from happening multiple times
+			return;
+		}
+
+		gameFirstClickedToStart = true;
+
+		gameMusic = playSound(sounds.secondReality, 1, 0, 0.5, true);
+		createDepthSpawnReference();
+		startDisplayIntervals();
+		inputSetup();
+		initializeTitleScreen();
+		initializeLevelSelectScreen();
+		initializeControlsMenu();
+		reset();
+
+		if (!gameDevelopmentMode)
+		{
+			gameState = GAME_STATE_TITLE;
+		}
+		else
+		{
+			gameState = GAME_STATE_PLAY;
+			var levWid= images[levNames[0]].width;
+			levNow = Math.floor(mouseX / levWid);
+			if(levNow>=levNames.length) {
+				return;
+			}
+			currentLevelImageName = levNames[levNow];
+		}
 	}
 }
 
