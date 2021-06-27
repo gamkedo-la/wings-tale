@@ -53,7 +53,7 @@ function powerupClass(atX,atY) {
 	}
 
 	this.draw = function() {
-		drawAnimFrame("powerup",this.x,this.y, Math.floor(this.frame/POWER_UP_FRAME_DRAG), POWERUP_W,POWERUP_H, this.kind);
+		drawAnimFrame("powerup",this.x,this.y, Math.floor(this.frame/POWER_UP_FRAME_DRAG), POWERUP_W,POWERUP_H, 0, this.kind);
 	}
 	this.animate = function() {
 		if(++this.frame >= POWERUP_FRAMES*POWER_UP_FRAME_DRAG) {

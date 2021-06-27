@@ -23,15 +23,22 @@ var fxCanvas, fxContext;
 var depthSpawnCanvas, depthSpawnContext, depthSpawnData;
 
 
-function drawAnimFrame(picName,atX,atY, whichFrame, frameW,frameH,optionalRow) {
+function drawAnimFrame(picName,atX,atY, whichFrame, frameW,frameH,angle,optionalRow) {
 	var offsetY;
 	if (typeof optionalRow !== 'undefined') {
 		offsetY = frameH * optionalRow;
 	} else {
 		offsetY = 0;
 	}
+	context.save();
+	context.translate(Math.floor(atX),Math.floor(atY));
+	if(angle!=0) {
+		context.rotate(angle);
+	}
+
 	context.drawImage(images[picName],whichFrame * frameW,offsetY,frameW,frameH,
-									  atX-frameW/2,atY-frameH/2,frameW,frameH);
+									  -frameW/2,-frameH/2,frameW,frameH);
+	context.restore();
 }
 
 function drawFilledBar(cornerX,cornerY,width,height,fillPerc,color) {

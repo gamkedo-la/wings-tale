@@ -43,13 +43,36 @@ function surfaceEnemyClass(startX,startY) {
 	this.y = 0;
 	this.frame = Math.random()*SURFACE_ENEMY_FRAMES;
 	this.bombLockedOn = false; // used to keep upgraded split bombs from homing on same ground target
+	this.patrolWaypoints = [];
+	var howManyWP = Math.floor(randRange(0,4));
+	for(var i=0;i<howManyWP;i++) {
+		this.patrolWaypoints.push({x:startX+randRange(-30,30),y:startY+randRange(-30,30)});
+	}
+	this.waypointIndex=0;
+	this.speed = randRange(0.5,0.85);
+	this.drawAngle = 0; // only used if doing waypoints
 
 	this.draw = function() {
 		this.y = this.origY-bgDrawY;
-		drawAnimFrame("turret",this.x,this.y, this.frame, SURFACE_ENEMY_DIM,SURFACE_ENEMY_DIM);
+		drawAnimFrame("turret",this.x,this.y, this.frame, SURFACE_ENEMY_DIM,SURFACE_ENEMY_DIM, this.drawAngle);
 	}
 
 	this.move = function() {
+		if(this.patrolWaypoints.length>0) {
+			var currentWaypoint = this.patrolWaypoints[this.waypointIndex];
+			var angTo = Math.atan2((currentWaypoint.y - this.origY), (currentWaypoint.x - this.x));
+			this.drawAngle = angTo;
+			this.x += Math.cos(angTo)*this.speed;
+			this.origY += Math.sin(angTo)*this.speed;
+
+			if ( approxDist(this.x,this.origY,currentWaypoint.x,currentWaypoint.y) < this.speed*2 ) {
+				this.waypointIndex++;
+				if(this.waypointIndex>=this.patrolWaypoints.length) {
+					this.waypointIndex = 0;
+				} // loop waypoint
+			} // advance waypoint
+		} // has waypoints?
+
 		if(this.y > GAME_H) {
 			this.readyToRemove = true;
 		} else {
