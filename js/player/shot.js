@@ -1,12 +1,13 @@
 var shotList=[];
-const SHOT_DIM=3;
+const SHOT_DIM=4;
 const SHOT_SPEED=6;
 var playerShotCommonFrame = 0;
-const PLAYER_SHOT_FRAMES = 4;
+const PLAYER_SHOT_FRAMES = 2;
 
 function animateShots() {
 	// special case, not using animateList for shots so they all stay in sync
-	if(++playerShotCommonFrame>=PLAYER_SHOT_FRAMES) {
+	playerShotCommonFrame++;
+	if(playerShotCommonFrame>=PLAYER_SHOT_FRAMES) {
 		playerShotCommonFrame = 0;
 	}
 }
@@ -30,6 +31,17 @@ function shotClass(startX,startY, totalSpeed, angle, momentumX,momentumY) {
 	}
 
 	this.draw = function() {
-		drawAnimFrame("player shot",this.x,this.y, playerShotCommonFrame, SHOT_DIM,SHOT_DIM);
+		var length = 4;
+		for(var i=0;i<length;i++) {
+			var piece;
+			if(i==0) {
+				piece = 0;
+			} else if(i==length-1) {
+				piece = 3;
+			} else {
+				piece = (playerShotCommonFrame%2==0 ? 1 : 2);
+			}
+			drawAnimFrame("player shot 2",this.x,this.y+i*SHOT_DIM, piece, SHOT_DIM,SHOT_DIM);
+		}
 	}
 }

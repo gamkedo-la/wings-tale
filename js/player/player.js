@@ -7,6 +7,8 @@ const EDGE_MARGIN = PLAYER_DIM;
 const INVULNERABLE_DURATION = 5;
 const INVULNERABLE_DURATION_DECREMENT = 0.1;
 
+const FRAMES_BETWEEN_PLAYER_SHOTS = 3;
+
 const GROUND_POWERUP_DROP_PERCENT = 0.5;
 const SKY_POWERUP_DROP_PERCENT = 0.02;
 
@@ -33,6 +35,8 @@ function playerClass() {
 	this.invulnerableBlinkToggle = false;
 
 	this.frame=0;
+
+	this.reloadTime = 0;
 
 	this.holdLeft=false;
 	this.holdUp=false;
@@ -174,11 +178,16 @@ function playerClass() {
 			}
 
 			if(this.holdFire) {
-				var newShot, shotAngSpan = -(this.shotsNumber-1)*(shotDegSpread*0.5);
-				playSound(sounds.playerShot);
-				for(var i=0;i<this.shotsNumber;i++) {
-					newShot = new shotClass(fromX,fromY,SHOT_SPEED,shotAngSpan+shotDegSpread*i,pmx,pmy);
-					shotList.push(newShot);
+				if(this.reloadTime<=0) {
+					var newShot, shotAngSpan = -(this.shotsNumber-1)*(shotDegSpread*0.5);
+					playSound(sounds.playerShot);
+					for(var i=0;i<this.shotsNumber;i++) {
+						newShot = new shotClass(fromX,fromY,SHOT_SPEED,shotAngSpan+shotDegSpread*i,pmx,pmy);
+						shotList.push(newShot);
+					}
+					this.reloadTime = FRAMES_BETWEEN_PLAYER_SHOTS;
+				} else {
+					this.reloadTime--;
 				}
 			}
 
