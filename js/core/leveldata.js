@@ -10,7 +10,7 @@ const DEPTH_FOR_GROUND = 60;
 
 function depthAt(atX,atY) {
 	let w = images[curDepthMap].width;
-	let index = atY * w + atX;
+	let index = (atY>>0) * w + (atX>>0);
 	return depthSpawnData?depthSpawnData.data[index*4+1]:NO_DEPTH_LOOKUP_DEFAULT_HEIGHT;
 }
 

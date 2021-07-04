@@ -2,6 +2,7 @@ var gameDevelopmentMode = true;//skip intro stuff
 
 var nDefenseOrbs = 33;
 var debuggingDisplay = true;
+var debugDraw_surfacePaths = true;
 
 let twoPlayerGame = false;
 let p2AI = true;

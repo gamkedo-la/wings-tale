@@ -42,20 +42,35 @@ function surfaceEnemyClass(startX,startY) {
 	this.frame = Math.random()*SURFACE_ENEMY_FRAMES;
 	this.bombLockedOn = false; // used to keep upgraded split bombs from homing on same ground target
 	this.patrolWaypoints = [];
-	var howManyWP = Math.floor(randRange(0,4));
+	var howManyWP = Math.floor(randRange(1,5));
+	if(howManyWP==1) { // single point, so no waypoints
+		howManyWP=0;
+	}
 	for(var i=0;i<howManyWP;i++) {
 		var atX,atY;
+		// used only to keep adjacent points spaced
+		var prevX = -3000; // way out of bounds to pass first adjacency tests
+		var prevY = -3000;
 		var triesBeforeAcceptingUnderwater = 50;
 		for(var ii=0;ii<triesBeforeAcceptingUnderwater;ii++) {
 			atX = startX+randRange(-60,60);
 			atX = Math.max(atX,0);
 			atX = Math.min(atX,GAME_W);
 			atY = startY+randRange(-60,60);
-			if(depthAt(atX,atY) > DEPTH_FOR_GROUND) {
+			if(depthAt(atX,atY) > DEPTH_FOR_GROUND &&
+				approxDist(atX,atY,prevX,prevY)>20) {
 				break;
 			}
 		}
+		// used only to keep adjacent points spaced
+		prevX=atX;
+		prevY=atY;
+
 		this.patrolWaypoints.push({x:atX,y:atY});
+	}
+	if(this.patrolWaypoints.length>0) { // has rails? start on them
+		this.x = this.patrolWaypoints[0].x;
+		this.origY = this.patrolWaypoints[0].y;
 	}
 	this.waypointIndex=0;
 	this.speed = randRange(0.5,0.85);
@@ -63,7 +78,21 @@ function surfaceEnemyClass(startX,startY) {
 
 	this.draw = function() {
 		this.y = this.origY-bgDrawY;
-		drawAnimFrame("turret",this.x,this.y, this.frame, SURFACE_ENEMY_DIM,SURFACE_ENEMY_DIM, this.drawAngle);
+		var heightHere = depthAt(this.x,this.origY);
+		var heightScale = 0.8+0.9*(heightHere/255.0);
+		if(debugDraw_surfacePaths && this.patrolWaypoints.length>0) {
+			context.strokeStyle="gray";
+			context.beginPath();
+			context.moveTo(this.patrolWaypoints[0].x,this.patrolWaypoints[0].y-bgDrawY);
+			for(var i=1;i<this.patrolWaypoints.length;i++) {
+				context.lineTo(this.patrolWaypoints[i].x,this.patrolWaypoints[i].y-bgDrawY);
+			}
+			context.closePath();
+			context.stroke();
+		}
+		drawAnimFrame("turret",this.x,this.y, this.frame, SURFACE_ENEMY_DIM,SURFACE_ENEMY_DIM,
+				this.drawAngle,
+				undefined, heightScale);
 	}
 
 	this.move = function() {
@@ -74,7 +103,7 @@ function surfaceEnemyClass(startX,startY) {
 			this.x += Math.cos(angTo)*this.speed;
 			this.origY += Math.sin(angTo)*this.speed;
 
-			if ( approxDist(this.x,this.origY,currentWaypoint.x,currentWaypoint.y) < this.speed*4 ) {
+			if ( approxDist(this.x,this.origY,currentWaypoint.x,currentWaypoint.y) < 5 ) {
 				this.waypointIndex++;
 				if(this.waypointIndex>=this.patrolWaypoints.length) {
 					this.waypointIndex = 0;

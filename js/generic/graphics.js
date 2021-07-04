@@ -23,7 +23,7 @@ var fxCanvas, fxContext;
 var depthSpawnCanvas, depthSpawnContext, depthSpawnData;
 
 
-function drawAnimFrame(picName,atX,atY, whichFrame, frameW,frameH,angle,optionalRow) {
+function drawAnimFrame(picName,atX,atY, whichFrame, frameW,frameH,angle,optionalRow,scalePerc) {
 	var offsetY;
 	if (typeof optionalRow !== 'undefined') {
 		offsetY = frameH * optionalRow;
@@ -32,6 +32,9 @@ function drawAnimFrame(picName,atX,atY, whichFrame, frameW,frameH,angle,optional
 	}
 	context.save();
 	context.translate(Math.floor(atX),Math.floor(atY));
+	if(typeof scalePerc !== 'undefined') {
+		context.scale(scalePerc,scalePerc);
+	}
 	if(angle!=0) {
 		context.rotate(angle);
 	}
