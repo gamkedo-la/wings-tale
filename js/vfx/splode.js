@@ -15,7 +15,7 @@ function spawnSplode(atX, atY, delay=false) {
 	var newSplode = new splodeClass(atX, atY);
 	// SOUNDS.splode.play();
 	if(delay){
-		setTimeout(function(atX, atY){
+		setTimeout(function(){
 			playSound(sounds.splode);
 			splodeList.push(newSplode);
 			dropRippleAt(atX, atY)
