@@ -10,6 +10,7 @@ const KEY_H = 72;
 const KEY_L = 76;
 const KEY_M = 77;
 const KEY_N = 78;
+const KEY_O = 79;
 const KEY_S = 83;
 const KEY_T = 84;
 const KEY_W = 87;
@@ -138,6 +139,11 @@ function keyHoldUpdate(evt, setTo) {
 						gameState = GAME_STATE_LEVEL_DEBUG;
 					}
 					readyToReset = true;
+				}
+				break;
+			case KEY_O:
+				if(!setTo) {
+					printLevelSeq();
 				}
 				break;
 			case KEY_H:

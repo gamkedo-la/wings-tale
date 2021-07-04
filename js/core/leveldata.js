@@ -14,7 +14,7 @@ function depthAt(atX,atY) {
 	return depthSpawnData?depthSpawnData.data[index*4+1]:NO_DEPTH_LOOKUP_DEFAULT_HEIGHT;
 }
 
-var islandSpawnSeq = [
+var islandSpawnSeq = /*[
 	{percDuration:0.05,kind:ENEMY_STALL_CHASE,driftX:0.3,percXMin:0.3,percXMax:0.4,speed:3.0,wave:10,ticksBetween:20},
 	{percDuration:SPAWN_WITH_NEXT,kind:ENEMY_BUG,driftX:-0.7,percXMin:0.8,percXMax:0.9,speed:1.0,wave:10,ticksBetween:20},
 	{percDuration:SPAWN_WITH_NEXT,kind:ENEMY_SWOOP,driftX:0.0,percXMin:0.5,percXMax:0.5,speed:2.5,wave:0,ticksBetween:1},
@@ -26,7 +26,8 @@ var islandSpawnSeq = [
 	{percDuration:0.1,kind:ENEMY_BUG,driftX:0.4,driftX:0.5,percXMin:0.1,percXMax:0.5,speed:1.5,wave:30,ticksBetween:40},
 	{percDuration:0.1,kind:ENEMY_BUG,driftX:0.0,percXMin:0.5,percXMax:0.5,speed:2,wave:50,ticksBetween:3},
 	{percDuration:0.1,kind:ENEMY_BUG,driftX:0.0,percXMin:0.1,percXMax:0.9,speed:3,wave:2,ticksBetween:0},
-];
+];*/ // above was hand typed, below was exported with O key (working on making editable in-game)
+[{"percDuration":0.05,"kind":2,"driftX":0.3,"percXMin":0.3,"percXMax":0.4,"speed":3,"wave":10,"ticksBetween":20},{"percDuration":0,"kind":0,"driftX":-0.7,"percXMin":0.8,"percXMax":0.9,"speed":1,"wave":10,"ticksBetween":20},{"percDuration":0,"kind":1,"driftX":0,"percXMin":0.5,"percXMax":0.5,"speed":2.5,"wave":0,"ticksBetween":1},{"percDuration":0.02,"kind":0,"driftX":0.7,"percXMin":0.1,"percXMax":0.2,"speed":1,"wave":10,"ticksBetween":20},{"percDuration":0.05,"kind":1,"driftX":-0.76,"percXMin":0.8,"percXMax":0.9,"speed":2.5,"wave":25,"ticksBetween":5},{"percDuration":0.05,"kind":0,"driftX":0,"percXMin":0.2,"percXMax":0.8,"speed":0.5,"wave":100,"ticksBetween":30},{"percDuration":0,"kind":1,"driftX":-0.9,"percXMin":0.95,"percXMax":0.95,"speed":2.5,"wave":0,"ticksBetween":2},{"percDuration":0.07,"kind":0,"driftX":0.8,"percXMin":0.1,"percXMax":0.3,"speed":2.5,"wave":5,"ticksBetween":2},{"percDuration":0.1,"kind":0,"driftX":0.5,"percXMin":0.1,"percXMax":0.5,"speed":1.5,"wave":30,"ticksBetween":40},{"percDuration":0.1,"kind":0,"driftX":0,"percXMin":0.5,"percXMax":0.5,"speed":2,"wave":50,"ticksBetween":3},{"percDuration":0.1,"kind":0,"driftX":0,"percXMin":0.1,"percXMax":0.9,"speed":3,"wave":2,"ticksBetween":0}];
 
 var spaceSpawnSeq = [
 	{percDuration:0.05,kind:ENEMY_SWOOP,driftX:0.8,percXMin:0.1,percXMax:0.15,speed:1.0,wave:5,ticksBetween:10},
@@ -72,6 +73,10 @@ function startLevel(whichLevel) {
 			levData[i].percDuration = accumPerc;
 		}
 	}	
+}
+
+function printLevelSeq() {
+	console.log( JSON.stringify(levSeq[levNow]) );
 }
 
 function drawLevelSpawnData() { // for level debug display (may become editable later)
