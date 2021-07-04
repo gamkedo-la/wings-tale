@@ -4,6 +4,15 @@ const ENEMY_STALL_CHASE = 2;
 var enemySpawnDebugColor = ["lime","yellow","cyan"];
 
 const SPAWN_WITH_NEXT = 0.0;
+const NO_DEPTH_LOOKUP_DEFAULT_HEIGHT = 128;
+const DEPTH_FOR_UNDERWATER = 3;
+const DEPTH_FOR_GROUND = 60;
+
+function depthAt(atX,atY) {
+	let w = images[curDepthMap].width;
+	let index = atY * w + atX;
+	return depthSpawnData?depthSpawnData.data[index*4+1]:NO_DEPTH_LOOKUP_DEFAULT_HEIGHT;
+}
 
 var islandSpawnSeq = [
 	{percDuration:0.05,kind:ENEMY_STALL_CHASE,driftX:0.3,percXMin:0.3,percXMax:0.4,speed:3.0,wave:10,ticksBetween:20},

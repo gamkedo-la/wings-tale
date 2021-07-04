@@ -1,26 +1,24 @@
 var surfaceList=[];
 const SURFACE_ENEMY_DIM = 10;
 const SURFACE_ENEMY_FRAMES = 2;
-const ENEMY_SPAWN_TRY_COUNT = 60;
+const ENEMY_SPAWN_TRY_COUNT = 100;
 
 function spawnSurfaceEnemies() {
-	
+	let w = images[curDepthMap].width;
+	let h = images[curDepthMap].height;
 	for(let i = 0; i < ENEMY_SPAWN_TRY_COUNT; i++){
-		let w = images[curDepthMap].width;
-		let h = images[curDepthMap].height;
 		let atX = Math.random() * w >> 0; //bitshift to get rid of float
 		let atY = Math.random() * h >> 0;
 
-		let index = atY * w + atX;
 		//we could easily use another channel of this image and paint to place more specifically,
 		//right now I just check if the depth map has green value greater than an arbitrary threshold
 		//to make sure they don't spawn over water.  
-		let canSpawnHere = depthSpawnData?depthSpawnData.data[index*4+1]:true;  //the green value at this pixel (if missing, assume yes)
+		let canSpawnHere = depthAt(atX,atY);  //the green value at this pixel (if missing, assume yes)
 
-		if(canSpawnHere > 60){ //definitely land
+		if(canSpawnHere > DEPTH_FOR_GROUND){ //definitely land
 			surfaceList.push(new surfaceEnemyClass(atX,atY));
 				
-		}else if(canSpawnHere < 3) {  //in the water
+		}else if(canSpawnHere < DEPTH_FOR_UNDERWATER) {  //in the water
 			surfaceList.push(new tentacleClass(atX, atY));
 		}
 
@@ -46,7 +44,18 @@ function surfaceEnemyClass(startX,startY) {
 	this.patrolWaypoints = [];
 	var howManyWP = Math.floor(randRange(0,4));
 	for(var i=0;i<howManyWP;i++) {
-		this.patrolWaypoints.push({x:startX+randRange(-30,30),y:startY+randRange(-30,30)});
+		var atX,atY;
+		var triesBeforeAcceptingUnderwater = 50;
+		for(var ii=0;ii<triesBeforeAcceptingUnderwater;ii++) {
+			atX = startX+randRange(-60,60);
+			atX = Math.max(atX,0);
+			atX = Math.min(atX,GAME_W);
+			atY = startY+randRange(-60,60);
+			if(depthAt(atX,atY) > DEPTH_FOR_GROUND) {
+				break;
+			}
+		}
+		this.patrolWaypoints.push({x:atX,y:atY});
 	}
 	this.waypointIndex=0;
 	this.speed = randRange(0.5,0.85);
@@ -65,7 +74,7 @@ function surfaceEnemyClass(startX,startY) {
 			this.x += Math.cos(angTo)*this.speed;
 			this.origY += Math.sin(angTo)*this.speed;
 
-			if ( approxDist(this.x,this.origY,currentWaypoint.x,currentWaypoint.y) < this.speed*2 ) {
+			if ( approxDist(this.x,this.origY,currentWaypoint.x,currentWaypoint.y) < this.speed*4 ) {
 				this.waypointIndex++;
 				if(this.waypointIndex>=this.patrolWaypoints.length) {
 					this.waypointIndex = 0;
