@@ -7,7 +7,6 @@ var debugDraw_surfacePaths = true;
 let twoPlayerGame = false;
 let p2AI = true;
 
-// Test commit: Hi!
 var playerList = [new playerClass(), new playerClass()];
 var readyToReset = false; // to avoid calling reset() mid list iterations
 var octopusBoss = new octopusClass();
