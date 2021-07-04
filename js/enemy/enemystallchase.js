@@ -1,4 +1,4 @@
-const ENEMY_STALLCHASE_DIM = 15;
+const ENEMY_STALLCHASE_DIM = 16;
 const ENEMY_STALLCHASE_FRAMES = 2;
 
 enemyStallChaseClass.prototype = new moveDrawClass();
