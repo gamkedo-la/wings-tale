@@ -1,5 +1,6 @@
 var shotList=[];
 const SHOT_DIM=4;
+const SHOT_COLLISION_DIM = SHOT_DIM*4;
 const SHOT_SPEED=6;
 var playerShotCommonFrame = 0;
 const PLAYER_SHOT_FRAMES = 2;
@@ -21,6 +22,7 @@ function shotClass(startX,startY, totalSpeed, angle, momentumX,momentumY) {
 	this.y = startY;
 	this.xv = momentumX + Math.cos(this.ang)*totalSpeed;
 	this.yv = momentumY + Math.sin(this.ang)*totalSpeed;
+	this.shotLength = 2; // not counting front/back end caps. in case we want it to grow, shrink, etc.
 
 	this.move = function() {
 		this.x += this.xv;
@@ -31,7 +33,8 @@ function shotClass(startX,startY, totalSpeed, angle, momentumX,momentumY) {
 	}
 
 	this.draw = function() {
-		var length = 4;
+		var length = 2+this.shotLength;
+		var shotPixelLength = length * SHOT_DIM/2;
 		for(var i=0;i<length;i++) {
 			var piece;
 			if(i==0) {
@@ -41,7 +44,7 @@ function shotClass(startX,startY, totalSpeed, angle, momentumX,momentumY) {
 			} else {
 				piece = (playerShotCommonFrame%2==0 ? 1 : 2);
 			}
-			drawAnimFrame("player shot 2",this.x,this.y+i*SHOT_DIM, piece, SHOT_DIM,SHOT_DIM);
+			drawAnimFrame("player shot 2",this.x,this.y-shotPixelLength+i*SHOT_DIM, piece, SHOT_DIM,SHOT_DIM);
 		}
 	}
 }

@@ -338,7 +338,7 @@ function update()
 				moveList(drawMoveList[i]);
 			}
 
-			listCollideExplode(shotList, enemyList, (SHOT_DIM+ENEMY_DIM)/2, function (at,to) { 
+			listCollideExplode(shotList, enemyList, (SHOT_COLLISION_DIM+ENEMY_STALLCHASE_DIM)/2, function (at,to) { 
 						if(Math.random() < SKY_POWERUP_DROP_PERCENT) {
 							powerupList.push(new powerupClass(at.x,to.y));
 						}
