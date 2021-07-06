@@ -229,6 +229,7 @@ function playerKeyHold(evt, keyFrom, whichPlayer, setTo) {
       playerList[whichPlayer].shotsNumber = 1;
       playerList[whichPlayer].bombCount = 1;
       playerList[whichPlayer].ghostCount = 0;
+      playerList[whichPlayer].cheatInvulnerable = false;
     }
   } else {
     validGameKey = false;
