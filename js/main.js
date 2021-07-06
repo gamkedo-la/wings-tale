@@ -459,11 +459,22 @@ function update() {
 }
 
 function gameDebugSharpText() {
+  var debugLineY = 20;
+  var debugLineSkip = 10;
+  var padding = 5;
+
+  // Transparent background for debug text
+  scaledCtx.fillStyle = "#00000099";
+  scaledCtx.fillRect(
+    20 - padding, // reposition the box further left to make room for padding
+    debugLineY - padding, // reposition the box further up to make room for padding
+    130 + padding * 2, // roughly the width of the longest string plus padding on both sides
+    debugLineSkip * 8 + padding * 2 // the height of all 8 lines of text plus padding on top and bottom
+  );
+
   scaledCtx.fillStyle = "white";
   scaledCtx.font = "10px Helvetica";
   // debugging list isn't growing, removed when expected etc.
-  var debugLineY = 20;
-  var debugLineSkip = 10;
   scaledCtx.fillText("DEBUG/TEMPORARY TEXT", 20, (debugLineY += debugLineSkip));
   scaledCtx.fillText("check H for help", 20, (debugLineY += debugLineSkip));
   scaledCtx.fillText("1-4,7-0: cheats", 20, (debugLineY += debugLineSkip));
