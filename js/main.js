@@ -143,7 +143,7 @@ function loadedAndClicked(evt) {
 
     gameFirstClickedToStart = true;
 
-    gameMusic = playSound(sounds.secondReality, 1, 0, 0.5, true);
+    gameMusic = playSound(sounds.Island_Song, 1, 0, 0.5, true);
     createDepthSpawnReference();
     startDisplayIntervals();
     inputSetup();
@@ -257,7 +257,7 @@ function reset() {
   animateEachLists = [playerList, enemyList, powerupList, surfaceList];
 
   if (gameMusic && gameMusic.sound) gameMusic.sound.stop();
-  gameMusic = playSound(sounds.secondReality, 1, 0, 0.3, true);
+  gameMusic = playSound(sounds.Island_Song, 1, 0, 0.3, true);
 }
 
 function drawBackground() {
