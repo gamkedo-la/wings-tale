@@ -1,5 +1,4 @@
 var gameDevelopmentMode = true; //skip intro stuff
-//practice commit from GD.  Remove when practice is complete
 
 var nDefenseOrbs = 33;
 var debuggingDisplay = true;
