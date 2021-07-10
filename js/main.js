@@ -136,6 +136,7 @@ function loadedAndClicked(evt) {
       // invalid unless loading finished
       return;
     }
+    
     if (gameFirstClickedToStart) {
       // lock it from happening multiple times
       return;
@@ -143,7 +144,7 @@ function loadedAndClicked(evt) {
 
     gameFirstClickedToStart = true;
 
-    gameMusic = playSound(sounds.Island_Song, 1, 0, 0.5, true);
+    
     createDepthSpawnReference();
     startDisplayIntervals();
     inputSetup();
@@ -151,6 +152,7 @@ function loadedAndClicked(evt) {
     initializeLevelSelectScreen();
     initializeControlsMenu();
     reset();
+    
 
     if (!gameDevelopmentMode) {
       gameState = GAME_STATE_TITLE;
@@ -218,8 +220,19 @@ function animateSprites() {
 }
 
 function reset() {
-  startLevel(levSeq[levNow]);
+  try{
+    gameMusic.sound.stop();
+  } catch(e){
+    console.log(`${e}`)
+  }
+  try{
+    gameMusic = playSound(sounds.Island_Song, 1, 0, 0.5, true);
+  } catch(e){
+    console.log(`${e}`)
+  }
 
+  startLevel(levSeq[levNow]);
+  
   if (twoPlayerGame) {
     playerList = [new playerClass(), new playerClass()];
   } else {
@@ -256,8 +269,6 @@ function reset() {
   // excludes lists which share a common animation frame to be in sync (ex. all shots show same animation frame at same time)
   animateEachLists = [playerList, enemyList, powerupList, surfaceList];
 
-  if (gameMusic && gameMusic.sound) gameMusic.sound.stop();
-  gameMusic = playSound(sounds.Island_Song, 1, 0, 0.3, true);
 }
 
 function drawBackground() {
@@ -369,6 +380,7 @@ function update() {
       break;
 
     case GAME_STATE_PLAY:
+      
       levelProgressInPixels += levelProgressRate;
       levelProgressPerc =
         levelProgressInPixels / images[currentLevelImageName].height;

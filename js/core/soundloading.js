@@ -1,4 +1,5 @@
 var sounds = [];
+var soundsToLoad;
 
 async function loadSounds() {
     
@@ -9,27 +10,31 @@ async function loadSounds() {
     
     startedLoading = true
     const soundList = [
+        {sndName: "Island_Song", theFile: "Island_Song.mp3"},
         {sndName: "playerShot", theFile: "shoot-06.mp3"},
         {sndName: "splode", theFile: "shoot-01.mp3"},
-        {sndName: "Island_Song", theFile: "Island_Song.mp3"},
+        {sndName: "splode1", theFile: "shoot-02.mp3"},
+        {sndName: "splode2", theFile: "shoot-03.mp3"},
+        {sndName: "splode3", theFile: "shoot-04.mp3"},
+       
     ];
 
     soundsToLoad = soundList.length;
 
     for (let i = 0; i < soundList.length; i++) {
         sounds[soundList[i].sndName] = await beginLoadingSound(soundList[i].sndName, soundList[i].theFile);
+        soundsToLoad--;   
     }
 }
 
 async function beginLoadingSound(sndName, fileName) {
     if (!audioCtx) {
-        console.log("ERROR: beginLoadingSound has no auaudioCtx: "+fileName);
+        console.log("ERROR: beginLoadingSound has no audioCtx: "+fileName);
         return;
     }
     src = "sounds/" + fileName;
     const response = await fetch(src);
     const arrayBuffer = await response.arrayBuffer();
     const audioBuffer = await audioCtx.decodeAudioData(arrayBuffer);
-    soundsToLoad--;
     return audioBuffer;
 }

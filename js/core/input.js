@@ -247,18 +247,21 @@ function mousemoved(evt) {
 }
 
 function handleMouseClick(evt) {
-  if (!gameFirstClickedToStart) {
-    initSounds();
-    loadedAndClicked(evt);
-  } else if (gameState == GAME_STATE_TITLE) {
-    gameState = GAME_STATE_LEVEL_SELECT;
-  } else if (gameState == GAME_STATE_LEVEL_SELECT) {
-    gameState = GAME_STATE_PLAY;
-    var levWid = images[levNames[0]].width;
-    levNow = Math.floor(mouseX / levWid);
-    if (levNow >= levNames.length) {
-      return;
+  initSounds();
+  setTimeout(function(){
+    if (!gameFirstClickedToStart) {
+      loadedAndClicked(evt);
+    } else if (gameState == GAME_STATE_TITLE) {
+      gameState = GAME_STATE_LEVEL_SELECT;
+    } else if (gameState == GAME_STATE_LEVEL_SELECT) {
+      gameState = GAME_STATE_PLAY;
+      var levWid = images[levNames[0]].width;
+      levNow = Math.floor(mouseX / levWid);
+      if (levNow >= levNames.length) {
+        return;
+      }
+      currentLevelImageName = levNames[levNow];
     }
-    currentLevelImageName = levNames[levNow];
-  }
+  }, 500 )
+  
 }
