@@ -1,4 +1,5 @@
 var gameDevelopmentMode = true; //skip intro stuff
+//practice commit from GD.  Remove when practice is complete
 
 var nDefenseOrbs = 33;
 var debuggingDisplay = true;
@@ -496,7 +497,7 @@ function gameDebugSharpText() {
 
   var percProgress = Math.floor(
     (100 * levelProgressInPixels) /
-      (images[currentLevelImageName].height - GAME_H)
+    (images[currentLevelImageName].height - GAME_H)
   );
   if (percProgress > 100) {
     percProgress = 100;
