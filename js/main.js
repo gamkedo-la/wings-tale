@@ -385,6 +385,9 @@ function update() {
         levelProgressInPixels / images[currentLevelImageName].height;
       if (levelProgressPerc > 1.0) {
         levelProgressPerc = 1.0;
+        bossFight = true;
+      } else {
+        bossFight = false;
       }
       spawnEnemyUpdate();
 
@@ -467,6 +470,41 @@ function update() {
   if (gameState == GAME_STATE_PLAY && debuggingDisplay) {
     gameDebugSharpText();
   }
+  if (gameState == GAME_STATE_LEVEL_DEBUG) {
+    editorText();
+  }
+}
+
+function editorText() {
+  var debugLineY = 20;
+  var debugLineSkip = 10;
+  var padding = 5;
+
+  var editorLines = [
+"Editor keys:",
+"L: exit editor to play mode",
+"O: output level to console",
+"mouse: highlight segment",
+"up/down: scroll level view",
+"left/right: move highlighted segment",
+"WASD: adjust drift or (not yet supported) time",
+"Q/E: frequency up/down",
+"1-3: enemy type for segment",
+  ];
+
+  scaledCtx.fillStyle = "#00000099";
+  scaledCtx.fillRect(
+    20 - padding,
+    debugLineY - padding,
+    250 + padding * 2,
+    debugLineSkip * editorLines.length + padding * 2
+  );
+
+  scaledCtx.fillStyle = "white";
+  scaledCtx.font = "10px Helvetica";
+  for(var i=0;i<editorLines.length;i++) {
+    scaledCtx.fillText(editorLines[i], 20, (debugLineY += debugLineSkip));
+  }
 }
 
 function gameDebugSharpText() {
@@ -511,9 +549,6 @@ function gameDebugSharpText() {
   );
   if (percProgress > 100) {
     percProgress = 100;
-    bossFight = true;
-  } else {
-    bossFight = false;
   }
   scaledCtx.fillText(
     "Level progress: " + percProgress + "%",

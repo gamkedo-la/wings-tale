@@ -9,11 +9,13 @@ const KEY_SPACE = 32;
 const KEY_A = 65;
 const KEY_C = 67;
 const KEY_D = 68;
+const KEY_E = 69;
 const KEY_H = 72;
 const KEY_L = 76;
 const KEY_M = 77;
 const KEY_N = 78;
 const KEY_O = 79;
+const KEY_Q = 81;
 const KEY_S = 83;
 const KEY_T = 84;
 const KEY_W = 87;
@@ -96,18 +98,10 @@ function inputSetup() {
 function keyHoldUpdate(evt, setTo) {
   var validGameKey = false;
 
-  validGameKey = playerKeyHold(evt, 0, 0, setTo);
-
-  if (validGameKey == false) {
-    if (twoPlayerGame && p2AI == false) {
-      validGameKey = playerKeyHold(evt, 1, 1, setTo);
-    } else {
-      // let player 2 keys work for p1
-      validGameKey = playerKeyHold(evt, 1, 0, setTo);
-    }
-  }
-
   if (gameState == GAME_STATE_LEVEL_DEBUG) {
+    if(setTo) { // no key holding on editor mode, just for simpler code & discrete input
+      return false;
+    }
     if (evt.keyCode == KEY_DOWN) {
       levelProgressInPixels -= GAME_H * 0.3;
       if (levelProgressInPixels < 0) {
@@ -120,6 +114,70 @@ function keyHoldUpdate(evt, setTo) {
         levelProgressInPixels = images[currentLevelImageName].height - 1;
       }
       validGameKey = true;
+    }
+
+    if(mouseOverLevData!=-1) {
+      var scootXBy = 0.05;
+      var durationChange = 0.03;
+      validGameKey = true;
+      switch (evt.keyCode) {
+        case KEY_1:
+          levData[mouseOverLevData].kind = ENEMY_BUG;
+          break;
+        case KEY_2:
+          levData[mouseOverLevData].kind = ENEMY_SWOOP;
+          break;
+        case KEY_3:
+          levData[mouseOverLevData].kind = ENEMY_STALL_CHASE;
+          break;
+        case KEY_LEFT:
+          levData[mouseOverLevData].percXMin -= scootXBy;
+          levData[mouseOverLevData].percXMax -= scootXBy;
+          break;
+        case KEY_RIGHT:
+          levData[mouseOverLevData].percXMin += scootXBy;
+          levData[mouseOverLevData].percXMax += scootXBy;
+          break;
+        case KEY_W:
+          levData[mouseOverLevData].percDuration += durationChange;
+          console.log("may need to recalculate changes in editor!");
+          break;
+        case KEY_S:
+          levData[mouseOverLevData].percDuration -= durationChange;
+          console.log("may need to recalculate changes in editor!");
+          break;
+        case KEY_A:
+          levData[mouseOverLevData].driftX -= scootXBy;
+          break;
+        case KEY_D:
+          levData[mouseOverLevData].driftX += scootXBy;
+          break;
+        case KEY_Q:
+          levData[mouseOverLevData].ticksBetween -= 1;
+          if(levData[mouseOverLevData].ticksBetween<0) {
+            levData[mouseOverLevData].ticksBetween=0;
+          }
+          break;
+        case KEY_E:
+          levData[mouseOverLevData].ticksBetween += 1;
+          break;
+        default:
+          validGameKey = false;
+          break;
+      }
+    }
+
+    return validGameKey; // skip the game keys below
+  }
+
+  validGameKey = playerKeyHold(evt, 0, 0, setTo);
+
+  if (validGameKey == false) {
+    if (twoPlayerGame && p2AI == false) {
+      validGameKey = playerKeyHold(evt, 1, 1, setTo);
+    } else {
+      // let player 2 keys work for p1
+      validGameKey = playerKeyHold(evt, 1, 0, setTo);
     }
   }
 

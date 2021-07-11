@@ -88,6 +88,7 @@ function drawLevelSpawnData() { // for level debug display (may become editable 
 	var prevNonSkipI = levData.length-1;
 	frontEdge=backEdge=-bgDrawY;
 	context.fillStyle = "white";
+	var newMousedOver=-1;
 	for(var i=levData.length-1; i>=0;i--) { // not bothering to cull yet, debug draw only
 		if(levData[i].percDuration != SPAWN_WITH_NEXT) {
 			frontEdge = backEdge;
@@ -97,19 +98,12 @@ function drawLevelSpawnData() { // for level debug display (may become editable 
 
 		context.strokeStyle = enemySpawnDebugColor[levData[i].kind];
 
-		context.lineWidth = "4"; // thick for spaced markers showing spawn density
-		if(levData[i].ticksBetween > 1) {
-			context.setLineDash([1, levData[i].ticksBetween]);
-		} else {
-			context.setLineDash([]);
-		}
-
 		var startXPercMin = levData[i].percXMin;
 		var endXPercMin = startXPercMin+levData[i].driftX;
 		var startXPercMax = levData[i].percXMax;
 		var endXPercMax = startXPercMax+levData[i].driftX;
 
-		if(mouseY>frontEdge && mouseY<backEdge) {
+		if(mouseY>frontEdge && mouseY<backEdge && newMousedOver==-1) {
 			var vertRange = backEdge-frontEdge;
 			var percOverRange = (mouseY-frontEdge)/vertRange;
 			var percOverRangeInv = 1.0-percOverRange;
@@ -117,8 +111,20 @@ function drawLevelSpawnData() { // for level debug display (may become editable 
 			var rightX = Math.floor(GAME_W*(startXPercMax*percOverRange+endXPercMax*percOverRangeInv));
 			var extraMargin = 5; // otherwise super thin aren't selectable
 			if(leftX - extraMargin < mouseX && mouseX < rightX + extraMargin) {
-				mouseOverLevData = i;
+				newMousedOver = i;
 			}
+		}
+
+		if(mouseOverLevData == i) { // exaggerate frequency dashes if selected
+			context.lineWidth = "7";
+		} else {
+			context.lineWidth = "4"; // thick for spaced markers showing spawn density
+		}
+
+		if(levData[i].ticksBetween > 1) {
+			context.setLineDash([1, levData[i].ticksBetween]);
+		} else {
+			context.setLineDash([]);
 		}
 
 		context.beginPath();
@@ -128,12 +134,12 @@ function drawLevelSpawnData() { // for level debug display (may become editable 
 		context.lineTo(startXPercMax*GAME_W,backEdge);
 		context.closePath();
 		context.stroke();
-		if(mouseOverLevData == i) {
+		if(mouseOverLevData == i) {  // exaggerate range box if selected
 			context.globalAlpha = 0.2;
 			context.fillStyle = "white";
 			context.fill();
 			context.globalAlpha = 1.0;
-			context.lineWidth = "7"; // thicker to show selected
+			context.lineWidth = "3"; // thicker to show selected
 		} else {
 			context.lineWidth = "1"; // thin for line drawing the min/max/drift edges
 		}
@@ -148,6 +154,9 @@ function drawLevelSpawnData() { // for level debug display (may become editable 
 		context.stroke();
 
 		context.fillText(i,levData[i].percXMin*GAME_W,backEdge);
+	}
+	if(newMousedOver != -1 && mouseOverLevData != newMousedOver) {
+		mouseOverLevData = newMousedOver;
 	}
 }
 
