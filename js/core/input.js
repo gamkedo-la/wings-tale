@@ -118,7 +118,8 @@ function keyHoldUpdate(evt, setTo) {
 
     if(mouseOverLevData!=-1) {
       var scootXBy = 0.05;
-      var durationChange = 0.03;
+      var durationChange = 0.01;
+      var findValidNearestI = 0;
       validGameKey = true;
       switch (evt.keyCode) {
         case KEY_1:
@@ -139,12 +140,27 @@ function keyHoldUpdate(evt, setTo) {
           levData[mouseOverLevData].percXMax += scootXBy;
           break;
         case KEY_W:
-          levData[mouseOverLevData].percDuration += durationChange;
-          console.log("may need to recalculate changes in editor!");
+          findValidNearestI = mouseOverLevData;
+          while(findValidNearestI < levData.length && levData[findValidNearestI].percDuration == SPAWN_WITH_NEXT) {
+            findValidNearestI++;
+          }
+          if(findValidNearestI < levData.length) {
+            levData[findValidNearestI].percDuration += durationChange;
+            updateSpawnPercRanges();
+          }
           break;
         case KEY_S:
-          levData[mouseOverLevData].percDuration -= durationChange;
-          console.log("may need to recalculate changes in editor!");
+          findValidNearestI = mouseOverLevData;
+          while(findValidNearestI < levData.length && levData[findValidNearestI].percDuration == SPAWN_WITH_NEXT) {
+            findValidNearestI++;
+          }
+          if(findValidNearestI < levData.length) {
+            levData[findValidNearestI].percDuration -= durationChange;
+            if(levData[findValidNearestI].percDuration<0.01) {
+              levData[findValidNearestI].percDuration = 0.01;
+            }
+            updateSpawnPercRanges();
+          }
           break;
         case KEY_A:
           levData[mouseOverLevData].driftX -= scootXBy;
@@ -160,6 +176,10 @@ function keyHoldUpdate(evt, setTo) {
           break;
         case KEY_E:
           levData[mouseOverLevData].ticksBetween += 1;
+          break;
+        case KEY_L:
+          gameState = GAME_STATE_PLAY;
+          readyToReset = true;
           break;
         default:
           validGameKey = false;
@@ -199,11 +219,7 @@ function keyHoldUpdate(evt, setTo) {
         break;
       case KEY_L:
         if (!setTo) {
-          if (gameState == GAME_STATE_LEVEL_DEBUG) {
-            gameState = GAME_STATE_PLAY;
-          } else {
-            gameState = GAME_STATE_LEVEL_DEBUG;
-          }
+          gameState = GAME_STATE_LEVEL_DEBUG;
           readyToReset = true;
         }
         break;

@@ -59,20 +59,27 @@ var levData = [];
 var spawnSeqStep = 0; // which step of the spawner have we progressed to
 var sameTimeSpawnSteps = [];
 var sameTimeSpawnTicks = [];
-
+var spawnRanges = [];
 var enemyList=[];
 
 function startLevel(whichLevel) {
     spawnSeqStep = 0;
 	levData = JSON.parse(JSON.stringify(whichLevel)); // deep/clean copy since we'll modify it during loading
+	
+	updateSpawnPercRanges();	
+}
+
+function updateSpawnPercRanges() {
 	var accumPerc = 0; // for recalculating percDuration per section into total up to that point
+	spawnRanges = [];
 	for(var i=0; i<levData.length;i++) {
-		// special case value used to stack at same time, don't increment those to a cumulative total
 		if(levData[i].percDuration != SPAWN_WITH_NEXT) {
 			accumPerc+=levData[i].percDuration;
-			levData[i].percDuration = accumPerc;
+			spawnRanges[i] = accumPerc;
+		} else {
+			spawnRanges[i] = SPAWN_WITH_NEXT;
 		}
-	}	
+	}
 }
 
 function printLevelSeq() {
@@ -89,10 +96,23 @@ function drawLevelSpawnData() { // for level debug display (may become editable 
 	frontEdge=backEdge=-bgDrawY;
 	context.fillStyle = "white";
 	var newMousedOver=-1;
-	for(var i=levData.length-1; i>=0;i--) { // not bothering to cull yet, debug draw only
-		if(levData[i].percDuration != SPAWN_WITH_NEXT) {
+
+	for(var i=levData.length-1; i>=0;i--) { // not bothering to cull, debug draw only
+		if(spawnRanges[i] != SPAWN_WITH_NEXT) {
+			// step back to find start of this block as previous block's percentage
+			var nextLowerPercI = i-1;
+			var nextPerc = 0;
+			while(spawnRanges[nextLowerPercI] == SPAWN_WITH_NEXT) {
+				nextLowerPercI--;
+			}
+			if(nextLowerPercI<0) {
+				nextPerc=0;
+			} else {
+				nextPerc=spawnRanges[nextLowerPercI];
+			}
+
 			frontEdge = backEdge;
-			backEdge = (1.0-levData[i].percDuration)*mapLength-bgDrawY;
+			backEdge = (1.0-nextPerc)*mapLength-bgDrawY;
 			prevNonSkipI = i;
 		}
 
@@ -167,7 +187,8 @@ function spawnEnemyUpdate() {
 	{
 		return;
 	}
-	if(levelProgressPerc>levData[spawnSeqStep].percDuration && 
+	
+	if(levelProgressPerc>spawnRanges[spawnSeqStep] && 
 		spawnSeqStep<levData.length-1 ) { // so last one will go until end of stage
 
 		sameTimeSpawnSteps.length = 0;
