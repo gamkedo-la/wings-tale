@@ -487,9 +487,12 @@ function editorText() {
 "mouse: highlight segment",
 "up/down: scroll level view",
 "left/right: move highlighted segment",
-"WASD: adjust drift or (not yet supported) time",
+"WASD: adjust drift or time",
 "Q/E: frequency up/down",
 "1-3: enemy type for segment",
+"0: insert new segment before selected",
+"-: remove selected segment (not yet nice with groups!)",
+"=: add overlapping segment",
   ];
 
   scaledCtx.fillStyle = "#00000099";

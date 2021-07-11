@@ -5,6 +5,8 @@ var unscaledMouseX = -1,
 
 const KEY_ENTER = 13;
 const KEY_SPACE = 32;
+const KEY_MINUS = 189;
+const KEY_EQUALS = 187;
 
 const KEY_A = 65;
 const KEY_C = 67;
@@ -138,6 +140,18 @@ function keyHoldUpdate(evt, setTo) {
         case KEY_RIGHT:
           levData[mouseOverLevData].percXMin += scootXBy;
           levData[mouseOverLevData].percXMax += scootXBy;
+          break;
+        case KEY_MINUS:
+          levData.splice(mouseOverLevData,1);
+          updateSpawnPercRanges();
+          break;
+        case KEY_EQUALS:
+          levData.splice(mouseOverLevData,0, JSON.parse(JSON.stringify(editorAddLevelRowWithNext)));
+          updateSpawnPercRanges();
+          break;
+        case KEY_0:
+          levData.splice(mouseOverLevData,0, JSON.parse(JSON.stringify(editorAddLevelRowNew)));
+          updateSpawnPercRanges();
           break;
         case KEY_W:
           findValidNearestI = mouseOverLevData;
