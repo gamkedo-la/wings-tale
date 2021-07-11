@@ -79,6 +79,8 @@ function printLevelSeq() {
 	console.log( JSON.stringify(levSeq[levNow]) );
 }
 
+var mouseOverLevData=-1;
+
 function drawLevelSpawnData() { // for level debug display (may become editable later)
 	// stopping 1 from end to draw line forward to next data point
 	var mapLength = images[currentLevelImageName].height;
@@ -101,6 +103,12 @@ function drawLevelSpawnData() { // for level debug display (may become editable 
 		} else {
 			context.setLineDash([]);
 		}
+
+		if(mouseY>frontEdge && mouseY<backEdge) {
+			console.log(i,mouseY,backEdge,frontEdge);
+			mouseOverLevData = i;
+		}
+
 		context.beginPath();
 		context.moveTo(levData[i].percXMin*GAME_W,backEdge);
 		context.lineTo((levData[i].percXMin+levData[i].driftX)*GAME_W,frontEdge);

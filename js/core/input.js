@@ -1,5 +1,7 @@
 var mouseX = -1,
   mouseY = -1;
+var unscaledMouseX = -1,
+  unscaledMouseY = -1;
 
 const KEY_ENTER = 13;
 const KEY_SPACE = 32;
@@ -242,12 +244,17 @@ function mousemoved(evt) {
   var root = document.documentElement;
 
   // account for the margins, canvas position on page, scroll amount, etc.
-  mouseX = evt.clientX - rect.left - root.scrollLeft;
-  mouseY = evt.clientY - rect.top - root.scrollTop;
+  unscaledMouseX = evt.clientX - rect.left - root.scrollLeft;
+  unscaledMouseY = evt.clientY - rect.top - root.scrollTop;
+
+  mouseX = Math.floor(unscaledMouseX * GAME_W / SCALED_W);
+  mouseY = Math.floor(unscaledMouseY * GAME_H / SCALED_H);
 }
 
 function handleMouseClick(evt) {
-  initSounds();
+  if(!gameFirstClickedToStart) {
+    initSounds();
+  }
   setTimeout(function(){
     if (!gameFirstClickedToStart) {
       loadedAndClicked(evt);
@@ -256,7 +263,7 @@ function handleMouseClick(evt) {
     } else if (gameState == GAME_STATE_LEVEL_SELECT) {
       gameState = GAME_STATE_PLAY;
       var levWid = images[levNames[0]].width;
-      levNow = Math.floor(mouseX / levWid);
+      levNow = Math.floor(unscaledMouseX / levWid);
       if (levNow >= levNames.length) {
         return;
       }

@@ -41,7 +41,6 @@ var imagesLoaded = false;
 var curDepthMap = "depth map";
 
 window.onload = function () {
-  // discord repo check
   setupCanvas();
 
   if (cheatKeepPowerupsOnDeath) {
