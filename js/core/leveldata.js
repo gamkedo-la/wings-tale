@@ -104,26 +104,46 @@ function drawLevelSpawnData() { // for level debug display (may become editable 
 			context.setLineDash([]);
 		}
 
+		var startXPercMin = levData[i].percXMin;
+		var endXPercMin = startXPercMin+levData[i].driftX;
+		var startXPercMax = levData[i].percXMax;
+		var endXPercMax = startXPercMax+levData[i].driftX;
+
 		if(mouseY>frontEdge && mouseY<backEdge) {
-			console.log(i,mouseY,backEdge,frontEdge);
-			mouseOverLevData = i;
+			var vertRange = backEdge-frontEdge;
+			var percOverRange = (mouseY-frontEdge)/vertRange;
+			var percOverRangeInv = 1.0-percOverRange;
+			var leftX = Math.floor(GAME_W*(startXPercMin*percOverRange+endXPercMin*percOverRangeInv));
+			var rightX = Math.floor(GAME_W*(startXPercMax*percOverRange+endXPercMax*percOverRangeInv));
+			var extraMargin = 5; // otherwise super thin aren't selectable
+			if(leftX - extraMargin < mouseX && mouseX < rightX + extraMargin) {
+				mouseOverLevData = i;
+			}
 		}
 
 		context.beginPath();
-		context.moveTo(levData[i].percXMin*GAME_W,backEdge);
-		context.lineTo((levData[i].percXMin+levData[i].driftX)*GAME_W,frontEdge);
-		context.lineTo((levData[i].percXMax+levData[i].driftX)*GAME_W,frontEdge);
-		context.lineTo(levData[i].percXMax*GAME_W,backEdge);
+		context.moveTo(startXPercMin*GAME_W,backEdge);
+		context.lineTo(endXPercMin*GAME_W,frontEdge);
+		context.lineTo(endXPercMax*GAME_W,frontEdge);
+		context.lineTo(startXPercMax*GAME_W,backEdge);
 		context.closePath();
 		context.stroke();
+		if(mouseOverLevData == i) {
+			context.globalAlpha = 0.2;
+			context.fillStyle = "white";
+			context.fill();
+			context.globalAlpha = 1.0;
+			context.lineWidth = "7"; // thicker to show selected
+		} else {
+			context.lineWidth = "1"; // thin for line drawing the min/max/drift edges
+		}
 
-		context.lineWidth = "1"; // thin for line drawing the min/max/drift edges
 		context.setLineDash([]);
 		context.beginPath();
-		context.moveTo(levData[i].percXMin*GAME_W,backEdge);
-		context.lineTo((levData[i].percXMin+levData[i].driftX)*GAME_W,frontEdge);
-		context.lineTo((levData[i].percXMax+levData[i].driftX)*GAME_W,frontEdge);
-		context.lineTo(levData[i].percXMax*GAME_W,backEdge);
+		context.moveTo(startXPercMin*GAME_W,backEdge);
+		context.lineTo(endXPercMin*GAME_W,frontEdge);
+		context.lineTo(endXPercMax*GAME_W,frontEdge);
+		context.lineTo(startXPercMax*GAME_W,backEdge);
 		context.closePath();
 		context.stroke();
 
