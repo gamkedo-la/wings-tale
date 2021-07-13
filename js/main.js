@@ -489,6 +489,7 @@ function editorText() {
 "left/right: move highlighted segment",
 "WASD: adjust drift or time",
 "Q/E: frequency up/down",
+"F/G: segment width up/down",
 "1-3: enemy type for segment",
 "0: insert new segment before selected",
 "-: remove selected segment (not yet nice with groups!)",
