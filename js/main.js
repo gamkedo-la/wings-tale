@@ -40,8 +40,6 @@ var imagesLoaded = false;
 
 var curDepthMap = "depth map";
 
-// Practice Commit - will remove
-
 window.onload = function () {
   setupCanvas();
 
