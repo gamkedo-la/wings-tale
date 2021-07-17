@@ -9,6 +9,7 @@ const POWER_UP_KIND_SHOTS = 0;
 const POWER_UP_KIND_BOMB = 1;
 const POWER_UP_KIND_GHOST = 2;
 const POWERUP_KINDS = 3;
+const POWERUP_MOVEMENT = 4;
 
 powerupClass.prototype = new moveDrawClass();
 
@@ -48,6 +49,10 @@ function powerupClass(atX,atY) {
 				break;
 			default:
 				console.log("missing powerup definition in doEffect for kind: " + this.kind);
+				break;
+			case POWERUP_MOVEMENT:
+				onPlayer.this.speed = 6;
+				playerScore+=5;
 				break;
 		}		
 	}

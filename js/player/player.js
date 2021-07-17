@@ -2,7 +2,6 @@ const PLAYER_DIM = 20;
 const PLAYER_FRAME_W = 21;
 const PLAYER_FRAME_H = 20;
 const PLAYER_FRAMES = 3;
-const PLAYER_SPEED = 3;
 const EDGE_MARGIN = PLAYER_DIM;
 const INVULNERABLE_DURATION = 5;
 const INVULNERABLE_DURATION_DECREMENT = 0.1;
@@ -30,6 +29,8 @@ function playerClass() {
   this.bombCount = 1;
   this.ghostCount = 0;
   this.homingBombFramesLeft = HOMING_POWERUP_FRAMES;
+
+  this.speed = 3;
 
   this.invulnerableTimeLeft = 0;
   this.invulnerableBlinkToggle = false;
@@ -148,16 +149,16 @@ function playerClass() {
 
     // input handling
     if (this.holdUp) {
-      this.yv = -PLAYER_SPEED;
+      this.yv = -this.speed;
     }
     if (this.holdRight) {
-      this.xv = PLAYER_SPEED;
+      this.xv = this.speed;
     }
     if (this.holdDown) {
-      this.yv = PLAYER_SPEED;
+      this.yv = this.speed;
     }
     if (this.holdLeft) {
-      this.xv = -PLAYER_SPEED;
+      this.xv = -this.speed;
     }
 
     if (Math.abs(this.xv) + Math.abs(this.yv) > GHOST_MIN_MOVE_SPEED) {
@@ -279,11 +280,11 @@ function playerClass() {
       this.holdBomb = !this.holdBomb;
     }
     if (this.AI_powerup_chasing != null) {
-      this.holdDown = this.y < this.AI_powerup_chasing.y - PLAYER_SPEED;
-      this.holdUp = this.y > this.AI_powerup_chasing.y + PLAYER_SPEED;
+      this.holdDown = this.y < this.AI_powerup_chasing.y - this.speed;
+      this.holdUp = this.y > this.AI_powerup_chasing.y + this.speed;
 
-      this.holdLeft = this.x > this.AI_powerup_chasing.x + PLAYER_SPEED;
-      this.holdRight = this.x < this.AI_powerup_chasing.x - PLAYER_SPEED;
+      this.holdLeft = this.x > this.AI_powerup_chasing.x + this.speed;
+      this.holdRight = this.x < this.AI_powerup_chasing.x - this.speed;
 
       var dist = approxDist(
         this.x,
@@ -302,8 +303,8 @@ function playerClass() {
       this.holdDown = this.y < GAME_H * 0.7;
       this.holdUp = this.y > GAME_H * 0.95;
 
-      this.holdLeft = this.x > this.AI_target.x + PLAYER_SPEED * 3;
-      this.holdRight = this.x < this.AI_target.x - PLAYER_SPEED * 3;
+      this.holdLeft = this.x > this.AI_target.x + this.speed * 3;
+      this.holdRight = this.x < this.AI_target.x - this.speed * 3;
       if (
         this.AI_target.y > this.y ||
         this.AI_target.readyToRemove ||

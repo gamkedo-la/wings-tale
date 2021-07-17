@@ -19,6 +19,7 @@ const KEY_L = 76;
 const KEY_M = 77;
 const KEY_N = 78;
 const KEY_O = 79;
+const KEY_P = 80;
 const KEY_Q = 81;
 const KEY_S = 83;
 const KEY_T = 84;
@@ -57,6 +58,7 @@ function inputPlayerClass() {
     this.cheatKeyGhost;
     this.cheatKeyReset;
     this.cheatKeyNoDamage;
+    this.cheatKeyMovement;
 }
 
 var inputList = [new inputPlayerClass(), new inputPlayerClass()];
@@ -72,6 +74,7 @@ function assignKeyMapping() {
     inputList[0].cheatKeyBomb = KEY_2;
     inputList[0].cheatKeyGhost = KEY_3;
     inputList[0].cheatKeyReset = KEY_4;
+    inputList[0].cheatKeyMovement = KEY_P;
     inputList[0].cheatKeyNoDamage = KEY_6;
 
     inputList[1].bombKey = KEY_X;
@@ -80,6 +83,7 @@ function assignKeyMapping() {
     inputList[1].upKey = KEY_W;
     inputList[1].downKey = KEY_S;
     inputList[1].rightKey = KEY_D;
+    inputList[1].cheatKeyMovement = KEY_P;
     inputList[1].cheatKeyNoDamage = KEY_6;
     inputList[1].cheatKeyShots = KEY_7;
     inputList[1].cheatKeyBomb = KEY_8;
@@ -325,6 +329,11 @@ function playerKeyHold(evt, keyFrom, whichPlayer, setTo) {
             playerList[whichPlayer].invulnerableBlinkToggle = true;
             playerList[whichPlayer].cheatInvulnerable = true;
         }
+    } else if (evt.keyCode == inputList[keyFrom].cheatKeyMovement) {
+        if (setTo == false) {
+            // key relase only
+            playerList[whichPlayer].speed = 6;
+        }
     } else if (evt.keyCode == inputList[keyFrom].cheatKeyReset) {
         if (setTo == false) {
             // key relase only
@@ -332,6 +341,7 @@ function playerKeyHold(evt, keyFrom, whichPlayer, setTo) {
             playerList[whichPlayer].bombCount = 1;
             playerList[whichPlayer].ghostCount = 0;
             playerList[whichPlayer].cheatInvulnerable = false;
+            playerList[whichPlayer].speed = 3;
         }
     } else {
         validGameKey = false;
