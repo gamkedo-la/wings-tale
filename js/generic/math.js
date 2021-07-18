@@ -18,3 +18,7 @@ function lerp(a, b, t){
 	return a*(1-t)+b*t;
 }
 
+function pointInBox(x,y, // coordinate
+				l,t,w,h){ // left, top, width, height
+	return (x>l && y>t && x<l+w && y<t+h);
+}

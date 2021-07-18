@@ -540,6 +540,8 @@ function editorText() {
   for (var i = 0; i < editorLines.length; i++) {
     scaledCtx.fillText(editorLines[i], 20, (debugLineY += debugLineSkip));
   }
+
+  editorButtons(); // defined in leveldata file
 }
 
 function gameDebugSharpText() {

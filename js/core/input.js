@@ -152,6 +152,7 @@ function keyHoldUpdate(evt, setTo) {
                 break;
             case KEY_L:
                 gameState = GAME_STATE_PLAY;
+                reset();
                 readyToReset = true;
                 break;
             case KEY_O:
@@ -390,6 +391,12 @@ function mousemoved(evt) {
 function handleMouseClick(evt) {
     if (!gameFirstClickedToStart) {
         initSounds();
+    }
+    if(gameState == GAME_STATE_LEVEL_DEBUG) {
+        if(mouseOverEditorButtonIdx != -1) {
+            editButtons[mouseOverEditorButtonIdx].func();
+        }
+        return;
     }
     setTimeout(function () {
         if (!gameFirstClickedToStart) {

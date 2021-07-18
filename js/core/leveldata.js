@@ -8,6 +8,55 @@ const NO_DEPTH_LOOKUP_DEFAULT_HEIGHT = 128;
 const DEPTH_FOR_UNDERWATER = 3;
 const DEPTH_FOR_GROUND = 60;
 
+function editExtra() {
+  console.log("undefined button");
+}
+
+// used for both draw and mouse overlap detection
+var editButtonDim = 40;
+var editButtonX = 50;
+var editButtonY = SCALED_H-editButtonDim-20;
+var mouseOverEditorButtonIdx = -1;
+var editButtons = [
+{name:"PLAY",func:function() {
+				gameState = GAME_STATE_PLAY;
+                reset();
+                readyToReset = true;}},
+{name:"OUT",func:editExtra},
+{name:"MOVE",func:editExtra},
+{name:"DRIFT",func:editExtra},
+{name:"TIME",func:editExtra},
+{name:"FREQ",func:editExtra},
+{name:"WIDTH",func:editExtra},
+{name:"KIND",func:editExtra},
+{name:"NEW",func:editExtra},
+{name:"DEL",func:editExtra},
+{name:"EXTRA",func:editExtra}
+];
+
+function editorButtons() {
+  scaledCtx.font = "10px Helvetica";
+  scaledCtx.beginPath();
+  scaledCtx.strokeStyle = "gray";
+
+  mouseOverEditorButtonIdx = -1; // forget moused over editor option
+  for (var i = 0; i < editButtons.length; i++) {
+  	var buttonX = editButtonX+i*editButtonDim;
+    if(pointInBox(unscaledMouseX, unscaledMouseY, buttonX,editButtonY,editButtonDim,editButtonDim)) {
+    	mouseOverEditorButtonIdx = i;
+    	scaledCtx.fillStyle = "gray";
+    } else {
+    	scaledCtx.fillStyle = "black";
+	}
+    scaledCtx.fillRect(buttonX, editButtonY,editButtonDim,editButtonDim);
+    scaledCtx.rect(buttonX, editButtonY,editButtonDim,editButtonDim);
+    scaledCtx.fillStyle = "white";
+    scaledCtx.fillText(editButtons[i].name, buttonX+4, editButtonY+20);
+  }
+
+  scaledCtx.stroke();
+}
+
 function depthAt(atX,atY) {
 	let w = images[curDepthMap].width;
 	let index = (atY>>0) * w + (atX>>0);
