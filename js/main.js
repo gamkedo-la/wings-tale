@@ -84,40 +84,59 @@ function loadingDoneSoStartGame() {
     //draw level select screen when in game dev mode
     var levX = 0;
     var levWid = images[levNames[0]].width;
-    for (var i = 0; i < levNames.length; i++) {
-      scaledCtx.drawImage(images[levNames[i]], levX, 0);
 
-      scaledCtx.lineWidth = "6";
-      scaledCtx.strokeStyle = "lime";
-      scaledCtx.beginPath();
-      scaledCtx.rect(levX, 0, levWid, scaledCanvas.height);
-      scaledCtx.stroke();
-      levX += levWid;
+    // LEVEL MENU BACKGROUND
+    scaledCtx.drawImage(
+      images["level menu"],
+      0,
+      0,
+      scaledCanvas.width,
+      scaledCanvas.height
+    );
+
+    const MARGIN = 25; // spacing between UI elements
+
+    //  ----- LEVEL SELECTIONS-----
+    const LEVEL_SELECT_HEIGHT = scaledCanvas.height / 3;
+    const LEVEL_SELECT_WIDTH = scaledCanvas.width / 4;
+    const LEVEL_SELECT_Y = scaledCanvas.height / 3;
+    const LEVEL_SELECT_X = scaledCanvas.width / 10;
+
+    const level_selections = [
+      "level menu island",
+      "level menu space",
+      "level menu moon",
+    ];
+
+    // Render level selections
+    for (var i = 0; i < level_selections.length; i++) {
+      scaledCtx.drawImage(
+        images[level_selections[i]],
+        LEVEL_SELECT_X + (LEVEL_SELECT_WIDTH + MARGIN) * i,
+        LEVEL_SELECT_Y,
+        LEVEL_SELECT_WIDTH,
+        LEVEL_SELECT_HEIGHT
+      );
     }
-    //level select screen header text
-    scaledCtx.fillStyle = "black";
-    scaledCtx.font = "10px Helvetica";
-    var lineX = levX + 6;
-    var lineY = 50;
-    var lineSkip = 10;
-    scaledCtx.fillText("click", lineX, (lineY += lineSkip));
-    scaledCtx.fillText("level", lineX, (lineY += lineSkip));
-    scaledCtx.fillText("to", lineX, (lineY += lineSkip));
-    scaledCtx.fillText("start", lineX, (lineY += lineSkip));
-    //level select levels text
-    scaledCtx.fillStyle = "white";
-    scaledCtx.font = "30px Georgia";
-    var lineX = 60;
-    var lineY = 500;
-    var wordSpacing = 350;
-    scaledCtx.fillText("Space", lineX + wordSpacing - 65, (lineY -= 20));
-    scaledCtx.fillStyle = "green";
 
-    scaledCtx.fillText("Island", lineX + 18, lineY);
-    scaledCtx.fillStyle = "Red";
+    //  ----- TEXT -----
+    const TEXT_HEIGHT = 18;
+    const TEXT_WIDTH = 96;
+    const TEXT_X = LEVEL_SELECT_X + TEXT_WIDTH / 2;
+    const TEXT_Y = LEVEL_SELECT_Y + LEVEL_SELECT_HEIGHT + MARGIN;
 
-    scaledCtx.fillText("Moon", lineX + wordSpacing + 200, lineY);
+    const level_text = ["text island", "text space", "text moon"];
 
+    // Render level names
+    for (var i = 0; i < level_text.length; i++) {
+      scaledCtx.drawImage(
+        images[level_text[i]],
+        TEXT_X + (LEVEL_SELECT_WIDTH + MARGIN) * i,
+        TEXT_Y,
+        TEXT_WIDTH,
+        TEXT_HEIGHT
+      );
+    }
     stretchLowResCanvasToVisibleCanvas();
   }
 }
@@ -135,7 +154,7 @@ function loadedAndClicked(evt) {
       // invalid unless loading finished
       return;
     }
-    
+
     if (gameFirstClickedToStart) {
       // lock it from happening multiple times
       return;
@@ -143,7 +162,6 @@ function loadedAndClicked(evt) {
 
     gameFirstClickedToStart = true;
 
-    
     createDepthSpawnReference();
     startDisplayIntervals();
     inputSetup();
@@ -151,7 +169,6 @@ function loadedAndClicked(evt) {
     initializeLevelSelectScreen();
     initializeControlsMenu();
     reset();
-    
 
     if (!gameDevelopmentMode) {
       gameState = GAME_STATE_TITLE;
@@ -219,19 +236,19 @@ function animateSprites() {
 }
 
 function reset() {
-  try{
+  try {
     gameMusic.sound.stop();
-  } catch(e){
-    console.log(`${e}`)
+  } catch (e) {
+    console.log(`${e}`);
   }
-  try{
+  try {
     gameMusic = playSound(sounds.Island_Song, 1, 0, 0.5, true);
-  } catch(e){
-    console.log(`${e}`)
+  } catch (e) {
+    console.log(`${e}`);
   }
 
   startLevel(levSeq[levNow]);
-  
+
   if (twoPlayerGame) {
     playerList = [new playerClass(), new playerClass()];
   } else {
@@ -267,7 +284,6 @@ function reset() {
 
   // excludes lists which share a common animation frame to be in sync (ex. all shots show same animation frame at same time)
   animateEachLists = [playerList, enemyList, powerupList, surfaceList];
-
 }
 
 function drawBackground() {
@@ -379,7 +395,6 @@ function update() {
       break;
 
     case GAME_STATE_PLAY:
-      
       levelProgressInPixels += levelProgressRate;
       levelProgressPerc =
         levelProgressInPixels / images[currentLevelImageName].height;
@@ -481,19 +496,19 @@ function editorText() {
   var padding = 5;
 
   var editorLines = [
-"Editor keys:",
-"L: exit editor to play mode",
-"O: output level to console",
-"mouse: highlight segment",
-"up/down: scroll level view",
-"left/right: move highlighted segment",
-"WASD: adjust drift or time",
-"Q/E: frequency up/down",
-"F/G: segment width up/down",
-"1-3: enemy type for segment",
-"0: insert new segment before selected",
-"-: remove selected segment (not yet nice with groups!)",
-"=: add overlapping segment",
+    "Editor keys:",
+    "L: exit editor to play mode",
+    "O: output level to console",
+    "mouse: highlight segment",
+    "up/down: scroll level view",
+    "left/right: move highlighted segment",
+    "WASD: adjust drift or time",
+    "Q/E: frequency up/down",
+    "F/G: segment width up/down",
+    "1-3: enemy type for segment",
+    "0: insert new segment before selected",
+    "-: remove selected segment (not yet nice with groups!)",
+    "=: add overlapping segment",
   ];
 
   scaledCtx.fillStyle = "#00000099";
@@ -506,7 +521,7 @@ function editorText() {
 
   scaledCtx.fillStyle = "white";
   scaledCtx.font = "10px Helvetica";
-  for(var i=0;i<editorLines.length;i++) {
+  for (var i = 0; i < editorLines.length; i++) {
     scaledCtx.fillText(editorLines[i], 20, (debugLineY += debugLineSkip));
   }
 }
@@ -549,7 +564,7 @@ function gameDebugSharpText() {
 
   var percProgress = Math.floor(
     (100 * levelProgressInPixels) /
-    (images[currentLevelImageName].height - GAME_H)
+      (images[currentLevelImageName].height - GAME_H)
   );
   if (percProgress > 100) {
     percProgress = 100;
