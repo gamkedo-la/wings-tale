@@ -103,6 +103,34 @@ function inputSetup() {
     document.addEventListener("keydown", keyPush);
     document.addEventListener("keyup", keyRelease);
     document.addEventListener("mousemove", mousemoved);
+    document.addEventListener('wheel',editorWheel, false);
+}
+
+function editorWheel(evt) {
+    if (gameState != GAME_STATE_LEVEL_DEBUG) {
+        return;
+    }
+    var scaleScrollFactor = 0.35; // deltaY is otherwise pretty aggressive, disorienting
+    if(evt.deltaY<0) {
+        levelScrollUp(-evt.deltaY * scaleScrollFactor);
+    } else {
+        levelScrollDown(evt.deltaY * scaleScrollFactor);
+    }
+    // evt.preventDefault(); // can't, treated as passive event listener by browser
+}
+
+function levelScrollDown(scrollByPx) {
+    levelProgressInPixels -= scrollByPx;
+    if (levelProgressInPixels < 0) {
+        levelProgressInPixels = 0;
+    }
+}
+
+function levelScrollUp(scrollByPx) {
+    levelProgressInPixels += scrollByPx;
+    if (levelProgressInPixels > images[currentLevelImageName].height - 1) {
+        levelProgressInPixels = images[currentLevelImageName].height - 1;
+    }
 }
 
 function keyHoldUpdate(evt, setTo) {
@@ -113,16 +141,10 @@ function keyHoldUpdate(evt, setTo) {
             return false;
         }
         if (evt.keyCode == KEY_DOWN) {
-            levelProgressInPixels -= GAME_H * 0.3;
-            if (levelProgressInPixels < 0) {
-                levelProgressInPixels = 0;
-            }
+            levelScrollDown(GAME_H * 0.3);
             validGameKey = true;
         } else if (evt.keyCode == KEY_UP) {
-            levelProgressInPixels += GAME_H * 0.3;
-            if (levelProgressInPixels > images[currentLevelImageName].height - 1) {
-                levelProgressInPixels = images[currentLevelImageName].height - 1;
-            }
+            levelScrollUp(GAME_H * 0.3);
             validGameKey = true;
         }
 
