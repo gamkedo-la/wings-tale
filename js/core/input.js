@@ -117,6 +117,7 @@ function editorWheel(evt) {
         levelScrollDown(evt.deltaY * scaleScrollFactor);
     }
     // evt.preventDefault(); // can't, treated as passive event listener by browser
+    return false;
 }
 
 function levelScrollDown(scrollByPx) {
@@ -140,20 +141,32 @@ function keyHoldUpdate(evt, setTo) {
         if (setTo) { // no key holding on editor mode, just for simpler code & discrete input
             return false;
         }
-        if (evt.keyCode == KEY_DOWN) {
-            levelScrollDown(GAME_H * 0.3);
-            validGameKey = true;
-        } else if (evt.keyCode == KEY_UP) {
-            levelScrollUp(GAME_H * 0.3);
-            validGameKey = true;
+
+        validGameKey=true; // will return to false if it fails this switch-case
+        switch(evt.keyCode) { // keys that don't require selection
+            case KEY_DOWN:
+                levelScrollDown(GAME_H * 0.3);
+                break;
+            case KEY_UP:
+                levelScrollUp(GAME_H * 0.3);
+                break;
+            case KEY_L:
+                gameState = GAME_STATE_PLAY;
+                readyToReset = true;
+                break;
+            case KEY_O:
+                printLevelSeq();
+                break;
+            default:
+                keyUsedYet = false;
         }
 
-        if (mouseOverLevData != -1) {
+        if (mouseOverLevData != -1) { // active selection?
             var scootXBy = 0.05;
             var durationChange = 0.01;
             var findValidNearestI = 0;
             validGameKey = true;
-            switch (evt.keyCode) {
+            switch (evt.keyCode) { // keys that require selection
                 case KEY_1:
                     levData[mouseOverLevData].kind = ENEMY_BUG;
                     break;
@@ -229,10 +242,6 @@ function keyHoldUpdate(evt, setTo) {
                 case KEY_E:
                     levData[mouseOverLevData].ticksBetween += 1;
                     break;
-                case KEY_L:
-                    gameState = GAME_STATE_PLAY;
-                    readyToReset = true;
-                    break;
                 default:
                     validGameKey = false;
                     break;
@@ -273,11 +282,6 @@ function keyHoldUpdate(evt, setTo) {
                 if (!setTo) {
                     gameState = GAME_STATE_LEVEL_DEBUG;
                     readyToReset = true;
-                }
-                break;
-            case KEY_O:
-                if (!setTo) {
-                    printLevelSeq();
                 }
                 break;
             case KEY_H:
