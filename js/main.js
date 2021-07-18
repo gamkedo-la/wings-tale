@@ -1,4 +1,4 @@
-var gameDevelopmentMode = false; //skip intro stuff
+var gameDevelopmentMode = true; //skip intro stuff
 
 var nDefenseOrbs = 33;
 var debuggingDisplay = true;
@@ -175,11 +175,13 @@ function loadedAndClicked(evt) {
     } else {
       gameState = GAME_STATE_PLAY;
       var levWid = images[levNames[0]].width;
-      levNow = Math.floor(mouseX / levWid);
+      levNow = Math.floor(unscaledMouseX / levWid);
+
       if (levNow >= levNames.length) {
         return;
       }
       currentLevelImageName = levNames[levNow];
+      reset();
     }
   }
 }
