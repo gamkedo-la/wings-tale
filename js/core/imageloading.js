@@ -52,6 +52,7 @@ function loadImages() {
     // note: in order to getbitmapdata on this we need to be
     // running on a web server due to browser local file security
     { imgName: "depth map", theFile: "islandLevelDepth.png" },
+    { imgName: "depth space", theFile: "spaceLevelDepth.png" },
     { imgName: "depth moon", theFile: "moonLevelDepth.png" },
     {
       imgName: "controls menu background",

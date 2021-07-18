@@ -1,4 +1,4 @@
-var gameDevelopmentMode = true; //skip intro stuff
+var gameDevelopmentMode = false; //skip intro stuff
 
 var nDefenseOrbs = 33;
 var debuggingDisplay = true;
@@ -195,8 +195,8 @@ function createDepthSpawnReference() {
       curDepthMap = "depth map";
       break;
     case LEVEL_SPACE:
-      img = images["depth map"];
-      curDepthMap = "depth map";
+      img = images["depth space"];
+      curDepthMap = "depth space";
       break;
     case LEVEL_MOON:
       img = images["depth moon"];
@@ -265,6 +265,7 @@ function reset() {
     drawMoveList[i].length = 0;
   }
 
+  surfaceList=[];
   if (levNow == LEVEL_ISLAND) {
     spawnSurfaceEnemies();
   }
@@ -307,6 +308,19 @@ function drawBackground() {
     case LEVEL_ISLAND:
       fxContext.drawImage(
         images["depth map"],
+        0,
+        bgDrawY,
+        GAME_W,
+        GAME_H,
+        0,
+        0,
+        GAME_W,
+        GAME_H
+      );
+      break;
+    case LEVEL_SPACE:
+      fxContext.drawImage(
+        images["depth space"],
         0,
         bgDrawY,
         GAME_W,

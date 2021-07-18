@@ -378,6 +378,7 @@ function handleMouseClick(evt) {
                 return;
             }
             currentLevelImageName = levNames[levNow];
+            reset();
         }
     }, 500)
 
