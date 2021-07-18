@@ -151,9 +151,7 @@ function keyHoldUpdate(evt, setTo) {
                 levelScrollUp(GAME_H * 0.3);
                 break;
             case KEY_L:
-                gameState = GAME_STATE_PLAY;
-                reset();
-                readyToReset = true;
+                editPlay();
                 break;
             case KEY_O:
                 printLevelSeq();
@@ -194,16 +192,13 @@ function keyHoldUpdate(evt, setTo) {
                     levData[mouseOverLevData].percXMax += scootXBy;
                     break;
                 case KEY_MINUS:
-                    levData.splice(mouseOverLevData, 1);
-                    updateSpawnPercRanges();
+                    editDelete();
                     break;
                 case KEY_EQUALS:
-                    levData.splice(mouseOverLevData, 0, JSON.parse(JSON.stringify(editorAddLevelRowWithNext)));
-                    updateSpawnPercRanges();
+                    editAddLayer();
                     break;
                 case KEY_0:
-                    levData.splice(mouseOverLevData, 0, JSON.parse(JSON.stringify(editorAddLevelRowNew)));
-                    updateSpawnPercRanges();
+                    editInsert();
                     break;
                 case KEY_W:
                     findValidNearestI = mouseOverLevData;
@@ -393,9 +388,7 @@ function handleMouseClick(evt) {
         initSounds();
     }
     if(gameState == GAME_STATE_LEVEL_DEBUG) {
-        if(mouseOverEditorButtonIdx != -1) {
-            editButtons[mouseOverEditorButtonIdx].func();
-        }
+        editorHandleClick();
         return;
     }
     setTimeout(function () {

@@ -541,7 +541,7 @@ function editorText() {
     scaledCtx.fillText(editorLines[i], 20, (debugLineY += debugLineSkip));
   }
 
-  editorButtons(); // defined in leveldata file
+  editorButtons(); // defined in leveleditor js
 }
 
 function gameDebugSharpText() {

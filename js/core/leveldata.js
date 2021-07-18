@@ -1,6 +1,7 @@
 const ENEMY_BUG = 0;
 const ENEMY_SWOOP = 1;
 const ENEMY_STALL_CHASE = 2;
+const ENEMY_KINDS = 3;
 var enemySpawnDebugColor = ["lime","yellow","cyan"];
 
 const SPAWN_WITH_NEXT = 0.0;
@@ -8,65 +9,11 @@ const NO_DEPTH_LOOKUP_DEFAULT_HEIGHT = 128;
 const DEPTH_FOR_UNDERWATER = 3;
 const DEPTH_FOR_GROUND = 60;
 
-function editExtra() {
-  console.log("undefined button");
-}
-
-// used for both draw and mouse overlap detection
-var editButtonDim = 40;
-var editButtonX = 50;
-var editButtonY = SCALED_H-editButtonDim-20;
-var mouseOverEditorButtonIdx = -1;
-var editButtons = [
-{name:"PLAY",func:function() {
-				gameState = GAME_STATE_PLAY;
-                reset();
-                readyToReset = true;}},
-{name:"OUT",func:editExtra},
-{name:"MOVE",func:editExtra},
-{name:"DRIFT",func:editExtra},
-{name:"TIME",func:editExtra},
-{name:"FREQ",func:editExtra},
-{name:"WIDTH",func:editExtra},
-{name:"KIND",func:editExtra},
-{name:"NEW",func:editExtra},
-{name:"DEL",func:editExtra},
-{name:"EXTRA",func:editExtra}
-];
-
-function editorButtons() {
-  scaledCtx.font = "10px Helvetica";
-  scaledCtx.beginPath();
-  scaledCtx.strokeStyle = "gray";
-
-  mouseOverEditorButtonIdx = -1; // forget moused over editor option
-  for (var i = 0; i < editButtons.length; i++) {
-  	var buttonX = editButtonX+i*editButtonDim;
-    if(pointInBox(unscaledMouseX, unscaledMouseY, buttonX,editButtonY,editButtonDim,editButtonDim)) {
-    	mouseOverEditorButtonIdx = i;
-    	scaledCtx.fillStyle = "gray";
-    } else {
-    	scaledCtx.fillStyle = "black";
-	}
-    scaledCtx.fillRect(buttonX, editButtonY,editButtonDim,editButtonDim);
-    scaledCtx.rect(buttonX, editButtonY,editButtonDim,editButtonDim);
-    scaledCtx.fillStyle = "white";
-    scaledCtx.fillText(editButtons[i].name, buttonX+4, editButtonY+20);
-  }
-
-  scaledCtx.stroke();
-}
-
 function depthAt(atX,atY) {
 	let w = images[curDepthMap].width;
 	let index = (atY>>0) * w + (atX>>0);
 	return depthSpawnData?depthSpawnData.data[index*4+1]:NO_DEPTH_LOOKUP_DEFAULT_HEIGHT;
 }
-
-// added on insert in editor, defined here to keep weird json syntax all in one place 
-var editorAddLevelRowNew = {percDuration:0.04,kind:ENEMY_BUG,driftX:0.0,percXMin:0.4,percXMax:0.6,speed:1.0,wave:5,ticksBetween:10};
-var editorAddLevelRowWithNext = JSON.parse(JSON.stringify(editorAddLevelRowNew)); // identical, but will replace...
-editorAddLevelRowWithNext.percDuration = SPAWN_WITH_NEXT; // duration to stay with next one
 
 var islandSpawnSeq =
 [{"percDuration":0.05,"kind":2,"driftX":0.3,"percXMin":0.3,"percXMax":0.4,"speed":3,"wave":10,"ticksBetween":20},{"percDuration":0,"kind":0,"driftX":-0.7,"percXMin":0.8,"percXMax":0.9,"speed":1,"wave":10,"ticksBetween":20},{"percDuration":0,"kind":1,"driftX":0,"percXMin":0.5,"percXMax":0.5,"speed":2.5,"wave":0,"ticksBetween":1},{"percDuration":0.02,"kind":0,"driftX":0.7,"percXMin":0.1,"percXMax":0.2,"speed":1,"wave":10,"ticksBetween":20},{"percDuration":0.05,"kind":1,"driftX":-0.76,"percXMin":0.8,"percXMax":0.9,"speed":2.5,"wave":25,"ticksBetween":5},{"percDuration":0.05,"kind":0,"driftX":0,"percXMin":0.2,"percXMax":0.8,"speed":0.5,"wave":100,"ticksBetween":30},{"percDuration":0,"kind":1,"driftX":-0.9,"percXMin":0.95,"percXMax":0.95,"speed":2.5,"wave":0,"ticksBetween":2},{"percDuration":0.07,"kind":0,"driftX":0.8,"percXMin":0.1,"percXMax":0.3,"speed":2.5,"wave":5,"ticksBetween":2},{"percDuration":0.1,"kind":0,"driftX":0.5,"percXMin":0.1,"percXMax":0.5,"speed":1.5,"wave":30,"ticksBetween":40},{"percDuration":0.1,"kind":0,"driftX":0,"percXMin":0.5,"percXMax":0.5,"speed":2,"wave":50,"ticksBetween":3},{"percDuration":0.1,"kind":0,"driftX":0,"percXMin":0.1,"percXMax":0.9,"speed":3,"wave":2,"ticksBetween":0}];
@@ -121,104 +68,6 @@ function updateSpawnPercRanges() {
 		} else {
 			spawnRanges[i] = SPAWN_WITH_NEXT;
 		}
-	}
-}
-
-function printLevelSeq() {
-	console.log( JSON.stringify(levSeq[levNow]) );
-}
-
-var mouseOverLevData=-1;
-
-function drawLevelSpawnData() { // for level debug display (may become editable later)
-	// stopping 1 from end to draw line forward to next data point
-	var mapLength = images[currentLevelImageName].height;
-	var frontEdge, backEdge;
-	var prevNonSkipI = levData.length-1;
-	frontEdge=backEdge=-bgDrawY;
-	context.fillStyle = "white";
-	var newMousedOver=-1;
-
-	for(var i=levData.length-1; i>=0;i--) { // not bothering to cull, debug draw only
-		if(spawnRanges[i] != SPAWN_WITH_NEXT) {
-			// step back to find start of this block as previous block's percentage
-			var nextLowerPercI = i-1;
-			var nextPerc = 0;
-			while(spawnRanges[nextLowerPercI] == SPAWN_WITH_NEXT) {
-				nextLowerPercI--;
-			}
-			if(nextLowerPercI<0) {
-				nextPerc=0;
-			} else {
-				nextPerc=spawnRanges[nextLowerPercI];
-			}
-
-			frontEdge = backEdge;
-			backEdge = (1.0-nextPerc)*mapLength-bgDrawY;
-			prevNonSkipI = i;
-		}
-
-		context.strokeStyle = enemySpawnDebugColor[levData[i].kind];
-
-		var startXPercMin = levData[i].percXMin;
-		var endXPercMin = startXPercMin+levData[i].driftX;
-		var startXPercMax = levData[i].percXMax;
-		var endXPercMax = startXPercMax+levData[i].driftX;
-
-		if(mouseY>frontEdge && mouseY<backEdge && newMousedOver==-1) {
-			var vertRange = backEdge-frontEdge;
-			var percOverRange = (mouseY-frontEdge)/vertRange;
-			var percOverRangeInv = 1.0-percOverRange;
-			var leftX = Math.floor(GAME_W*(startXPercMin*percOverRange+endXPercMin*percOverRangeInv));
-			var rightX = Math.floor(GAME_W*(startXPercMax*percOverRange+endXPercMax*percOverRangeInv));
-			var extraMargin = 5; // otherwise super thin aren't selectable
-			if(leftX - extraMargin < mouseX && mouseX < rightX + extraMargin) {
-				newMousedOver = i;
-			}
-		}
-
-		if(mouseOverLevData == i) { // exaggerate frequency dashes if selected
-			context.lineWidth = "7";
-		} else {
-			context.lineWidth = "4"; // thick for spaced markers showing spawn density
-		}
-
-		if(levData[i].ticksBetween > 1) {
-			context.setLineDash([1, levData[i].ticksBetween]);
-		} else {
-			context.setLineDash([]);
-		}
-
-		context.beginPath();
-		context.moveTo(startXPercMin*GAME_W,backEdge);
-		context.lineTo(endXPercMin*GAME_W,frontEdge);
-		context.lineTo(endXPercMax*GAME_W,frontEdge);
-		context.lineTo(startXPercMax*GAME_W,backEdge);
-		context.closePath();
-		context.stroke();
-		if(mouseOverLevData == i) {  // exaggerate range box if selected
-			context.globalAlpha = 0.2;
-			context.fillStyle = "white";
-			context.fill();
-			context.globalAlpha = 1.0;
-			context.lineWidth = "3"; // thicker to show selected
-		} else {
-			context.lineWidth = "1"; // thin for line drawing the min/max/drift edges
-		}
-
-		context.setLineDash([]);
-		context.beginPath();
-		context.moveTo(startXPercMin*GAME_W,backEdge);
-		context.lineTo(endXPercMin*GAME_W,frontEdge);
-		context.lineTo(endXPercMax*GAME_W,frontEdge);
-		context.lineTo(startXPercMax*GAME_W,backEdge);
-		context.closePath();
-		context.stroke();
-
-		context.fillText(i,levData[i].percXMin*GAME_W,backEdge);
-	}
-	if(newMousedOver != -1 && mouseOverLevData != newMousedOver) {
-		mouseOverLevData = newMousedOver;
 	}
 }
 
