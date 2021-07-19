@@ -11,6 +11,8 @@ var playerList = [new playerClass(), new playerClass()];
 var readyToReset = false; // to avoid calling reset() mid list iterations
 var octopusBoss = new octopusClass();
 
+var gamepads = new GamepadManager();
+
 var playerScore = 0; // Player Score, Getting powerups adds to it.
 
 var drawMoveList = []; // list of lists - note, drawn in this order, so should be filled closest to ground up towards sky last
@@ -390,7 +392,10 @@ function stretchLowResCanvasToVisibleCanvas() {
 }
 
 function update() {
-  if (readyToReset) {
+  
+    gamepads.update();
+
+    if (readyToReset) {
     reset();
     readyToReset = false;
   }
