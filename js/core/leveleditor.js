@@ -9,16 +9,19 @@ function editorHandleClick() {
 }
 
 function editPlay() {
-	gameState = GAME_STATE_PLAY;
+  gameState = GAME_STATE_PLAY;
+  dragMode = DRAG_MODE_NONE;
   reset();
   readyToReset = true;
 }
 
 function editExtra() {
+  dragMode = DRAG_MODE_NONE;
   console.log("undefined button");
 }
 
 function editKind() {
+	dragMode = DRAG_MODE_NONE;
 	if(mouseOverLevData != -1) {
 		levData[mouseOverLevData].kind++;
 		if(levData[mouseOverLevData].kind>= ENEMY_KINDS) {
@@ -27,26 +30,52 @@ function editKind() {
 	}
 }
 function editAddLayer() {
+	dragMode = DRAG_MODE_NONE;
 	if(mouseOverLevData != -1) {
 		levData.splice(mouseOverLevData, 0, JSON.parse(JSON.stringify(editorAddLevelRowWithNext)));
     updateSpawnPercRanges();
   }
 }
 function editDelete() {
+	dragMode = DRAG_MODE_NONE;
 	if(mouseOverLevData != -1) {
 		levData.splice(mouseOverLevData, 1);
     updateSpawnPercRanges();
   }
 }
 function editInsert() {
+	dragMode = DRAG_MODE_NONE;
 	if(mouseOverLevData != -1) {
 		levData.splice(mouseOverLevData, 0, JSON.parse(JSON.stringify(editorAddLevelRowNew)));
     updateSpawnPercRanges();
   }
 }
-function editPanSelection(changeBy) {
+function editDriftSelection(changeBy) {
 	levData[mouseOverLevData].driftX += changeBy;
-	console.log("To do: bounds check based on drift value from start");
+	if(levData[mouseOverLevData].percXMin+levData[mouseOverLevData].driftX < 0.0) {
+		levData[mouseOverLevData].driftX = -levData[mouseOverLevData].percXMin;
+	}
+	if(levData[mouseOverLevData].percXMax+levData[mouseOverLevData].driftX > 1.0) {
+		levData[mouseOverLevData].driftX = 1.0-levData[mouseOverLevData].percXMax;
+	}
+}
+function editPanSelection(changeBy) {
+	levData[mouseOverLevData].percXMin += changeBy;
+    levData[mouseOverLevData].percXMax += changeBy;
+	panBoundsFix();
+}
+function editWidthSelection(changeBy) {
+	levData[mouseOverLevData].percXMin += changeBy;
+	levData[mouseOverLevData].percXMax -= changeBy;
+	panBoundsFix();
+}
+function panBoundsFix() {
+	if(levData[mouseOverLevData].percXMin < 0.0) {
+		editPanSelection(-levData[mouseOverLevData].percXMin);
+	}
+	if(levData[mouseOverLevData].percXMax > 1.0) {
+		editPanSelection(1.0-levData[mouseOverLevData].percXMax);
+	}
 }
 function editChangeDuration(changeBy) {
 	if (mouseOverLevData == -1) {
@@ -70,19 +99,31 @@ var editButtonDim = 40;
 var editButtonX = 50;
 var editButtonY = SCALED_H-editButtonDim-20;
 var mouseOverEditorButtonIdx = -1;
-var editButtons = [
+const DRAG_MODE_NONE = 0;
+const DRAG_MODE_MOVE = 1;
+const DRAG_MODE_DRIFT = 2;
+var dragMode = DRAG_MODE_NONE;
+
+const EDIT_BUTTON_NO_SELECTION = 1;
+const EDIT_BUTTON_MOVE = 2;
+const EDIT_BUTTON_DRIFT = 3;
+var editButtons = [ // match to constants above for highlight when in drag modes
 {name:"PLAY",func:editPlay},
-{name:"OUT",func:printLevelSeq},
-{name:"MOVE",func:editExtra},
-{name:"DRIFT",func:editExtra},
-{name:"TIME",func:editExtra},
-{name:"FREQ",func:editExtra},
-{name:"WIDTH",func:editExtra},
+{name:"OUT",func:printLevelSeq}, // 1 EDIT_BUTTON_NO_SELECTION
+{name:"MOVE",func:editMove}, // 2 EDIT_BUTTON_MOVE
+{name:"DRIFT",func:editDrift}, // 3 EDIT_BUTTON_DRIFT
 {name:"KIND",func:editKind},
 {name:"INSERT",func:editInsert},
 {name:"DEL",func:editDelete},
 {name:"LAYER",func:editAddLayer}
 ];
+
+function editMove() {
+	dragMode = DRAG_MODE_MOVE;
+}
+function editDrift() {
+	dragMode = DRAG_MODE_DRIFT;
+}
 
 function editorButtons() {
   scaledCtx.font = "10px Helvetica";
@@ -95,7 +136,12 @@ function editorButtons() {
     if(pointInBox(unscaledMouseX, unscaledMouseY, buttonX,editButtonY,editButtonDim,editButtonDim)) {
     	mouseOverEditorButtonIdx = i;
     	scaledCtx.fillStyle = "gray";
-    } else {
+    } else if( (i==EDIT_BUTTON_MOVE && dragMode == DRAG_MODE_MOVE) || 
+				(i==EDIT_BUTTON_DRIFT && dragMode == DRAG_MODE_DRIFT) ) {
+    	scaledCtx.fillStyle = "green";
+    } else if(i > EDIT_BUTTON_NO_SELECTION && mouseOverLevData == -1) {
+    	scaledCtx.fillStyle = "#660000";
+	} else {
     	scaledCtx.fillStyle = "black";
 	}
     scaledCtx.fillRect(buttonX, editButtonY,editButtonDim,editButtonDim);
@@ -206,7 +252,9 @@ function drawLevelSpawnData() { // for level debug display (may become editable 
 		context.fillText(i,levData[i].percXMin*GAME_W,backEdge);
 	}
 	if(newMousedOver != -1 && mouseOverLevData != newMousedOver && editorClicked) {
-		mouseOverLevData = newMousedOver;
+		if(dragMode == DRAG_MODE_NONE) {
+			mouseOverLevData = newMousedOver;
+		}
 		editorClicked = false;
 	}
 }

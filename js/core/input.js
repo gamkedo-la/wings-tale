@@ -4,6 +4,7 @@ var unscaledMouseX = -1,
     unscaledMouseY = -1;
 var mouseDragging = false;
 var dragX = 0, dragY = 0;
+var cumulativeDrag = 0; // total amount of drag since button down, for click detection
 
 const KEY_ENTER = 13;
 const KEY_SPACE = 32;
@@ -183,20 +184,16 @@ function keyHoldUpdate(evt, setTo) {
                     levData[mouseOverLevData].kind = ENEMY_STALL_CHASE;
                     break;
                 case KEY_LEFT:
-                    levData[mouseOverLevData].percXMin -= scootXBy;
-                    levData[mouseOverLevData].percXMax -= scootXBy;
+                    editPanSelection(-scootXBy);
                     break;
                 case KEY_RIGHT:
-                    levData[mouseOverLevData].percXMin += scootXBy;
-                    levData[mouseOverLevData].percXMax += scootXBy;
+                    editPanSelection(scootXBy);
                     break;
                 case KEY_F:
-                    levData[mouseOverLevData].percXMin += scootXBy;
-                    levData[mouseOverLevData].percXMax -= scootXBy;
+                    editWidthSelection(-scootXBy);
                     break;
                 case KEY_G:
-                    levData[mouseOverLevData].percXMin -= scootXBy;
-                    levData[mouseOverLevData].percXMax += scootXBy;
+                    editWidthSelection(scootXBy);
                     break;
                 case KEY_MINUS:
                     editDelete();
@@ -376,9 +373,17 @@ function mousemoved(evt) {
     if(mouseDragging) {
         dragX = unscaledMouseX-wasUMX;
         dragY = unscaledMouseY-wasUMY;
-        console.log("Drag: "+dragX+", "+dragY);
-        editChangeDuration(dragY*-0.001);
-        editPanSelection(dragX*0.02);
+        cumulativeDrag += Math.abs(dragX) + Math.abs(dragY);
+        switch(dragMode) {
+            case DRAG_MODE_MOVE:
+                editPanSelection(dragX*0.0012);
+                editChangeDuration(dragY*-0.00017);
+                break;
+            case DRAG_MODE_DRIFT:
+                editDriftSelection(dragX*0.00135);
+                editWidthSelection(dragY*0.0003);
+                break;
+        }
     }
 
     mouseX = Math.floor(unscaledMouseX * GAME_W / SCALED_W);
@@ -387,16 +392,24 @@ function mousemoved(evt) {
 
 function handleMouseRelease(evt) {
     mouseDragging = false;
+    if(mouseOverEditorButtonIdx == -1 && cumulativeDrag < 5) { // clicked to deselect, rather than dragged to change
+        dragMode = DRAG_MODE_NONE;
+    }
+    if(editorClicked && dragMode == DRAG_MODE_NONE) { // clicked empty space, not in drag mode, deselect
+        mouseOverLevData = -1;
+        editorClicked = false;
+    }
     dragX = dragY = 0;
+    cumulativeDrag = 0;
 }
 
 function handleMouseClick(evt) {
-    mouseDragging = true;
     if (!gameFirstClickedToStart) {
         initSounds();
     }
     if(gameState == GAME_STATE_LEVEL_DEBUG) {
         editorHandleClick();
+        mouseDragging = true;
         return;
     }
     setTimeout(function () {
