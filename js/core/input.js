@@ -153,24 +153,9 @@ function keyHoldUpdate(evt, setTo) {
       return false;
     }
 
-    validGameKey = true; // will return to false if it fails this switch-case
-    switch (
-      evt.keyCode // keys that don't require selection
-    ) {
-      case KEY_DOWN:
-        levelScrollDown(GAME_H * 0.3);
-        break;
-      case KEY_UP:
-        levelScrollUp(GAME_H * 0.3);
-        break;
-      case KEY_L:
-        editPlay();
-        break;
-      case KEY_O:
-        printLevelSeq();
-        break;
-      default:
-        keyUsedYet = false;
+    if (mouseOverLevData != -1) {
+      // active selection?
+      validGameKey = editorKeyboard(evt.keyCode);
     }
 
     if (mouseOverLevData != -1) {
@@ -382,18 +367,8 @@ function mousemoved(evt) {
     dragX = unscaledMouseX - wasUMX;
     dragY = unscaledMouseY - wasUMY;
     cumulativeDrag += Math.abs(dragX) + Math.abs(dragY);
-    switch (dragMode) {
-      case DRAG_MODE_MOVE:
-        editPanSelection(dragX * 0.0012);
-        editChangeDuration(dragY * -0.00017);
-        break;
-      case DRAG_MODE_DRIFT:
-        editDriftSelection(dragX * 0.00135);
-        editWidthSelection(dragY * 0.0003);
-        break;
-    }
+    editorDrag();
   }
-
   mouseX = Math.floor((unscaledMouseX * GAME_W) / SCALED_W);
   mouseY = Math.floor((unscaledMouseY * GAME_H) / SCALED_H);
 }
