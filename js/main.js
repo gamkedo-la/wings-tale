@@ -26,6 +26,9 @@ const GAME_STATE_TITLE = 2;
 const GAME_STATE_LEVEL_SELECT = 3;
 const GAME_STATE_LOADING_SPLASH = 4;
 const GAME_STATE_LEVEL_DEBUG = 5;
+
+const LEVEL_RECTS = [{ x: 0, y: 0, width: 0, height: 0 }]; // Array of rectangles representing the levels in the level select menu
+
 var gameState;
 if (!gameDevelopmentMode) {
   gameState = GAME_STATE_LOADING_SPLASH;
@@ -115,7 +118,18 @@ function loadingDoneSoStartGame() {
         LEVEL_SELECT_WIDTH,
         LEVEL_SELECT_HEIGHT
       );
+
+      LEVEL_RECTS[i] = {
+        x: LEVEL_SELECT_X + (LEVEL_SELECT_WIDTH + MARGIN) * i,
+        y: LEVEL_SELECT_Y,
+        width: LEVEL_SELECT_WIDTH,
+        height: LEVEL_SELECT_HEIGHT,
+        name: level_selections[i],
+      };
     }
+
+    document.addEventListener("mousemove", mousemoved);
+    document.addEventListener("mousemove", handleLevelHover);
 
     //  ----- TEXT -----
     const TEXT_HEIGHT = 18;
@@ -265,7 +279,7 @@ function reset() {
     drawMoveList[i].length = 0;
   }
 
-  surfaceList=[];
+  surfaceList = [];
   if (levNow == LEVEL_ISLAND) {
     spawnSurfaceEnemies();
   }
@@ -388,10 +402,9 @@ function stretchLowResCanvasToVisibleCanvas() {
 }
 
 function update() {
-  
-    gamepads.update();
+  gamepads.update();
 
-    if (readyToReset) {
+  if (readyToReset) {
     reset();
     readyToReset = false;
   }

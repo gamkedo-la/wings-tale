@@ -37,6 +37,18 @@ function loadImages() {
       theFile: "level-select-moon-draft-2.png",
     },
     {
+      imgName: "level menu island highlight",
+      theFile: "level-select-island-highlight.png",
+    },
+    {
+      imgName: "level menu space highlight",
+      theFile: "level-select-space-highlight.png",
+    },
+    {
+      imgName: "level menu moon highlight",
+      theFile: "level-select-moon-highlight.png",
+    },
+    {
       imgName: "text island",
       theFile: "text-island.png",
     },
