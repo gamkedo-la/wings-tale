@@ -208,33 +208,16 @@ function keyHoldUpdate(evt, setTo) {
                     editInsert();
                     break;
                 case KEY_W:
-                    findValidNearestI = mouseOverLevData;
-                    while (findValidNearestI < levData.length && levData[findValidNearestI].percDuration == SPAWN_WITH_NEXT) {
-                        findValidNearestI++;
-                    }
-                    if (findValidNearestI < levData.length) {
-                        levData[findValidNearestI].percDuration += durationChange;
-                        updateSpawnPercRanges();
-                    }
+                    editChangeDuration(durationChange);
                     break;
                 case KEY_S:
-                    findValidNearestI = mouseOverLevData;
-                    while (findValidNearestI < levData.length && levData[findValidNearestI].percDuration == SPAWN_WITH_NEXT) {
-                        findValidNearestI++;
-                    }
-                    if (findValidNearestI < levData.length) {
-                        levData[findValidNearestI].percDuration -= durationChange;
-                        if (levData[findValidNearestI].percDuration < 0.01) {
-                            levData[findValidNearestI].percDuration = 0.01;
-                        }
-                        updateSpawnPercRanges();
-                    }
+                    editChangeDuration(-durationChange);
                     break;
                 case KEY_A:
-                    levData[mouseOverLevData].driftX -= scootXBy;
+                    editPanSelection(-scootXBy);
                     break;
                 case KEY_D:
-                    levData[mouseOverLevData].driftX += scootXBy;
+                    editPanSelection(scootXBy);
                     break;
                 case KEY_Q:
                     levData[mouseOverLevData].ticksBetween -= 1;
@@ -394,6 +377,8 @@ function mousemoved(evt) {
         dragX = unscaledMouseX-wasUMX;
         dragY = unscaledMouseY-wasUMY;
         console.log("Drag: "+dragX+", "+dragY);
+        editChangeDuration(dragY*-0.001);
+        editPanSelection(dragX*0.02);
     }
 
     mouseX = Math.floor(unscaledMouseX * GAME_W / SCALED_W);

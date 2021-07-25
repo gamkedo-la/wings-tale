@@ -44,6 +44,26 @@ function editInsert() {
     updateSpawnPercRanges();
   }
 }
+function editPanSelection(changeBy) {
+	levData[mouseOverLevData].driftX += changeBy;
+	console.log("To do: bounds check based on drift value from start");
+}
+function editChangeDuration(changeBy) {
+	if (mouseOverLevData == -1) {
+		return;
+	}
+	var findValidNearestI = mouseOverLevData;
+	while (findValidNearestI < levData.length && levData[findValidNearestI].percDuration == SPAWN_WITH_NEXT) {
+		findValidNearestI++;
+	}
+	if (findValidNearestI < levData.length) {
+		levData[findValidNearestI].percDuration += changeBy;
+		if (levData[findValidNearestI].percDuration < 0.01) {
+			levData[findValidNearestI].percDuration = 0.01;
+		}
+		updateSpawnPercRanges();
+	}
+}
 
 // used for both draw and mouse overlap detection
 var editButtonDim = 40;
