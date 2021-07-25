@@ -182,6 +182,8 @@ function loadedAndClicked(evt) {
     initializeControlsMenu();
     reset();
 
+    scaledCanvas.style.cursor = "initial";
+
     if (!gameDevelopmentMode) {
       gameState = GAME_STATE_TITLE;
     } else {
