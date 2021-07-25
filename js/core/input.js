@@ -2,6 +2,8 @@ var mouseX = -1,
     mouseY = -1;
 var unscaledMouseX = -1,
     unscaledMouseY = -1;
+var mouseDragging = false;
+var dragX = 0, dragY = 0;
 
 const KEY_ENTER = 13;
 const KEY_SPACE = 32;
@@ -97,6 +99,11 @@ function keyPush(evt) {
 
 function keyRelease(evt) {
     keyHoldUpdate(evt, false);
+}
+
+function mouseSetup() {
+    document.addEventListener("mousedown", handleMouseClick);
+    document.addEventListener("mouseup", handleMouseRelease);
 }
 
 function inputSetup() {
@@ -375,15 +382,31 @@ function mousemoved(evt) {
     var rect = scaledCanvas.getBoundingClientRect();
     var root = document.documentElement;
 
+    // to calculate delta for drag inputs, initially being done for editor usage
+    var wasUMX = unscaledMouseX;
+    var wasUMY = unscaledMouseY;
+
     // account for the margins, canvas position on page, scroll amount, etc.
     unscaledMouseX = evt.clientX - rect.left - root.scrollLeft;
     unscaledMouseY = evt.clientY - rect.top - root.scrollTop;
+
+    if(mouseDragging) {
+        dragX = unscaledMouseX-wasUMX;
+        dragY = unscaledMouseY-wasUMY;
+        console.log("Drag: "+dragX+", "+dragY);
+    }
 
     mouseX = Math.floor(unscaledMouseX * GAME_W / SCALED_W);
     mouseY = Math.floor(unscaledMouseY * GAME_H / SCALED_H);
 }
 
+function handleMouseRelease(evt) {
+    mouseDragging = false;
+    dragX = dragY = 0;
+}
+
 function handleMouseClick(evt) {
+    mouseDragging = true;
     if (!gameFirstClickedToStart) {
         initSounds();
     }

@@ -55,7 +55,7 @@ window.onload = function () {
 
   loadImages();
 
-  document.addEventListener("mousedown", handleMouseClick);
+  mouseSetup();
 
   if (!gameDevelopmentMode) {
     context.fillStyle = "black";
@@ -70,9 +70,7 @@ window.onload = function () {
       canvas.height / 2
     );
     stretchLowResCanvasToVisibleCanvas();
-  } else {
   }
-
   // scaledCtx.fillStyle = "black";
   // scaledCtx.fillRect(0,0,scaledCanvas.width,scaledCanvas.height);
 };
@@ -81,8 +79,6 @@ function loadingDoneSoStartGame() {
   imagesLoaded = true;
 
   if (gameDevelopmentMode) {
-    console.log("scaledCtx: " + scaledCtx);
-    console.log("images:" + images);
     //draw level select screen when in game dev mode
     var levX = 0;
     var levWid = images[levNames[0]].width;
