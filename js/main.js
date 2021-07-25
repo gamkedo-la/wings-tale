@@ -507,44 +507,6 @@ function update() {
   }
 }
 
-function editorText() {
-  var debugLineY = 20;
-  var debugLineSkip = 10;
-  var padding = 5;
-
-  var editorLines = [
-    "Editor keys:",
-    "L: exit editor to play mode",
-    "O: output level to console",
-    "mouse: highlight segment",
-    "up/down: scroll level view",
-    "left/right: move highlighted segment",
-    "WASD: adjust drift or time",
-    "Q/E: frequency up/down",
-    "F/G: segment width up/down",
-    "1-3: enemy type for segment",
-    "0: insert new segment before selected",
-    "-: remove selected segment (not yet nice with groups!)",
-    "=: add overlapping segment",
-  ];
-
-  scaledCtx.fillStyle = "#00000099";
-  scaledCtx.fillRect(
-    20 - padding,
-    debugLineY - padding,
-    250 + padding * 2,
-    debugLineSkip * editorLines.length + padding * 2
-  );
-
-  scaledCtx.fillStyle = "white";
-  scaledCtx.font = "10px Helvetica";
-  for (var i = 0; i < editorLines.length; i++) {
-    scaledCtx.fillText(editorLines[i], 20, (debugLineY += debugLineSkip));
-  }
-
-  editorButtons(); // defined in leveleditor js
-}
-
 function gameDebugSharpText() {
   var debugLineY = 20;
   var debugLineSkip = 10;

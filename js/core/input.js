@@ -169,66 +169,7 @@ function keyHoldUpdate(evt, setTo) {
         }
 
         if (mouseOverLevData != -1) { // active selection?
-            var scootXBy = 0.05;
-            var durationChange = 0.01;
-            var findValidNearestI = 0;
-            validGameKey = true;
-            switch (evt.keyCode) { // keys that require selection
-                case KEY_1:
-                    levData[mouseOverLevData].kind = ENEMY_BUG;
-                    break;
-                case KEY_2:
-                    levData[mouseOverLevData].kind = ENEMY_SWOOP;
-                    break;
-                case KEY_3:
-                    levData[mouseOverLevData].kind = ENEMY_STALL_CHASE;
-                    break;
-                case KEY_LEFT:
-                    editPanSelection(-scootXBy);
-                    break;
-                case KEY_RIGHT:
-                    editPanSelection(scootXBy);
-                    break;
-                case KEY_F:
-                    editWidthSelection(-scootXBy);
-                    break;
-                case KEY_G:
-                    editWidthSelection(scootXBy);
-                    break;
-                case KEY_MINUS:
-                    editDelete();
-                    break;
-                case KEY_EQUALS:
-                    editAddLayer();
-                    break;
-                case KEY_0:
-                    editInsert();
-                    break;
-                case KEY_W:
-                    editChangeDuration(durationChange);
-                    break;
-                case KEY_S:
-                    editChangeDuration(-durationChange);
-                    break;
-                case KEY_A:
-                    editPanSelection(-scootXBy);
-                    break;
-                case KEY_D:
-                    editPanSelection(scootXBy);
-                    break;
-                case KEY_Q:
-                    levData[mouseOverLevData].ticksBetween -= 1;
-                    if (levData[mouseOverLevData].ticksBetween < 0) {
-                        levData[mouseOverLevData].ticksBetween = 0;
-                    }
-                    break;
-                case KEY_E:
-                    levData[mouseOverLevData].ticksBetween += 1;
-                    break;
-                default:
-                    validGameKey = false;
-                    break;
-            }
+            validGameKey = editorKeyboard(evt.keyCode);
         }
 
         return validGameKey; // skip the game keys below
@@ -374,16 +315,7 @@ function mousemoved(evt) {
         dragX = unscaledMouseX-wasUMX;
         dragY = unscaledMouseY-wasUMY;
         cumulativeDrag += Math.abs(dragX) + Math.abs(dragY);
-        switch(dragMode) {
-            case DRAG_MODE_MOVE:
-                editPanSelection(dragX*0.0012);
-                editChangeDuration(dragY*-0.00017);
-                break;
-            case DRAG_MODE_DRIFT:
-                editDriftSelection(dragX*0.00135);
-                editWidthSelection(dragY*0.0003);
-                break;
-        }
+        editorDrag();
     }
 
     mouseX = Math.floor(unscaledMouseX * GAME_W / SCALED_W);

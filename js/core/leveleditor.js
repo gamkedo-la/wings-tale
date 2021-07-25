@@ -1,5 +1,36 @@
 var editorClicked = false;
 
+function editorText() {
+	var debugLineY = 20;
+	var debugLineSkip = 10;
+	var padding = 5;
+  
+	var editorLines = [
+	  "Editor keys:",
+	  "L: exit editor to play mode",
+	  "O: output level to console",
+	  "mouse click: select segment",
+	  "mousewheel: scroll level view",
+	  "Q/E: lower/higher spawn frequency"
+	];
+  
+	scaledCtx.fillStyle = "#00000099";
+	scaledCtx.fillRect(
+	  20 - padding,
+	  debugLineY - padding,
+	  250 + padding * 2,
+	  debugLineSkip * editorLines.length + padding * 2
+	);
+  
+	scaledCtx.fillStyle = "white";
+	scaledCtx.font = "10px Helvetica";
+	for (var i = 0; i < editorLines.length; i++) {
+	  scaledCtx.fillText(editorLines[i], 20, (debugLineY += debugLineSkip));
+	}
+  
+	editorButtons(); // defined in leveleditor js
+  }
+
 function editorHandleClick() {
 	if(mouseOverEditorButtonIdx != -1) {
       editButtons[mouseOverEditorButtonIdx].func();
@@ -67,6 +98,9 @@ function editPanSelection(changeBy) {
 function editWidthSelection(changeBy) {
 	levData[mouseOverLevData].percXMin += changeBy;
 	levData[mouseOverLevData].percXMax -= changeBy;
+	if(levData[mouseOverLevData].percXMin > levData[mouseOverLevData].percXMax) { // no negative
+		levData[mouseOverLevData].percXMax = levData[mouseOverLevData].percXMin;
+	}
 	panBoundsFix();
 }
 function panBoundsFix() {
@@ -151,6 +185,58 @@ function editorButtons() {
   }
 
   scaledCtx.stroke();
+}
+
+function editorKeyboard(keyCode) {
+	var scootXBy = 0.05;
+	var durationChange = 0.01;
+	var findValidNearestI = 0;
+	validGameKey = true;
+	switch (keyCode) { // keys that require selection
+		case KEY_LEFT:
+			editPanSelection(-scootXBy);
+			break;
+		case KEY_RIGHT:
+			editPanSelection(scootXBy);
+			break;
+		case KEY_MINUS:
+			editDelete();
+			break;
+		case KEY_EQUALS:
+			editAddLayer();
+			break;
+		case KEY_0:
+			editInsert();
+			break;
+		case KEY_Q:
+			levData[mouseOverLevData].ticksBetween += 1;
+			break;
+		case KEY_E:
+			levData[mouseOverLevData].ticksBetween -= 1;
+			if (levData[mouseOverLevData].ticksBetween < 0) {
+				levData[mouseOverLevData].ticksBetween = 0;
+			}
+			break;
+		default:
+			validGameKey = false;
+			break;
+	}
+	return validGameKey;
+}
+function editorDrag() {
+	if(gameState != GAME_STATE_LEVEL_DEBUG) {
+		return;
+	}
+	switch(dragMode) {
+		case DRAG_MODE_MOVE:
+			editPanSelection(dragX*0.0012);
+			editWidthSelection(dragY*0.0003);
+			break;
+		case DRAG_MODE_DRIFT:
+			editDriftSelection(dragX*0.00135);
+			editChangeDuration(dragY*-0.00014);
+			break;
+	}
 }
 
 // added on insert in editor, defined here to keep weird json syntax all in one place 
