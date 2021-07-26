@@ -252,13 +252,23 @@ function animateSprites() {
 }
 
 function reset() {
+ console.log("reached reset "+levNow);
   try {
     gameMusic.sound.stop();
   } catch (e) {
     console.log(`${e}`);
   }
   try {
-    gameMusic = playSound(sounds.Island_Song, 1, 0, 0.5, true);
+    if(levNow==LEVEL_ISLAND){
+       gameMusic = playSound(sounds.Island_Song, 1, 0, 0.5, true);
+    }
+    else if (levNow==LEVEL_SPACE){
+      gameMusic = playSound(sounds.Space_Song, 1, 0, 0.5, true);
+    }
+    else if (levNow==LEVEL_MOON){
+      gameMusic = playSound(sounds.Space_Song, 1, 0, 0.5, true); //Space since we do not have a Moon song
+    }
+
   } catch (e) {
     console.log(`${e}`);
   }

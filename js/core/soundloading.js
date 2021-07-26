@@ -11,6 +11,7 @@ async function loadSounds() {
     startedLoading = true
     const soundList = [
         {sndName: "Island_Song", theFile: "Island_Song.mp3"},
+        {sndName: "Space_Song", theFile: "Space_Song.mp3"},
         {sndName: "playerShot", theFile: "shoot-06.mp3"},
         {sndName: "splode", theFile: "shoot-01.mp3"},
         {sndName: "splode1", theFile: "shoot-02.mp3"},
