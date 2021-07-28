@@ -412,7 +412,7 @@ function handleMouseClick(evt) {
       currentLevelImageName = levNames[levNow];
       reset();
     }
-  }, 500);
+  }, 750);
 }
 
 function handleLevelHover() {
