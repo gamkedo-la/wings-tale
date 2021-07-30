@@ -58,12 +58,13 @@ function shotGroundClass(startX,startY, totalSpeed, angle, momentumX,momentumY, 
 		this.xv *= SHOT_GROUND_SPEED_PERC_FALLOFF;
 		this.yv *= SHOT_GROUND_SPEED_PERC_FALLOFF;
 		if(this.y<0 || this.x<0 || this.x>GAME_W || this.y>GAME_H) {
+            //if (this.ownedByPlayer) this.ownedByPlayer.combo.reset(); // a bullet flying off screen resets the player's combo counter
 			this.readyToRemove = true;
 		} else if(this.yv >= SHOT_GROUND_SPEED_DETONATE) {
 			for(var i=0; i<BOMB_EXPLOSIONS; i++) {
 				var blastAng = randAng();
 				var blastDist = randRange(3,BOMB_RADIUS);
-
+                // todo: determine if we hit or miss for the combo counter like shots
 				spawnSplode(this.x + Math.cos(blastAng)*blastDist,this.y + Math.sin(blastAng)*blastDist, true);
 			}
 			listCollideRangeOfPoint(surfaceList, this.x, this.y, BOMB_RADIUS, function (at) { 

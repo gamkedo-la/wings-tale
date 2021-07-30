@@ -49,11 +49,15 @@ function playerClass() {
   this.wasHoldingBomb = false; // to tell when state toggles, since not repeat fire
 
   this.defenseRingUnitList = [];
+  
+  this.combo = new comboCounter(); // "4x COMBO!" gui
 
   this.reset = function () {
     if (this.cheatInvulnerable) {
       return;
     }
+
+    this.combo.reset();
 
     if (this.invulnerableTimeLeft <= 0) {
       this.invulnerableTimeLeft = INVULNERABLE_DURATION;
@@ -79,6 +83,9 @@ function playerClass() {
   };
 
   this.draw = function () {
+
+    this.combo.draw();
+
     if (this.invulnerableTimeLeft > 0) {
       if (Math.round(this.invulnerableTimeLeft * 10) % 4 == 0) {
         this.invulnerableBlinkToggle = !this.invulnerableBlinkToggle;
@@ -214,6 +221,7 @@ function playerClass() {
             pmy,
             this.homingBombFramesLeft > 0
           );
+          newBomb.ownedByPlayer = this;  // so we know who shot it
           shotGroundList.push(newBomb);
         }
       }
@@ -232,6 +240,7 @@ function playerClass() {
               pmx,
               pmy
             );
+            newShot.ownedByPlayer = this; // so we know who shot it
             shotList.push(newShot);
           }
           this.reloadTime = FRAMES_BETWEEN_PLAYER_SHOTS;

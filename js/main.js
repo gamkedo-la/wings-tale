@@ -254,7 +254,9 @@ function animateSprites() {
 function reset() {
  console.log("reached reset "+levNow);
   try {
-    gameMusic.sound.stop();
+    if (gameMusic && gameMusic.sound) { // can be null
+      gameMusic.sound.stop();
+    }
   } catch (e) {
     console.log(`${e}`);
   }
@@ -461,6 +463,10 @@ function update() {
         enemyList,
         (SHOT_COLLISION_DIM + ENEMY_STALLCHASE_DIM) / 2,
         function (at, to) {
+          
+          console.log("shot hit!");
+          if (at.ownedByPlayer) at.ownedByPlayer.combo.add();  
+
           if (Math.random() < SKY_POWERUP_DROP_PERCENT) {
             powerupList.push(new powerupClass(at.x, to.y));
           }

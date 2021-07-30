@@ -29,6 +29,8 @@ function shotClass(startX,startY, totalSpeed, angle, momentumX,momentumY) {
 		this.y += this.yv;
 		if(this.y<0 || this.x<0 || this.x>GAME_W || this.y>GAME_H) {
 			this.readyToRemove = true;
+            // a bullet flying off screen resets the player's combo counter
+            if (this.ownedByPlayer) this.ownedByPlayer.combo.reset(); 
 		}
 	}
 
