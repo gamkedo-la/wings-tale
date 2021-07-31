@@ -29,7 +29,8 @@ function playerClass() {
   this.bombCount = 1;
   this.ghostCount = 0;
   this.homingBombFramesLeft = HOMING_POWERUP_FRAMES;
-
+  this.hasLaserPowerUp = false;
+  this.laserIsFiring = false;
   this.speed = 3;
 
   this.invulnerableTimeLeft = 0;
@@ -49,7 +50,7 @@ function playerClass() {
   this.wasHoldingBomb = false; // to tell when state toggles, since not repeat fire
 
   this.defenseRingUnitList = [];
-  
+
   this.combo = new comboCounter(); // "4x COMBO!" gui
 
   this.reset = function () {
@@ -83,7 +84,6 @@ function playerClass() {
   };
 
   this.draw = function () {
-
     this.combo.draw();
 
     if (this.invulnerableTimeLeft > 0) {
@@ -221,13 +221,13 @@ function playerClass() {
             pmy,
             this.homingBombFramesLeft > 0
           );
-          newBomb.ownedByPlayer = this;  // so we know who shot it
+          newBomb.ownedByPlayer = this; // so we know who shot it
           shotGroundList.push(newBomb);
         }
       }
 
       if (this.holdFire) {
-        if (this.reloadTime <= 0) {
+        if (this.reloadTime <= 0 && !this.hasLaser) {
           var newShot,
             shotAngSpan = -(this.shotsNumber - 1) * (shotDegSpread * 0.5);
           playSound(sounds.playerShot);
@@ -246,6 +246,10 @@ function playerClass() {
           this.reloadTime = FRAMES_BETWEEN_PLAYER_SHOTS;
         } else {
           this.reloadTime--;
+        }
+
+        if (this.hasLaserPowerUp) {
+          console.log("Player has laser power up!");
         }
       }
 
