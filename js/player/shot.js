@@ -4,6 +4,7 @@ const SHOT_COLLISION_DIM = SHOT_DIM * 4;
 const SHOT_SPEED = 6;
 var playerShotCommonFrame = 0;
 const PLAYER_SHOT_FRAMES = 2;
+const LASER_SHOT_LENGTH = 60;
 
 function animateShots() {
   // special case, not using animateList for shots so they all stay in sync

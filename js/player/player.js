@@ -77,6 +77,7 @@ function playerClass() {
         this.bombCount = 1;
         this.ghostCount = 0;
         this.homingBombFramesLeft = HOMING_POWERUP_FRAMES;
+        this.hasLaserPowerUp = false;
       }
 
       resetDefenseRing(this);
@@ -227,18 +228,19 @@ function playerClass() {
       }
 
       if (this.holdFire) {
-        if (this.reloadTime <= 0 && !this.hasLaser) {
+        if (this.reloadTime <= 0) {
           var newShot,
             shotAngSpan = -(this.shotsNumber - 1) * (shotDegSpread * 0.5);
           playSound(sounds.playerShot);
           for (var i = 0; i < this.shotsNumber; i++) {
             newShot = new shotClass(
               fromX,
-              fromY,
+              this.hasLaserPowerUp ? fromY - LASER_SHOT_LENGTH * 2 : fromY,
               SHOT_SPEED,
               shotAngSpan + shotDegSpread * i,
               pmx,
-              pmy
+              pmy,
+              this.hasLaserPowerUp ? LASER_SHOT_LENGTH : 2
             );
             newShot.ownedByPlayer = this; // so we know who shot it
             shotList.push(newShot);

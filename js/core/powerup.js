@@ -49,7 +49,6 @@ function powerupClass(atX, atY) {
         playerScore += 5;
         break;
       case POWERUP_KIND_LASER:
-        onPlayer.shotsNumber = 3;
         onPlayer.hasLaserPowerUp = true;
         playerScore += 5;
         break;
