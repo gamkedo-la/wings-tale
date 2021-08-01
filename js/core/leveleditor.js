@@ -245,6 +245,7 @@ var editorAddLevelRowWithNext = JSON.parse(JSON.stringify(editorAddLevelRowNew))
 editorAddLevelRowWithNext.percDuration = SPAWN_WITH_NEXT; // duration to stay with next one
 
 function printLevelSeq() {
+	console.log("***TO DO: inject groundData JSON into level format as part of export step!");
 	console.log( JSON.stringify(levSeq[levNow]) );
 }
 
