@@ -520,12 +520,7 @@ function update() {
       }
       break;
     case GAME_STATE_LEVEL_DEBUG:
-      drawBackground();
-      drawList(surfaceList);
-      if(surfaceSelected != -1) {
-        drawBox(surfaceList[surfaceSelected].x,surfaceList[surfaceSelected].y,SURFACE_ENEMY_DIM,"pink");
-      }
-      drawLevelSpawnData();
+      editorDraw();
       break;
   }
 

@@ -1,37 +1,50 @@
 var editorClicked = false;
 var mouseOverLevData=-1;
 var surfaceSelected = -1;
+var surfaceWaypointSelected = -1;
 
 function editorText() {
 	var debugLineY = 20;
 	var debugLineSkip = 10;
 	var padding = 5;
-  
+
 	var editorLines = [
-	  "Editor keys:",
-	  "L: exit editor to play mode",
-	  "O: output level to console",
-	  "mouse click: select segment",
-	  "mousewheel: scroll level view",
-	  "Q/E: lower/higher spawn frequency"
+	"Editor keys:",
+	"mouse click: select segment or surface unit",
+	"mousewheel: scroll level view",
+	"Q/E: lower/higher spawn frequency"
 	];
-  
+
 	scaledCtx.fillStyle = "#00000099";
 	scaledCtx.fillRect(
-	  20 - padding,
-	  debugLineY - padding,
-	  250 + padding * 2,
-	  debugLineSkip * editorLines.length + padding * 2
+	20 - padding,
+	debugLineY - padding,
+	250 + padding * 2,
+	debugLineSkip * editorLines.length + padding * 2
 	);
-  
+
 	scaledCtx.fillStyle = "white";
 	scaledCtx.font = "10px Helvetica";
 	for (var i = 0; i < editorLines.length; i++) {
-	  scaledCtx.fillText(editorLines[i], 20, (debugLineY += debugLineSkip));
+	scaledCtx.fillText(editorLines[i], 20, (debugLineY += debugLineSkip));
 	}
-  
+
 	editorButtons(); // defined in leveleditor js
-  }
+}
+
+function editorDraw() {
+	drawBackground();
+      drawList(surfaceList);
+      if(surfaceSelected != -1) {
+        drawBox(surfaceList[surfaceSelected].x,surfaceList[surfaceSelected].y,SURFACE_ENEMY_DIM,"pink");
+        if(surfaceWaypointSelected != -1) {
+          drawBox(surfaceList[surfaceSelected].patrolWaypoints[surfaceWaypointSelected].x,
+            surfaceList[surfaceSelected].patrolWaypoints[surfaceWaypointSelected].y-bgDrawY,
+            SURFACE_ENEMY_DIM/2,"lime");
+        }
+      }
+      drawLevelSpawnData();
+}
 
 function editorHandleClick() {
 	if(mouseOverEditorButtonIdx != -1) {
@@ -334,19 +347,37 @@ function drawLevelSpawnData() { // for level debug display (may become editable 
 
 		context.fillText(i,levData[i].percXMin*GAME_W,backEdge);
 	}
+	
+	context.lineWidth = "1"; // leave thin for other routines
+
 	if(editorClicked) {
-		surfaceSelected = -1;
-		if(dragMode == DRAG_MODE_NONE) {
-			if(newMousedOver != -1 && mouseOverLevData != newMousedOver) {
-				mouseOverLevData = newMousedOver;
-			} else {
-				for(var i=0;i<surfaceList.length;i++) {
-					if(approxDist(mouseX,mouseY,surfaceList[i].x,surfaceList[i].y) < SURFACE_ENEMY_DIM) {
-						surfaceSelected = i;
-					}
+		surfaceWaypointSelected = -1;
+		if(surfaceSelected != -1 && // check for waypoint if we have a selected ground unit
+			surfaceList[surfaceSelected].patrolWaypoints != undefined) { // and it has waypoints
+
+			for(var i=0;i<surfaceList[surfaceSelected].patrolWaypoints.length;i++) {
+				if(approxDist(mouseX,mouseY,surfaceList[surfaceSelected].patrolWaypoints[i].x,
+								surfaceList[surfaceSelected].patrolWaypoints[i].y-bgDrawY) < SURFACE_ENEMY_DIM) {
+					surfaceWaypointSelected = i;
+					console.log(surfaceWaypointSelected);
 				}
 			}
 		}
+
+		if(surfaceWaypointSelected == -1) { // didn't just select a waypoint?
+			surfaceSelected = -1;
+			if(dragMode == DRAG_MODE_NONE) {
+				if(newMousedOver != -1 && mouseOverLevData != newMousedOver) {
+					mouseOverLevData = newMousedOver;
+				} else {
+					for(var i=0;i<surfaceList.length;i++) {
+						if(approxDist(mouseX,mouseY,surfaceList[i].x,surfaceList[i].y) < SURFACE_ENEMY_DIM) {
+							surfaceSelected = i;
+						}
+					} // loop to find if surface element clicked
+				} // not changing selected spawn segment
+			} // didn't drag 
+		} // didn't select a waypoint
 		editorClicked = false;
-	}
-}
+	}  // end of click for editor to handle
+} // end of draw Level Spawner data 
