@@ -2,6 +2,38 @@ var editorClicked = false;
 var mouseOverLevData=-1;
 var surfaceSelected = -1;
 var surfaceWaypointSelected = -1;
+var hideSkySpawnerLayer = false;
+
+// used for both draw and mouse overlap detection
+var editButtonDim = 40;
+var editButtonX = 50;
+var editButtonY = SCALED_H-editButtonDim-20;
+var mouseOverEditorButtonIdx = -1;
+const DRAG_MODE_NONE = 0;
+const DRAG_MODE_MOVE = 1;
+const DRAG_MODE_DRIFT = 2;
+var dragMode = DRAG_MODE_NONE;
+
+const EDIT_BUTTON_NO_SELECTION = 1;
+const EDIT_BUTTON_MOVE = 2;
+const EDIT_BUTTON_DRIFT = 3;
+var editButtons = [ // match to constants above for highlight when in drag modes
+{name:"PLAY",func:editPlay},
+{name:"OUT",func:printLevelSeq}, // 1 EDIT_BUTTON_NO_SELECTION
+{name:"MOVE",func:editMove}, // 2 EDIT_BUTTON_MOVE
+{name:"DRIFT",func:editDrift}, // 3 EDIT_BUTTON_DRIFT
+{name:"KIND",func:editKind},
+{name:"INSERT",func:editInsert},
+{name:"DEL",func:editDelete},
+{name:"LAYER",func:editAddLayer}
+];
+
+// added on insert in editor, defined here to keep weird json syntax all in one place 
+var editorAddLevelRowNew = {percDuration:0.04,kind:ENEMY_BUG,driftX:0.0,percXMin:0.4,percXMax:0.6,speed:1.0,wave:5,ticksBetween:10};
+var editorAddLevelRowWithNext = JSON.parse(JSON.stringify(editorAddLevelRowNew)); // identical, but will replace...
+editorAddLevelRowWithNext.percDuration = SPAWN_WITH_NEXT; // duration to stay with next one
+var newMousedOver = -1;
+
 
 function editorText() {
 	var debugLineY = 20;
@@ -43,7 +75,10 @@ function editorDraw() {
             SURFACE_ENEMY_DIM/2,"lime");
         }
       }
-      drawLevelSpawnData();
+	  if(hideSkySpawnerLayer == false) {
+      	drawLevelSpawnData();
+	  }
+	  handleEditorClick();
 }
 
 function editorHandleClick() {
@@ -83,7 +118,10 @@ function editKind() {
 }
 function editAddLayer() {
 	dragMode = DRAG_MODE_NONE;
-	if(mouseOverLevData != -1) {
+	if(surfaceSelected != -1) {
+		hideSkySpawnerLayer = !hideSkySpawnerLayer;
+	}
+	else if(mouseOverLevData != -1) {
 		levData.splice(mouseOverLevData, 0, JSON.parse(JSON.stringify(editorAddLevelRowWithNext)));
 		updateSpawnPercRanges();
   	}
@@ -91,9 +129,14 @@ function editAddLayer() {
 function editDelete() {
 	dragMode = DRAG_MODE_NONE;
 	if(surfaceSelected != -1) {
-		surfaceList.splice(surfaceSelected, 1);
-		surfaceSelected = -1;
-		surfaceWaypointSelected = -1;
+		if(surfaceWaypointSelected > 0) { // -1 means none, 0 is root object
+			surfaceList[surfaceSelected].patrolWaypoints.splice(surfaceWaypointSelected,1);
+			surfaceWaypointSelected--;
+		} else { // root selected, delete whole object
+			surfaceList.splice(surfaceSelected, 1);
+			surfaceSelected = -1;
+			surfaceWaypointSelected = -1;
+		}
 	} else if(mouseOverLevData != -1) {
 		levData.splice(mouseOverLevData, 1);
 		mouseOverLevData = -1;
@@ -103,10 +146,17 @@ function editDelete() {
 function editInsert() {
 	dragMode = DRAG_MODE_NONE;
 	if(surfaceSelected != -1) {
-		var surfaceNewCopy = new tentacleClass( surfaceList[surfaceSelected].x+30,
-												surfaceList[surfaceSelected].origY);
-		surfaceList.push(surfaceNewCopy);
-		surfaceSelected = surfaceList.length-1;
+		if(surfaceWaypointSelected > 0) { // -1 means none, 0 is root object
+			var thisPt = surfaceList[surfaceSelected].patrolWaypoints[surfaceWaypointSelected];
+			surfaceList[surfaceSelected].patrolWaypoints.splice(surfaceWaypointSelected,0,
+				{x:thisPt.x+20,y:thisPt.y-15});
+				surfaceWaypointSelected++;
+		} else { // root selected, spawn whole object
+			var surfaceNewCopy = new tentacleClass( surfaceList[surfaceSelected].x+30,
+													surfaceList[surfaceSelected].origY);
+			surfaceList.push(surfaceNewCopy);
+			surfaceSelected = surfaceList.length-1;
+		}
 	} else if(mouseOverLevData != -1) {
 		levData.splice(mouseOverLevData, 0, JSON.parse(JSON.stringify(editorAddLevelRowNew)));
 		updateSpawnPercRanges();
@@ -158,30 +208,6 @@ function editChangeDuration(changeBy) {
 		updateSpawnPercRanges();
 	}
 }
-
-// used for both draw and mouse overlap detection
-var editButtonDim = 40;
-var editButtonX = 50;
-var editButtonY = SCALED_H-editButtonDim-20;
-var mouseOverEditorButtonIdx = -1;
-const DRAG_MODE_NONE = 0;
-const DRAG_MODE_MOVE = 1;
-const DRAG_MODE_DRIFT = 2;
-var dragMode = DRAG_MODE_NONE;
-
-const EDIT_BUTTON_NO_SELECTION = 1;
-const EDIT_BUTTON_MOVE = 2;
-const EDIT_BUTTON_DRIFT = 3;
-var editButtons = [ // match to constants above for highlight when in drag modes
-{name:"PLAY",func:editPlay},
-{name:"OUT",func:printLevelSeq}, // 1 EDIT_BUTTON_NO_SELECTION
-{name:"MOVE",func:editMove}, // 2 EDIT_BUTTON_MOVE
-{name:"DRIFT",func:editDrift}, // 3 EDIT_BUTTON_DRIFT
-{name:"KIND",func:editKind},
-{name:"INSERT",func:editInsert},
-{name:"DEL",func:editDelete},
-{name:"LAYER",func:editAddLayer}
-];
 
 function editMove() {
 	dragMode = DRAG_MODE_MOVE;
@@ -293,7 +319,6 @@ function editorDrag() {
 				if(surfaceList[surfaceSelected].patrolWaypoints != undefined) {
 					surfaceList[surfaceSelected].patrolWaypoints[0].x = surfaceList[surfaceSelected].x;
 					surfaceList[surfaceSelected].patrolWaypoints[0].y = surfaceList[surfaceSelected].origY;
-					console.log(surfaceList[surfaceSelected].patrolWaypoints.length);
 					for(var i=1;i<surfaceList[surfaceSelected].patrolWaypoints.length;i++) {
 						surfaceList[surfaceSelected].patrolWaypoints[i].x += dragX*scaleDragPixelsX;
 						surfaceList[surfaceSelected].patrolWaypoints[i].y += dragY*scaleDragPixelsY;
@@ -307,15 +332,10 @@ function editorDrag() {
 	}
 }
 
-// added on insert in editor, defined here to keep weird json syntax all in one place 
-var editorAddLevelRowNew = {percDuration:0.04,kind:ENEMY_BUG,driftX:0.0,percXMin:0.4,percXMax:0.6,speed:1.0,wave:5,ticksBetween:10};
-var editorAddLevelRowWithNext = JSON.parse(JSON.stringify(editorAddLevelRowNew)); // identical, but will replace...
-editorAddLevelRowWithNext.percDuration = SPAWN_WITH_NEXT; // duration to stay with next one
-
 function printLevelSeq() {
 	var levelOut = JSON.parse(JSON.stringify(levData)); // deep/clean copy since we'll modify it during loading
 	levelOut.unshift(JSONSurfaceSpawnData());	
-	console.log( levelOut );
+	console.log( JSON.stringify(levelOut) );
 }
 
 function drawLevelSpawnData() { // for level debug display (may become editable later)
@@ -325,7 +345,7 @@ function drawLevelSpawnData() { // for level debug display (may become editable 
 	var prevNonSkipI = levData.length-1;
 	frontEdge=backEdge=-bgDrawY;
 	context.fillStyle = "white";
-	var newMousedOver=-1;
+	newMousedOver=-1;
 
 	for(var i=levData.length-1; i>=0;i--) { // not bothering to cull, debug draw only
 		if(spawnRanges[i] != SPAWN_WITH_NEXT) {
@@ -407,7 +427,9 @@ function drawLevelSpawnData() { // for level debug display (may become editable 
 	}
 	
 	context.lineWidth = "1"; // leave thin for other routines
+}
 
+function handleEditorClick() {
 	if(editorClicked) {
 		surfaceWaypointSelected = -1;
 		if(surfaceSelected != -1 && // check for waypoint if we have a selected ground unit
@@ -424,7 +446,7 @@ function drawLevelSpawnData() { // for level debug display (may become editable 
 		if(surfaceWaypointSelected == -1) { // didn't just select a waypoint?
 			if(dragMode == DRAG_MODE_NONE) {
 				surfaceSelected = -1;
-				if(newMousedOver != -1 && mouseOverLevData != newMousedOver) {
+				if(newMousedOver != -1 && mouseOverLevData != newMousedOver && hideSkySpawnerLayer == false) {
 					mouseOverLevData = newMousedOver;
 				} else {
 					for(var i=0;i<surfaceList.length;i++) {
