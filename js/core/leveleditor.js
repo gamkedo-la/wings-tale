@@ -258,14 +258,51 @@ function editorDrag() {
 	if(gameState != GAME_STATE_LEVEL_DEBUG) {
 		return;
 	}
+	// accounts close to stretch difference, note: not proportional since graphics stretch isn't, either
+	var scaleDragPixelsX = 0.3;
+	var scaleDragPixelsY = 0.4;
 	switch(dragMode) {
 		case DRAG_MODE_MOVE:
-			editPanSelection(dragX*0.0012);
-			editWidthSelection(dragY*0.0003);
+			if(surfaceSelected != -1) {
+				// moving main body, no waypoints or first selected
+				if(surfaceWaypointSelected == -1 || surfaceWaypointSelected == 0 || 
+					surfaceList[surfaceSelected].patrolWaypoints == undefined) {
+					surfaceList[surfaceSelected].x += dragX*scaleDragPixelsX;
+					surfaceList[surfaceSelected].origY += dragY*scaleDragPixelsY;
+					// if it has waypoints, keep 0,0 with it
+					if(surfaceList[surfaceSelected].patrolWaypoints != undefined) {
+						surfaceList[surfaceSelected].patrolWaypoints[0].x = surfaceList[surfaceSelected].x;
+						surfaceList[surfaceSelected].patrolWaypoints[0].y = surfaceList[surfaceSelected].origY;
+					}
+				}
+				if(surfaceWaypointSelected != -1) { // patrol point
+					surfaceList[surfaceSelected].patrolWaypoints[surfaceWaypointSelected].x += dragX*scaleDragPixelsX;
+					surfaceList[surfaceSelected].patrolWaypoints[surfaceWaypointSelected].y += dragY*scaleDragPixelsY;
+				}
+				
+			} else if(mouseOverLevData != -1) {
+				editPanSelection(dragX*0.0012);
+				editWidthSelection(dragY*0.0003);
+			}
 			break;
 		case DRAG_MODE_DRIFT:
-			editDriftSelection(dragX*0.00135);
-			editChangeDuration(dragY*-0.00014);
+			if(surfaceSelected != -1) {
+				surfaceList[surfaceSelected].x += dragX*scaleDragPixelsX;
+				surfaceList[surfaceSelected].origY += dragY*scaleDragPixelsY;
+				// if it has waypoints, keep 0,0 with it
+				if(surfaceList[surfaceSelected].patrolWaypoints != undefined) {
+					surfaceList[surfaceSelected].patrolWaypoints[0].x = surfaceList[surfaceSelected].x;
+					surfaceList[surfaceSelected].patrolWaypoints[0].y = surfaceList[surfaceSelected].origY;
+					console.log(surfaceList[surfaceSelected].patrolWaypoints.length);
+					for(var i=1;i<surfaceList[surfaceSelected].patrolWaypoints.length;i++) {
+						surfaceList[surfaceSelected].patrolWaypoints[i].x += dragX*scaleDragPixelsX;
+						surfaceList[surfaceSelected].patrolWaypoints[i].y += dragY*scaleDragPixelsY;
+					}
+				}
+			} else if(mouseOverLevData != -1) {
+				editDriftSelection(dragX*0.00135);
+				editChangeDuration(dragY*-0.00014);
+			}
 			break;
 	}
 }
@@ -385,8 +422,8 @@ function drawLevelSpawnData() { // for level debug display (may become editable 
 		}
 
 		if(surfaceWaypointSelected == -1) { // didn't just select a waypoint?
-			surfaceSelected = -1;
 			if(dragMode == DRAG_MODE_NONE) {
+				surfaceSelected = -1;
 				if(newMousedOver != -1 && mouseOverLevData != newMousedOver) {
 					mouseOverLevData = newMousedOver;
 				} else {
