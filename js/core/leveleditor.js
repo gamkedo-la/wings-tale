@@ -1,4 +1,6 @@
 var editorClicked = false;
+var mouseOverLevData=-1;
+var surfaceSelected = -1;
 
 function editorText() {
 	var debugLineY = 20;
@@ -245,8 +247,6 @@ function printLevelSeq() {
 	console.log( levelOut );
 }
 
-var mouseOverLevData=-1;
-
 function drawLevelSpawnData() { // for level debug display (may become editable later)
 	// stopping 1 from end to draw line forward to next data point
 	var mapLength = images[currentLevelImageName].height;
@@ -334,9 +334,18 @@ function drawLevelSpawnData() { // for level debug display (may become editable 
 
 		context.fillText(i,levData[i].percXMin*GAME_W,backEdge);
 	}
-	if(newMousedOver != -1 && mouseOverLevData != newMousedOver && editorClicked) {
+	if(editorClicked) {
+		surfaceSelected = -1;
 		if(dragMode == DRAG_MODE_NONE) {
-			mouseOverLevData = newMousedOver;
+			if(newMousedOver != -1 && mouseOverLevData != newMousedOver) {
+				mouseOverLevData = newMousedOver;
+			} else {
+				for(var i=0;i<surfaceList.length;i++) {
+					if(approxDist(mouseX,mouseY,surfaceList[i].x,surfaceList[i].y) < SURFACE_ENEMY_DIM) {
+						surfaceSelected = i;
+					}
+				}
+			}
 		}
 		editorClicked = false;
 	}

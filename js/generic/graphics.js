@@ -53,6 +53,14 @@ function drawFilledBar(cornerX,cornerY,width,height,fillPerc,color) {
 	context.fillRect(cornerX,cornerY,width*fillPerc,height);
 }
 
+// note: from CENTER not corner (used mainly for editor highlight stuff)
+function drawBox(centerX,centerY,sizeFromCenter,color) {
+	context.beginPath();
+	context.strokeStyle = color;
+	context.rect(centerX-sizeFromCenter,centerY-sizeFromCenter,sizeFromCenter*2,sizeFromCenter*2);
+	context.stroke();
+}
+
 function startDisplayIntervals() {
 	setInterval(update,1000/TARGET_MOTION_FPS);
 	setInterval(animateSprites, 1000/SHARED_ANIMATION_FRAMES_PER_SEC);

@@ -47,8 +47,8 @@ function surfaceEnemyClass(startX,startY) {
 	this.myKind = GROUND_KIND_TANK; // used for level format data
 	this.x = startX;
 	this.origY = startY;
-	this.y = this.origY;
-	this.frame = Math.random()*SURFACE_ENEMY_FRAMES;
+	this.y = 0;
+	this.frame = Math.floor(Math.random()*SURFACE_ENEMY_FRAMES);
 	this.bombLockedOn = false; // used to keep upgraded split bombs from homing on same ground target
 	this.patrolWaypoints = [];
 	
