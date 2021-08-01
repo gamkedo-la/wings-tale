@@ -44,9 +44,10 @@ function spawnSurfaceEnemies() {
 surfaceEnemyClass.prototype = new moveDrawClass();
 
 function surfaceEnemyClass(startX,startY) {
+	this.myKind = GROUND_KIND_TANK; // used for level format data
 	this.x = startX;
 	this.origY = startY;
-	this.y = 0;
+	this.y = this.origY;
 	this.frame = Math.random()*SURFACE_ENEMY_FRAMES;
 	this.bombLockedOn = false; // used to keep upgraded split bombs from homing on same ground target
 	this.patrolWaypoints = [];
@@ -104,9 +105,7 @@ function surfaceEnemyClass(startX,startY) {
 			} // advance waypoint
 		} // has waypoints?
 
-		if(this.y > GAME_H) {
-			this.readyToRemove = true;
-		} else {
+		if(this.y < GAME_H) {
 			if (120 * Math.random() < 1) {
 				new enemyShotClass(this.x, this.y);
 			}

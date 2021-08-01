@@ -521,6 +521,7 @@ function update() {
       break;
     case GAME_STATE_LEVEL_DEBUG:
       drawBackground();
+      drawList(surfaceList);
       drawLevelSpawnData();
       break;
   }

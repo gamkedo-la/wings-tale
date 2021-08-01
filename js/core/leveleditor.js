@@ -46,11 +46,6 @@ function editPlay() {
   readyToReset = true;
 }
 
-function editExtra() {
-  dragMode = DRAG_MODE_NONE;
-  console.log("undefined button");
-}
-
 function editKind() {
 	dragMode = DRAG_MODE_NONE;
 	if(mouseOverLevData != -1) {
@@ -245,8 +240,9 @@ var editorAddLevelRowWithNext = JSON.parse(JSON.stringify(editorAddLevelRowNew))
 editorAddLevelRowWithNext.percDuration = SPAWN_WITH_NEXT; // duration to stay with next one
 
 function printLevelSeq() {
-	console.log("***TO DO: inject groundData JSON into level format as part of export step!");
-	console.log( JSON.stringify(levSeq[levNow]) );
+	var levelOut = JSON.parse(JSON.stringify(levData)); // deep/clean copy since we'll modify it during loading
+	levelOut.unshift(JSONSurfaceSpawnData());	
+	console.log( levelOut );
 }
 
 var mouseOverLevData=-1;

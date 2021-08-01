@@ -2,8 +2,9 @@ tentacleClass.prototype = new moveDrawClass();
 
  // note: so far, not yet a general enemy class, pretty specific to this enemy. we can generalize it when we add more types
 function tentacleClass(atX, atY) {
+	this.myKind = GROUND_KIND_TENTACLE; // used for level format data
     this.frameDim = 16;
-	this.startY = atY;
+	this.origY = atY;
 	this.x = atX;
 	this.y = 0;
     this.xtip = 0;
@@ -16,7 +17,7 @@ function tentacleClass(atX, atY) {
 	this.bombLockedOn = false; // used to keep upgraded split bombs from homing on same ground target
 
 	this.move = function() {
-		this.y = this.startY - bgDrawY;
+		this.y = this.origY - bgDrawY;
 		this.xtip = Math.cos(this.y/3)*10;
 		// if(this.y>GAME_H) {
 		// 	this.readyToRemove = true;
@@ -24,6 +25,9 @@ function tentacleClass(atX, atY) {
 	}
 
 	this.draw = function() {
+		if(gameState == GAME_STATE_LEVEL_DEBUG) {
+			this.move(); // updates draw info for this object
+		}
         for(let i = 0; i < this.splatCount; i++){
 			this.xtip = this.xtip + Math.cos(i+this.y)*5;
             drawX = lerp(this.x, this.x+this.xtip, i / this.splatCount);
