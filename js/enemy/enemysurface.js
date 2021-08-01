@@ -50,36 +50,21 @@ function surfaceEnemyClass(startX,startY) {
 	this.frame = Math.random()*SURFACE_ENEMY_FRAMES;
 	this.bombLockedOn = false; // used to keep upgraded split bombs from homing on same ground target
 	this.patrolWaypoints = [];
-	var howManyWP = Math.floor(randRange(1,5));
-	if(howManyWP==1) { // single point, so no waypoints
-		howManyWP=0;
-	}
-	for(var i=0;i<howManyWP;i++) {
-		var atX,atY;
-		// used only to keep adjacent points spaced
-		var prevX = -3000; // way out of bounds to pass first adjacency tests
-		var prevY = -3000;
-		var triesBeforeAcceptingUnderwater = 50;
-		for(var ii=0;ii<triesBeforeAcceptingUnderwater;ii++) {
-			atX = startX+randRange(-60,60);
-			atX = Math.max(atX,0);
-			atX = Math.min(atX,GAME_W);
-			atY = startY+randRange(-60,60);
-			if(depthAt(atX,atY) > DEPTH_FOR_GROUND &&
-				approxDist(atX,atY,prevX,prevY)>20) {
-				break;
-			}
-		}
-		// used only to keep adjacent points spaced
-		prevX=atX;
-		prevY=atY;
+	
+	this.loadWaypoints = function(wpData) {
+		var howManyWP = wpData.length;
 
-		this.patrolWaypoints.push({x:atX,y:atY});
+		for(var i=0;i<howManyWP;i++) {
+			this.patrolWaypoints.push({x:this.x+wpData[i].x,y:this.origY+wpData[i].y});
+		}
+		if(this.patrolWaypoints.length>0) { // has rails? start on them
+			this.x = this.patrolWaypoints[0].x;
+			this.origY = this.patrolWaypoints[0].y;
+		} else if(howManyWP==1) { // single point, so no waypoints
+			this.patrolWaypoints = [];
+		}		
 	}
-	if(this.patrolWaypoints.length>0) { // has rails? start on them
-		this.x = this.patrolWaypoints[0].x;
-		this.origY = this.patrolWaypoints[0].y;
-	}
+
 	this.waypointIndex=0;
 	this.speed = randRange(0.5,0.85);
 	this.drawAngle = 0; // only used if doing waypoints
