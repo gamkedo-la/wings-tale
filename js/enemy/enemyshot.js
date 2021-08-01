@@ -22,7 +22,7 @@ function enemyShotClass(startX, startY, totalSpeed = ENEMY_SHOT_SPEED) {
 		var dist2 = approxDist(startX,startY,playerList[1].x,playerList[1].y)
 		playerTarget = (dist1 < dist2 ? playerList[0] : playerList[1]);
 	}
-	this.ang = Math.atan2((playerTarget.y - startY), (playerTarget.x - startX))
+	this.ang = Math.atan2((playerTarget.y - startY), (playerTarget.x - startX));
 	this.x = startX;
 	this.y = startY;
 	this.xv = Math.cos(this.ang) * totalSpeed;

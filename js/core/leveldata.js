@@ -5,6 +5,10 @@ const ENEMY_SHOCK = 3;
 const ENEMY_KINDS = 4;
 var enemySpawnDebugColor = ["lime","yellow","cyan","pink"];
 
+const GROUND_KIND_TANK = 0;
+const GROUND_KIND_TENTACLE = 1;
+const GROUND_KINDS = 2;
+
 const SPAWN_WITH_NEXT = 0.0;
 const NO_DEPTH_LOOKUP_DEFAULT_HEIGHT = 128;
 const DEPTH_FOR_UNDERWATER = 3;
@@ -81,6 +85,22 @@ function JSONSurfaceSpawnData() {
 	return groundJSON;
 }
 
+function groundTypeToObject(kind,atX,atY) {
+	var returnObj = null;
+	switch(kind) {
+		case GROUND_KIND_TANK:
+			returnObj = new surfaceEnemyClass(atX,atY);
+			break;
+		case GROUND_KIND_TENTACLE:
+			returnObj = new tentacleClass(atX,atY);
+			break;
+		default:
+			console.log("unrecognized ground type for value: "+kind);
+			break;
+	}
+	return returnObj;
+}
+
 // note: should only be called right after making a fresh copy to levData, modifies it
 function processAndRemoveGroundLevelData() {
 	var levelSpawnData = levData[0].groundData;
@@ -92,16 +112,13 @@ function processAndRemoveGroundLevelData() {
 	var nextSpawn;
 
 	for(var i=0;i<levelSpawnData.length;i++) {
-		switch(levelSpawnData[i].groundKind) {
-			case GROUND_KIND_TANK:
-				nextSpawn = new surfaceEnemyClass(levelSpawnData[i].x,levelSpawnData[i].y);
-				nextSpawn.loadWaypoints(levelSpawnData[i].track);
-				surfaceList.push(nextSpawn);
-				break;
-			case GROUND_KIND_TENTACLE:
-				surfaceList.push(new tentacleClass(levelSpawnData[i].x,levelSpawnData[i].y));
-				break;
-			}
+		nextSpawn = groundTypeToObject(levelSpawnData[i].groundKind,
+										levelSpawnData[i].x,levelSpawnData[i].y);
+
+		if(levelSpawnData[i].groundKind==GROUND_KIND_TANK) {
+			nextSpawn.loadWaypoints(levelSpawnData[i].track);
+		}
+		surfaceList.push(nextSpawn);
 	}
 
 	levData.splice(0,1); // cut out the ground spawn data, it's different format, leaves just sky spawn behind for level/editor code

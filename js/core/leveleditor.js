@@ -63,7 +63,18 @@ function editPlay() {
 
 function editKind() {
 	dragMode = DRAG_MODE_NONE;
-	if(mouseOverLevData != -1) {
+	if(surfaceSelected != -1) {
+		surfaceWaypointSelected = -1; // avoid losing waypoint in kind change
+		surfaceList[surfaceSelected].myKind++;
+		if(surfaceList[surfaceSelected].myKind>= GROUND_KINDS) {
+			surfaceList[surfaceSelected].myKind=0;
+		}
+
+		// have to regenerate it, since we use whole actual ground instances in the editor
+		surfaceList[surfaceSelected] = groundTypeToObject(surfaceList[surfaceSelected].myKind,
+			surfaceList[surfaceSelected].x,surfaceList[surfaceSelected].origY);
+
+	} else if(mouseOverLevData != -1) {
 		levData[mouseOverLevData].kind++;
 		if(levData[mouseOverLevData].kind>= ENEMY_KINDS) {
 			levData[mouseOverLevData].kind=0;
@@ -74,22 +85,32 @@ function editAddLayer() {
 	dragMode = DRAG_MODE_NONE;
 	if(mouseOverLevData != -1) {
 		levData.splice(mouseOverLevData, 0, JSON.parse(JSON.stringify(editorAddLevelRowWithNext)));
-    updateSpawnPercRanges();
-  }
+		updateSpawnPercRanges();
+  	}
 }
 function editDelete() {
 	dragMode = DRAG_MODE_NONE;
-	if(mouseOverLevData != -1) {
+	if(surfaceSelected != -1) {
+		surfaceList.splice(surfaceSelected, 1);
+		surfaceSelected = -1;
+		surfaceWaypointSelected = -1;
+	} else if(mouseOverLevData != -1) {
 		levData.splice(mouseOverLevData, 1);
-    updateSpawnPercRanges();
-  }
+		mouseOverLevData = -1;
+    	updateSpawnPercRanges();
+	}
 }
 function editInsert() {
 	dragMode = DRAG_MODE_NONE;
-	if(mouseOverLevData != -1) {
+	if(surfaceSelected != -1) {
+		var surfaceNewCopy = new tentacleClass( surfaceList[surfaceSelected].x+30,
+												surfaceList[surfaceSelected].origY);
+		surfaceList.push(surfaceNewCopy);
+		surfaceSelected = surfaceList.length-1;
+	} else if(mouseOverLevData != -1) {
 		levData.splice(mouseOverLevData, 0, JSON.parse(JSON.stringify(editorAddLevelRowNew)));
-    updateSpawnPercRanges();
-  }
+		updateSpawnPercRanges();
+	}
 }
 function editDriftSelection(changeBy) {
 	levData[mouseOverLevData].driftX += changeBy;
@@ -183,7 +204,7 @@ function editorButtons() {
     } else if( (i==EDIT_BUTTON_MOVE && dragMode == DRAG_MODE_MOVE) || 
 				(i==EDIT_BUTTON_DRIFT && dragMode == DRAG_MODE_DRIFT) ) {
     	scaledCtx.fillStyle = "green";
-    } else if(i > EDIT_BUTTON_NO_SELECTION && mouseOverLevData == -1) {
+    } else if(i > EDIT_BUTTON_NO_SELECTION && surfaceSelected == -1 && mouseOverLevData == -1) {
     	scaledCtx.fillStyle = "#660000";
 	} else {
     	scaledCtx.fillStyle = "black";
@@ -359,7 +380,6 @@ function drawLevelSpawnData() { // for level debug display (may become editable 
 				if(approxDist(mouseX,mouseY,surfaceList[surfaceSelected].patrolWaypoints[i].x,
 								surfaceList[surfaceSelected].patrolWaypoints[i].y-bgDrawY) < SURFACE_ENEMY_DIM) {
 					surfaceWaypointSelected = i;
-					console.log(surfaceWaypointSelected);
 				}
 			}
 		}
@@ -373,6 +393,7 @@ function drawLevelSpawnData() { // for level debug display (may become editable 
 					for(var i=0;i<surfaceList.length;i++) {
 						if(approxDist(mouseX,mouseY,surfaceList[i].x,surfaceList[i].y) < SURFACE_ENEMY_DIM) {
 							surfaceSelected = i;
+							mouseOverLevData = -1; // deselect spawn segment, surface selected instead
 						}
 					} // loop to find if surface element clicked
 				} // not changing selected spawn segment

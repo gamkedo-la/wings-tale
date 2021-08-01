@@ -3,9 +3,6 @@ const SURFACE_ENEMY_DIM = 10;
 const SURFACE_ENEMY_FRAMES = 2;
 const ENEMY_SPAWN_TRY_COUNT = 100;
 
-const GROUND_KIND_TANK = 0;
-const GROUND_KIND_TENTACLE = 1;
-
 function spawnSurfaceEnemies() {
 	
 	// was used for random gen in early stages, now replaced by level data
@@ -50,11 +47,13 @@ function surfaceEnemyClass(startX,startY) {
 	this.y = 0;
 	this.frame = Math.floor(Math.random()*SURFACE_ENEMY_FRAMES);
 	this.bombLockedOn = false; // used to keep upgraded split bombs from homing on same ground target
-	this.patrolWaypoints = [];
+	this.patrolWaypoints = [{x:startX+0,y:startY+0},
+							{x:startX-50,y:startY-50},
+							{x:startX+50,y:startY-50}]; // default, mainly shows up in editor
 	
 	this.loadWaypoints = function(wpData) {
 		var howManyWP = wpData.length;
-
+		this.patrolWaypoints = [];
 		for(var i=0;i<howManyWP;i++) {
 			this.patrolWaypoints.push({x:this.x+wpData[i].x,y:this.origY+wpData[i].y});
 		}
