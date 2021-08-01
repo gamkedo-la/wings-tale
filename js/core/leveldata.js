@@ -71,15 +71,15 @@ function JSONSurfaceSpawnData() {
 	var groundJSON = {groundData:[]};
 	for(var i=0;i<surfaceList.length;i++) {
 		var nextGround = {groundKind:surfaceList[i].myKind,
-			x: surfaceList[i].x,
-			y: surfaceList[i].origY};
+			x: Math.floor(surfaceList[i].x),
+			y: Math.floor(surfaceList[i].origY)};
 		if(surfaceList[i].patrolWaypoints) {
 			nextGround.track = [];
 			for(var ii=0;ii<surfaceList[i].patrolWaypoints.length;ii++) {
 				// console.log(surfaceList[i].patrolWaypoints[ii].y, nextGround.y);
 				nextGround.track[ii] = 
-					{x:surfaceList[i].patrolWaypoints[ii].x - nextGround.x,
-						y:surfaceList[i].patrolWaypoints[ii].y - nextGround.y};
+					{x:Math.floor(surfaceList[i].patrolWaypoints[ii].x - nextGround.x),
+						y:Math.floor(surfaceList[i].patrolWaypoints[ii].y - nextGround.y)};
 			}
 		}
 
