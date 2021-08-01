@@ -17,7 +17,12 @@ function depthAt(atX,atY) {
 }
 
 var islandSpawnSeq =
-[{"groundData":"not yet defined"},
+[
+	{"groundData":[
+		{"groundKind":0,"x":100,"y":830,"track":[{"x":50,"y":50},{"x":-20,"y":50},{"x":-30,"y":10}] },
+		{"groundKind":1,"x":200,"y":130,"track":[{"x":-20,"y":0},{"x":0,"y":-75},{"x":20,"y":100}] }
+		]
+	},
 {"percDuration":0.05,"kind":2,"driftX":0.3,"percXMin":0.3,"percXMax":0.4,"speed":3,"wave":10,"ticksBetween":20},{"percDuration":0,"kind":0,"driftX":-0.7,"percXMin":0.8,"percXMax":0.9,"speed":1,"wave":10,"ticksBetween":20},{"percDuration":0,"kind":1,"driftX":0,"percXMin":0.5,"percXMax":0.5,"speed":2.5,"wave":0,"ticksBetween":1},{"percDuration":0.02,"kind":0,"driftX":0.7,"percXMin":0.1,"percXMax":0.2,"speed":1,"wave":10,"ticksBetween":20},{"percDuration":0.05,"kind":1,"driftX":-0.76,"percXMin":0.8,"percXMax":0.9,"speed":2.5,"wave":25,"ticksBetween":5},{"percDuration":0.05,"kind":0,"driftX":0,"percXMin":0.2,"percXMax":0.8,"speed":0.5,"wave":100,"ticksBetween":30},{"percDuration":0,"kind":1,"driftX":-0.9,"percXMin":0.95,"percXMax":0.95,"speed":2.5,"wave":0,"ticksBetween":2},{"percDuration":0.07,"kind":0,"driftX":0.8,"percXMin":0.1,"percXMax":0.3,"speed":2.5,"wave":5,"ticksBetween":2},{"percDuration":0.1,"kind":0,"driftX":0.5,"percXMin":0.1,"percXMax":0.5,"speed":1.5,"wave":30,"ticksBetween":40},{"percDuration":0.1,"kind":0,"driftX":0,"percXMin":0.5,"percXMax":0.5,"speed":2,"wave":50,"ticksBetween":3},{"percDuration":0.1,"kind":0,"driftX":0,"percXMin":0.1,"percXMax":0.9,"speed":3,"wave":2,"ticksBetween":0}];
 
 var spaceSpawnSeq = [
@@ -57,8 +62,28 @@ var enemyList=[];
 
 // note: should only be called right after making a fresh copy to levData, modifies it
 function processAndRemoveGroundLevelData() {
-	var levelSpawnData = levData[0];
+	var levelSpawnData = levData[0].groundData;
 	console.log("Level spawn data to use for play: "+JSON.stringify(levelSpawnData));
+	surfaceList = [];
+
+	let w = images[curDepthMap].width;
+	let h = images[curDepthMap].height;
+	console.log("map dim: " +w+", "+h);
+
+	for(var i=0;i<levelSpawnData.length;i++) {
+		switch(levelSpawnData[i].groundKind) {
+			case GROUND_KIND_TANK:
+				surfaceList.push(new surfaceEnemyClass(levelSpawnData[i].x,levelSpawnData[i].y));
+				console.log("coords: " + levelSpawnData[i].x +", "+levelSpawnData[i].y);
+				break;
+			case GROUND_KIND_TENTACLE:
+				surfaceList.push(new tentacleClass(levelSpawnData[i].x,levelSpawnData[i].y));
+				break;
+			}
+	}
+
+	console.log("Number of ground units spawned: " + surfaceList.length);
+
 	levData.splice(0,1); // cut out the ground spawn data, it's different format, leaves just sky spawn behind for level/editor code
 }
 

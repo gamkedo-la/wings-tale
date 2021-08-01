@@ -9,16 +9,16 @@
 // player.combo.draw(x,y); // renders gui somewhere
 
 function comboCounter() {
-    console.log("combo counter initializing");
+    // console.log("combo counter initializing");
     const kudos = ['NICE','SWEET','EXCELLENT','AMAZING','AWESOME','INCREDIBLE','FANTASTIC','EPIC','LEGENDARY','GALACTIC','INTERGALACTIC','ULTRA SKILL'];
     var _count = 0; // private
     this.current = function() { return _count; };
     this.add = function() { 
         _count++;
-        console.log(_count+"x combo! nice.");
+        // console.log(_count+"x combo! nice.");
     };
     this.reset = function() {
-        console.log("shot missed. combo reset to x0 (noooo!)");
+        // console.log("shot missed. combo reset to x0 (noooo!)");
         _count=0; 
     };
     this.draw = function(x=210,y=8) {

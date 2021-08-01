@@ -204,7 +204,6 @@ function createDepthSpawnReference() {
   depthSpawnCanvas = document.createElement("canvas");
   depthSpawnContext = depthSpawnCanvas.getContext("2d");
   let img = [];
-  console.log("LevNow: ", levNow);
   switch (levNow) {
     case LEVEL_ISLAND:
       img = images["depth map"];
@@ -252,7 +251,7 @@ function animateSprites() {
 }
 
 function reset() {
- console.log("reached reset "+levNow);
+  // console.log("reached reset "+levNow);
   try {
     if (gameMusic && gameMusic.sound) { // can be null
       gameMusic.sound.stop();
@@ -293,10 +292,10 @@ function reset() {
     drawMoveList[i].length = 0;
   }
 
-  surfaceList = [];
+  /*surfaceList = []; // now part of startLevel function since part of map data
   if (levNow == LEVEL_ISLAND) {
     spawnSurfaceEnemies();
-  }
+  }*/
   rippleReset();
 
   // repacking this list since reset above emplied

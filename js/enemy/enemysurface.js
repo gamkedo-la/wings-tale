@@ -3,7 +3,14 @@ const SURFACE_ENEMY_DIM = 10;
 const SURFACE_ENEMY_FRAMES = 2;
 const ENEMY_SPAWN_TRY_COUNT = 100;
 
+const GROUND_KIND_TANK = 0;
+const GROUND_KIND_TENTACLE = 1;
+
 function spawnSurfaceEnemies() {
+	
+	// was used for random gen in early stages, now replaced by level data
+
+	/*
 	let w = images[curDepthMap].width;
 	let h = images[curDepthMap].height;
 	for(let i = 0; i < ENEMY_SPAWN_TRY_COUNT; i++){
@@ -21,8 +28,9 @@ function spawnSurfaceEnemies() {
 		}else if(canSpawnHere < DEPTH_FOR_UNDERWATER) {  //in the water
 			surfaceList.push(new tentacleClass(atX, atY));
 		}
-
 	}
+	*/
+
 	// surfaceList.push(new surfaceEnemyClass(201,259));
 	// surfaceList.push(new surfaceEnemyClass(110,592));
 	// surfaceList.push(new surfaceEnemyClass(58,744));
