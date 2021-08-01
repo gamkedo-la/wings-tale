@@ -155,6 +155,7 @@ function editInsert() {
 			var surfaceNewCopy = new tentacleClass( surfaceList[surfaceSelected].x+30,
 													surfaceList[surfaceSelected].origY);
 			surfaceList.push(surfaceNewCopy);
+			surfaceWaypointSelected = -1; // avoid accidental selection of non-existent waypoint
 			surfaceSelected = surfaceList.length-1;
 		}
 	} else if(mouseOverLevData != -1) {
