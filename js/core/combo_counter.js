@@ -26,13 +26,16 @@ function comboCounter() {
         if (_count>0) {
             context.font = "8px Helvetica";
             context.fillStyle = "black";
-            context.fillText(_count+"x COMBO", x+1, y+1);
+            //context.fillText(_count+"x COMBO", x+1, y+1);
+            //micro_pixel_font(_count+"x COMBO", x+1, y+1);
             context.fillStyle = "orange";
-            context.fillText(_count+"x COMBO", x, y);
+            //context.fillText(_count+"x COMBO", x, y);
+            micro_pixel_font(_count+"x COMBO", x, y);
             if (_count > 9) { // say something cute
                 var whichone = Math.min(Math.floor(_count/10),kudos.length-1);
                 var wobble = Math.sin(performance.now()/1000)*8;
-                context.fillText(kudos[whichone],x+wobble,y+9);
+                //context.fillText(kudos[whichone],x+wobble,y+9);
+                micro_pixel_font(kudos[whichone],x+wobble,y+9);
             }
             context.fillStyle = 'white';
         }
