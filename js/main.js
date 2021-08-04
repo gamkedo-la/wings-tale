@@ -267,7 +267,7 @@ function reset() {
       gameMusic = playSound(sounds.Space_Song, 1, 0, 0.5, true);
     }
     else if (levNow==LEVEL_MOON){
-      gameMusic = playSound(sounds.Moon_Song_WIP, 1, 0, 0.5, true); 
+      gameMusic = playSound(sounds.Moon_Song, 1, 0, 0.5, true); 
     }
 
   } catch (e) {
