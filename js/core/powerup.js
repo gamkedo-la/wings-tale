@@ -9,8 +9,9 @@ const POWER_UP_KIND_SHOTS = 0;
 const POWER_UP_KIND_BOMB = 1;
 const POWER_UP_KIND_GHOST = 2;
 const POWERUP_KIND_LASER = 3;
-const POWERUP_KINDS = 4;
-const POWERUP_MOVEMENT = 4;
+const POWER_UP_KIND_MOVEMENT = 4;
+const POWERUP_KINDS = 5;
+
 
 powerupClass.prototype = new moveDrawClass();
 
@@ -48,6 +49,10 @@ function powerupClass(atX, atY) {
         onPlayer.ghostCount += 1;
         playerScore += 5;
         break;
+      case POWER_UP_KIND_MOVEMENT:
+          onPlayer.speed = 6;
+          playerScore += 5;
+        break;
       case POWERUP_KIND_LASER:
         onPlayer.hasLaserPowerUp = true;
         playerScore += 5;
@@ -56,11 +61,6 @@ function powerupClass(atX, atY) {
         console.log(
           "missing powerup definition in doEffect for kind: " + this.kind
         );
-        break;
-      case POWERUP_MOVEMENT:
-        onPlayer.this.speed = 6;
-        playerScore += 5;
-        break;
     }
   };
 
