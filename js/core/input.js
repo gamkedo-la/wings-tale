@@ -3,6 +3,7 @@ var mouseX = -1,
 var unscaledMouseX = -1,
   unscaledMouseY = -1;
 var mouseDragging = false;
+var mouseNewDragStarted = false; // flips true for single frame of new drag
 var dragX = 0,
   dragY = 0;
 var cumulativeDrag = 0; // total amount of drag since button down, for click detection
@@ -363,6 +364,10 @@ function mousemoved(evt) {
   unscaledMouseX = evt.clientX - rect.left - root.scrollLeft;
   unscaledMouseY = evt.clientY - rect.top - root.scrollTop;
 
+  if(mouseNewDragStarted) {
+    mouseNewDragStarted = false;
+  }
+
   if (mouseDragging) {
     dragX = unscaledMouseX - wasUMX;
     dragY = unscaledMouseY - wasUMY;
@@ -395,6 +400,7 @@ function handleMouseClick(evt) {
   if (gameState == GAME_STATE_LEVEL_DEBUG) {
     editorHandleClick();
     mouseDragging = true;
+    mouseNewDragStarted = true;
     return;
   }
   setTimeout(function () {

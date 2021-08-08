@@ -14,6 +14,8 @@ const DRAG_MODE_MOVE = 1;
 const DRAG_MODE_DRIFT = 2;
 var dragMode = DRAG_MODE_NONE;
 
+const EDIT_SPAWNTRACK_DRAGGING_DIM = 10;
+
 const EDIT_BUTTON_NO_SELECTION = 1;
 const EDIT_BUTTON_MOVE = 2;
 const EDIT_BUTTON_DRIFT = 3;
@@ -424,6 +426,37 @@ function drawLevelSpawnData() { // for level debug display (may become editable 
 		context.closePath();
 		context.stroke();
 
+		var dragBoxCenterX = 0.5*(startXPercMin+startXPercMax)*GAME_W;
+		var dragBoxCenterY = backEdge;
+		context.fillStyle = "gray";
+		if(approxDist(mouseX,mouseY, dragBoxCenterX,dragBoxCenterY) < EDIT_SPAWNTRACK_DRAGGING_DIM) {
+			if(mouseNewDragStarted) {
+				dragMode = DRAG_MODE_MOVE;
+				mouseOverLevData = i;
+			}
+			context.fillStyle = "red";
+		}
+		context.fillRect(
+			dragBoxCenterX-EDIT_SPAWNTRACK_DRAGGING_DIM/2,dragBoxCenterY-EDIT_SPAWNTRACK_DRAGGING_DIM/2,
+			EDIT_SPAWNTRACK_DRAGGING_DIM,EDIT_SPAWNTRACK_DRAGGING_DIM
+			);
+
+		dragBoxCenterX = 0.5*(endXPercMin+endXPercMax)*GAME_W;
+		dragBoxCenterY = frontEdge;		
+		context.fillStyle = "gray";
+		if(approxDist(mouseX,mouseY, dragBoxCenterX,dragBoxCenterY) < EDIT_SPAWNTRACK_DRAGGING_DIM/2) {
+			if(mouseNewDragStarted) {
+				dragMode = DRAG_MODE_DRIFT;
+				mouseOverLevData = i;
+			}
+			context.fillStyle = "red";
+		}
+		context.fillRect(
+			dragBoxCenterX-EDIT_SPAWNTRACK_DRAGGING_DIM/2,dragBoxCenterY-EDIT_SPAWNTRACK_DRAGGING_DIM/2,
+			EDIT_SPAWNTRACK_DRAGGING_DIM,EDIT_SPAWNTRACK_DRAGGING_DIM
+			);
+
+		context.fillStyle = "white";
 		context.fillText(i,levData[i].percXMin*GAME_W,backEdge);
 	}
 	
