@@ -20,6 +20,7 @@ const KEY_E = 69;
 const KEY_F = 70;
 const KEY_G = 71;
 const KEY_H = 72;
+const KEY_J = 74;
 const KEY_L = 76;
 const KEY_M = 77;
 const KEY_N = 78;
@@ -64,6 +65,7 @@ function inputPlayerClass() {
   this.cheatKeyReset;
   this.cheatKeyNoDamage;
   this.cheatKeyMovement;
+  this.cheatKeySpawnBug;
 }
 
 var inputList = [new inputPlayerClass(), new inputPlayerClass()];
@@ -81,6 +83,7 @@ function assignKeyMapping() {
   inputList[0].cheatKeyReset = KEY_4;
   inputList[0].cheatKeyMovement = KEY_P;
   inputList[0].cheatKeyNoDamage = KEY_6;
+  inputList[0].cheatKeySpawnBug = KEY_J;
 
   inputList[1].bombKey = KEY_X;
   inputList[1].fireKey = KEY_Z;
@@ -94,6 +97,7 @@ function assignKeyMapping() {
   inputList[1].cheatKeyBomb = KEY_8;
   inputList[1].cheatKeyGhost = KEY_9;
   inputList[1].cheatKeyReset = KEY_0;
+  inputList[1].cheatKeySpawnBug = KEY_C;
 }
 
 function keyPush(evt) {
@@ -280,6 +284,11 @@ function playerKeyHold(evt, keyFrom, whichPlayer, setTo) {
       playerList[whichPlayer].cheatInvulnerable = false;
       playerList[whichPlayer].speed = 3;
     }
+  } else if (evt.keyCode == inputList[keyFrom].cheatKeySpawnBug) {
+    if (setTo == false) {
+      // key relase only
+      spawnSpecificEnemyAtRandomPosition(ENEMY_BUG);
+    }
   } else {
     validGameKey = false;
   }
@@ -382,4 +391,10 @@ function handleLevelHover() {
       );
     }
   }
+}
+
+function spawnSpecificEnemyAtRandomPosition(enemy){
+  var usingStep = {percDuration:randRange(0.01,0.10),kind:enemy,driftX:randRange(-1.0,1.0),percXMin:randRange(0.1,1.0),percXMax:randRange(0.1,1.0),speed:randRange(1.0,2.0),wave:randRange(1,10),ticksBetween:randRange(10,2000)};
+  
+  spawnKind(usingStep);
 }
