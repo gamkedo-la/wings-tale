@@ -80,6 +80,7 @@ window.onload = function () {
 
 function loadingDoneSoStartGame() {
   imagesLoaded = true;
+  createEditorSpawnKindPatterns();
 
   if (gameDevelopmentMode) {
     //draw level select screen when in game dev mode

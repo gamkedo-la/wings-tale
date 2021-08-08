@@ -371,9 +371,10 @@ function drawLevelSpawnData() { // for level debug display (may become editable 
 
 		context.strokeStyle = enemySpawnDebugColor[levData[i].kind];
 
-		var startXPercMin = levData[i].percXMin;
+		var minMarginThickness = 0.03; // necessary to see type of thinnest/zero band
+		var startXPercMin = levData[i].percXMin-minMarginThickness;
 		var endXPercMin = startXPercMin+levData[i].driftX;
-		var startXPercMax = levData[i].percXMax;
+		var startXPercMax = levData[i].percXMax+minMarginThickness;
 		var endXPercMax = startXPercMax+levData[i].driftX;
 
 		if(mouseY>frontEdge && mouseY<backEdge && newMousedOver==-1) {
@@ -425,6 +426,10 @@ function drawLevelSpawnData() { // for level debug display (may become editable 
 		context.lineTo(startXPercMax*GAME_W,backEdge);
 		context.closePath();
 		context.stroke();
+		context.fillStyle = enemyEditorToPattern[ levData[i].kind ];
+		context.globalAlpha = 0.5;
+		context.fill();
+		context.globalAlpha = 1.0;
 
 		var dragBoxCenterX = 0.5*(startXPercMin+startXPercMax)*GAME_W;
 		var dragBoxCenterY = backEdge;
@@ -443,7 +448,7 @@ function drawLevelSpawnData() { // for level debug display (may become editable 
 
 		dragBoxCenterX = 0.5*(endXPercMin+endXPercMax)*GAME_W;
 		dragBoxCenterY = frontEdge;		
-		context.fillStyle = "gray";
+		context.fillStyle = "lightgray";
 		if(approxDist(mouseX,mouseY, dragBoxCenterX,dragBoxCenterY) < EDIT_SPAWNTRACK_DRAGGING_DIM/2) {
 			if(mouseNewDragStarted) {
 				dragMode = DRAG_MODE_DRIFT;
