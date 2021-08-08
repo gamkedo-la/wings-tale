@@ -14,7 +14,7 @@ const DRAG_MODE_MOVE = 1;
 const DRAG_MODE_DRIFT = 2;
 var dragMode = DRAG_MODE_NONE;
 
-const EDIT_SPAWNTRACK_DRAGGING_DIM = 10;
+const EDIT_SPAWNTRACK_DRAGGING_DIM = 7;
 
 const EDIT_BUTTON_NO_SELECTION = 1;
 const EDIT_BUTTON_MOVE = 2;
@@ -469,34 +469,37 @@ function drawLevelSpawnData() { // for level debug display (may become editable 
 }
 
 function handleEditorClick() {
-	if(editorClicked) {
+	if(editorClicked || mouseNewDragStarted) {
 		surfaceWaypointSelected = -1;
-		if(surfaceSelected != -1 && // check for waypoint if we have a selected ground unit
-			surfaceList[surfaceSelected].patrolWaypoints != undefined) { // and it has waypoints
 
-			for(var i=0;i<surfaceList[surfaceSelected].patrolWaypoints.length;i++) {
-				if(approxDist(mouseX,mouseY,surfaceList[surfaceSelected].patrolWaypoints[i].x,
-								surfaceList[surfaceSelected].patrolWaypoints[i].y-bgDrawY) < SURFACE_ENEMY_DIM) {
-					surfaceWaypointSelected = i;
+		surfaceSelected = -1;
+		if(newMousedOver != -1 && mouseOverLevData != newMousedOver && hideSkySpawnerLayer == false) {
+			mouseOverLevData = newMousedOver;
+		} else {
+			for(var i=0;i<surfaceList.length;i++) {
+				if(approxDist(mouseX,mouseY,surfaceList[i].x,surfaceList[i].y) < SURFACE_ENEMY_DIM) {
+					surfaceSelected = i;
+					dragMode = DRAG_MODE_DRIFT;
+					mouseOverLevData = -1; // deselect spawn segment, surface selected instead
 				}
-			}
-		}
+				if(surfaceList[i].patrolWaypoints != undefined) { // does this one have waypoints ?
+					// skip first in this loop, first waypoint is always root (detected above already)
+					for(var ii=1;ii<surfaceList[i].patrolWaypoints.length;ii++) {
+							if(approxDist(mouseX,mouseY,surfaceList[i].patrolWaypoints[ii].x,
+											surfaceList[i].patrolWaypoints[ii].y-bgDrawY) < SURFACE_ENEMY_DIM) {
+								surfaceSelected = i;
+								surfaceWaypointSelected = ii;
+								if(ii == 0) {
+									dragMode = DRAG_MODE_DRIFT;
+								} else {
+									dragMode = DRAG_MODE_MOVE;
+								} // end of check for root waypoint
+							} // end of checking if mouse is close enough
+						} // end of each patrol waypoint
+				} // has waypoints?
+			} // loop to find if surface element clicked
+		} // not changing selected spawn segment
 
-		if(surfaceWaypointSelected == -1) { // didn't just select a waypoint?
-			if(dragMode == DRAG_MODE_NONE) {
-				surfaceSelected = -1;
-				if(newMousedOver != -1 && mouseOverLevData != newMousedOver && hideSkySpawnerLayer == false) {
-					mouseOverLevData = newMousedOver;
-				} else {
-					for(var i=0;i<surfaceList.length;i++) {
-						if(approxDist(mouseX,mouseY,surfaceList[i].x,surfaceList[i].y) < SURFACE_ENEMY_DIM) {
-							surfaceSelected = i;
-							mouseOverLevData = -1; // deselect spawn segment, surface selected instead
-						}
-					} // loop to find if surface element clicked
-				} // not changing selected spawn segment
-			} // didn't drag 
-		} // didn't select a waypoint
 		editorClicked = false;
 	}  // end of click for editor to handle
 } // end of draw Level Spawner data 
