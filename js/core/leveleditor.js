@@ -16,18 +16,17 @@ var dragMode = DRAG_MODE_NONE;
 
 const EDIT_SPAWNTRACK_DRAGGING_DIM = 7;
 
-const EDIT_BUTTON_NO_SELECTION = 1;
-const EDIT_BUTTON_MOVE = 2;
-const EDIT_BUTTON_DRIFT = 3;
+const EDIT_BUTTON_NO_SELECTION = 2; // after this are red/unavailable with no selection
 var editButtons = [ // match to constants above for highlight when in drag modes
 {name:"PLAY",func:editPlay},
-{name:"OUT",func:printLevelSeq}, // 1 EDIT_BUTTON_NO_SELECTION
-{name:"MOVE",func:editMove}, // 2 EDIT_BUTTON_MOVE
-{name:"DRIFT",func:editDrift}, // 3 EDIT_BUTTON_DRIFT
+{name:"OUT",func:printLevelSeq},
+{name:"LAYER",func:editChangeLayer},
+//{name:"MOVE",func:editMove},
+//{name:"DRIFT",func:editDrift},
 {name:"KIND",func:editKind},
 {name:"INSERT",func:editInsert},
 {name:"DEL",func:editDelete},
-{name:"LAYER",func:editAddLayer}
+{name:"EXTRA",func:editAddExtra}
 ];
 
 // added on insert in editor, defined here to keep weird json syntax all in one place 
@@ -118,15 +117,21 @@ function editKind() {
 		}
 	}
 }
-function editAddLayer() {
+
+function editAddExtra() {
 	dragMode = DRAG_MODE_NONE;
-	if(surfaceSelected != -1) {
-		hideSkySpawnerLayer = !hideSkySpawnerLayer;
-	}
-	else if(mouseOverLevData != -1) {
+	if(mouseOverLevData != -1) {
 		levData.splice(mouseOverLevData, 0, JSON.parse(JSON.stringify(editorAddLevelRowWithNext)));
 		updateSpawnPercRanges();
-  	}
+  } else if(surfaceSelected != -1) {
+  	editInsert();
+  	console.log("intended for sky spawns, currently same as \"insert\" for ground");
+  }
+}
+function editChangeLayer() {
+	hideSkySpawnerLayer = !hideSkySpawnerLayer;
+	mouseOverLevData = -1;
+	surfaceWaypointSelected = -1;
 }
 function editDelete() {
 	dragMode = DRAG_MODE_NONE;
@@ -230,9 +235,6 @@ function editorButtons() {
     if(pointInBox(unscaledMouseX, unscaledMouseY, buttonX,editButtonY,editButtonDim,editButtonDim)) {
     	mouseOverEditorButtonIdx = i;
     	scaledCtx.fillStyle = "gray";
-    } else if( (i==EDIT_BUTTON_MOVE && dragMode == DRAG_MODE_MOVE) || 
-				(i==EDIT_BUTTON_DRIFT && dragMode == DRAG_MODE_DRIFT) ) {
-    	scaledCtx.fillStyle = "green";
     } else if(i > EDIT_BUTTON_NO_SELECTION && surfaceSelected == -1 && mouseOverLevData == -1) {
     	scaledCtx.fillStyle = "#660000";
 	} else {
@@ -253,28 +255,17 @@ function editorKeyboard(keyCode) {
 	var findValidNearestI = 0;
 	validGameKey = true;
 	switch (keyCode) { // keys that require selection
-		case KEY_LEFT:
-			editPanSelection(-scootXBy);
-			break;
-		case KEY_RIGHT:
-			editPanSelection(scootXBy);
-			break;
-		case KEY_MINUS:
-			editDelete();
-			break;
-		case KEY_EQUALS:
-			editAddLayer();
-			break;
-		case KEY_0:
-			editInsert();
-			break;
 		case KEY_Q:
-			levData[mouseOverLevData].ticksBetween += 1;
+			if(mouseOverLevData != -1) {
+				levData[mouseOverLevData].ticksBetween++;
+			}
 			break;
 		case KEY_E:
-			levData[mouseOverLevData].ticksBetween -= 1;
-			if (levData[mouseOverLevData].ticksBetween < 0) {
-				levData[mouseOverLevData].ticksBetween = 0;
+			if(mouseOverLevData != -1) {
+				levData[mouseOverLevData].ticksBetween--;
+				if (levData[mouseOverLevData].ticksBetween < 0) {
+					levData[mouseOverLevData].ticksBetween = 0;
+				}
 			}
 			break;
 		default:
@@ -395,11 +386,7 @@ function drawLevelSpawnData() { // for level debug display (may become editable 
 			context.lineWidth = "4"; // thick for spaced markers showing spawn density
 		}
 
-		if(levData[i].ticksBetween > 1) {
-			context.setLineDash([1, levData[i].ticksBetween]);
-		} else {
-			context.setLineDash([]);
-		}
+		context.setLineDash([1, levData[i].ticksBetween+1]);
 
 		context.beginPath();
 		context.moveTo(startXPercMin*GAME_W,backEdge);
@@ -434,7 +421,7 @@ function drawLevelSpawnData() { // for level debug display (may become editable 
 		var dragBoxCenterX = 0.5*(startXPercMin+startXPercMax)*GAME_W;
 		var dragBoxCenterY = backEdge;
 		context.fillStyle = "gray";
-		if(approxDist(mouseX,mouseY, dragBoxCenterX,dragBoxCenterY) < EDIT_SPAWNTRACK_DRAGGING_DIM) {
+		if(approxDist(mouseX,mouseY, dragBoxCenterX,dragBoxCenterY) < EDIT_SPAWNTRACK_DRAGGING_DIM*1.5) {
 			if(mouseNewDragStarted) {
 				dragMode = DRAG_MODE_MOVE;
 				mouseOverLevData = i;
@@ -469,7 +456,7 @@ function drawLevelSpawnData() { // for level debug display (may become editable 
 }
 
 function handleEditorClick() {
-	if(editorClicked || mouseNewDragStarted) {
+	if(editorClicked || (mouseNewDragStarted && mouseOverEditorButtonIdx == -1)) {
 		surfaceWaypointSelected = -1;
 
 		surfaceSelected = -1;
