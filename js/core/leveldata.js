@@ -3,12 +3,14 @@ const ENEMY_SWOOP = 1;
 const ENEMY_STALL_CHASE = 2;
 const ENEMY_SHOCK = 3;
 const ENEMY_KINDS = 4;
+const ENEMY_DIMO = 5;
 var enemySpawnDebugColor = ["lime","yellow","cyan","pink"];
 var enemyEditorToPattern = [ // string used by level editor to show the graphic in spawn volumes
 		"bug", // ENEMY_BUG = 0;
 		"swoop", // ENEMY_SWOOP = 1;
 		"stallchase", // ENEMY_STALL_CHASE = 2;
 		"shockball", // ENEMY_SHOCK = 3;
+		"dimo",	//ENEMY_DIM = 5
 		// note: none needed for ENEMY_KINDS, that const is a clue for editor to wrap cycling type
 	];
 // replaces strings in the array with usable pattern data for spawn boxes, only call once at start
@@ -229,6 +231,9 @@ function spawnKind(usingStep) {
 			break;
 		case ENEMY_SHOCK:
 			enemyList.push(new enemyShockBallClass(usingStep));
+			break;
+		case ENEMY_DIMO:
+			enemyList.push(new enemyDimoClass(usingStep));
 			break;
 	}
 }
