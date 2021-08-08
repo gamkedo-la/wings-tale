@@ -44,8 +44,9 @@ function editorText() {
 	var editorLines = [
 	"Editor keys:",
 	"mouse click: select segment or surface unit",
-	"mousewheel: scroll level view",
-	"Q/E: lower/higher spawn frequency"
+	"mouse drag: move/adjust (gray control points)",
+	"mousewheel: move level view",
+	"Q/E: less/more frequency, more dashes = more enemies"
 	];
 
 	scaledCtx.fillStyle = "#00000099";
