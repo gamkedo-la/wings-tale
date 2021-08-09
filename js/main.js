@@ -464,8 +464,15 @@ function update() {
         (SHOT_COLLISION_DIM + ENEMY_STALLCHASE_DIM) / 2,
         function (at, to) {
           
-          console.log("shot hit!");
-          if (at.ownedByPlayer) at.ownedByPlayer.combo.add();  
+          //console.log("shot hit!");
+          if (at.ownedByPlayer) {
+              at.ownedByPlayer.combo.add();
+              // note: if the global playerScore gets refactored into
+              // a property of the player class (to allow >1 player)
+              // then this is a good place to increase the score
+              // example: at.ownedByPlayer.score += 10;
+              playerScore += 10; // FIXME - each enemy could have to.scoreEarned
+          }
 
           if (Math.random() < SKY_POWERUP_DROP_PERCENT) {
             powerupList.push(new powerupClass(at.x, to.y));
@@ -538,7 +545,7 @@ function update() {
 }
 
 function gameDebugSharpText() {
-  var debugLineY = 20;
+  var debugLineY = 56;
   var debugLineSkip = 10;
   var padding = 5;
 

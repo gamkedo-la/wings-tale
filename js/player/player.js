@@ -52,6 +52,7 @@ function playerClass() {
   this.defenseRingUnitList = [];
 
   this.combo = new comboCounter(); // "4x COMBO!" gui
+  this.scoreUI = new score_gui();
 
   this.reset = function () {
     if (this.cheatInvulnerable) {
@@ -86,6 +87,11 @@ function playerClass() {
 
   this.draw = function () {
     this.combo.draw();
+
+    // FIXME:
+    // playerScore is a global but the game can have two players
+    // therefore perhaps score should become a property of the player class
+    this.scoreUI.draw(playerScore,8,8); 
 
     if (this.invulnerableTimeLeft > 0) {
       if (Math.round(this.invulnerableTimeLeft * 10) % 4 == 0) {

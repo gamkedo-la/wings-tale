@@ -39,23 +39,23 @@ function powerupClass(atX, atY) {
     switch (this.kind) {
       case POWER_UP_KIND_SHOTS:
         onPlayer.shotsNumber += 4;
-        playerScore += 5;
+        playerScore += 500;
         break;
       case POWER_UP_KIND_BOMB:
         onPlayer.bombCount += 1;
-        playerScore += 5;
+        playerScore += 750;
         break;
       case POWER_UP_KIND_GHOST:
         onPlayer.ghostCount += 1;
-        playerScore += 5;
+        playerScore += 2500;
         break;
       case POWER_UP_KIND_MOVEMENT:
           onPlayer.speed = 6;
-          playerScore += 5;
+          playerScore += 1200;
         break;
       case POWERUP_KIND_LASER:
         onPlayer.hasLaserPowerUp = true;
-        playerScore += 5;
+        playerScore += 1500;
         break;
       default:
         console.log(
