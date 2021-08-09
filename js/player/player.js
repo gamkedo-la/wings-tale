@@ -79,6 +79,7 @@ function playerClass() {
         this.ghostCount = 0;
         this.homingBombFramesLeft = HOMING_POWERUP_FRAMES;
         this.hasLaserPowerUp = false;
+        this.speed = 3;
       }
 
       resetDefenseRing(this);
