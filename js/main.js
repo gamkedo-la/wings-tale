@@ -10,6 +10,7 @@ let p2AI = true;
 var playerList = [new playerClass(), new playerClass()];
 var readyToReset = false; // to avoid calling reset() mid list iterations
 var octopusBoss = new octopusClass();
+var alienshipBoss = new alienshipClass();
 
 var gamepads = new GamepadManager();
 
@@ -524,7 +525,15 @@ function update() {
       }
 
       if (bossFight) {
+        if (levNow==LEVEL_ISLAND) {
         octopusBoss.draw();
+        }
+        else if (levNow==LEVEL_SPACE) {
+        alienshipBoss.draw();
+        }
+        else if (levNow==LEVEL_MOON) {   // This code is for spawning moon stage boss, currently spawns alien ship
+        alienshipBoss.draw();
+        }
       }
       break;
     case GAME_STATE_LEVEL_DEBUG:

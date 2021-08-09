@@ -17,6 +17,7 @@ function loadImages() {
     { imgName: "shockball", theFile: "enemyenergyspark.png" },
     { imgName: "octopus", theFile: "GiantOctopus.png" },
     { imgName: "tentacle", theFile: "tentacle.png" },
+    { imgName: "alien ship", theFile: "AlienShip.png" },
     { imgName: "dimo", theFile: "enemyDimo.png" },
     { imgName: "powerup", theFile: "powerup.png" },
     { imgName: "turret", theFile: "enemyturret.png" },
