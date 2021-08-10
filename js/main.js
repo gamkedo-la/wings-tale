@@ -1,5 +1,5 @@
 var gameDevelopmentMode = true; //skip intro stuff
-//practice commit will remove - Bonzerr
+
 var nDefenseOrbs = 33;
 var debuggingDisplay = true;
 var debugDraw_surfacePaths = true;
