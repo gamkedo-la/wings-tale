@@ -21,6 +21,7 @@ function loadImages() {
     { imgName: "dimo", theFile: "enemyDimo.png" },
     { imgName: "powerup", theFile: "powerup.png" },
     { imgName: "turret", theFile: "enemyturret.png" },
+    { imgName: "frog tank", theFile: "enemyspacefrog.png" },
     { imgName: "defense_ring_unit", theFile: "defense_ring_unit.png" },
     //{imgName: "level island", theFile: "level-islands.png"},
     { imgName: "level island", theFile: "islandLevelPaint.png" },

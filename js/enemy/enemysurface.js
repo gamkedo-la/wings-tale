@@ -1,5 +1,5 @@
 var surfaceList=[];
-const SURFACE_ENEMY_DIM = 10;
+const SURFACE_ENEMY_DIM = 16;
 const SURFACE_ENEMY_FRAMES = 2;
 const ENEMY_SPAWN_TRY_COUNT = 100;
 
@@ -83,7 +83,7 @@ function surfaceEnemyClass(startX,startY) {
 			context.closePath();
 			context.stroke();
 		}
-		drawAnimFrame("turret",this.x,this.y, this.frame, SURFACE_ENEMY_DIM,SURFACE_ENEMY_DIM,
+		drawAnimFrame("frog tank",this.x,this.y, this.frame, SURFACE_ENEMY_DIM,SURFACE_ENEMY_DIM,
 				this.drawAngle,
 				undefined, heightScale);
 	}
