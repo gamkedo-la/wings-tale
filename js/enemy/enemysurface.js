@@ -1,6 +1,8 @@
 var surfaceList=[];
 const SURFACE_ENEMY_DIM = 16;
-const SURFACE_ENEMY_FRAMES = 2;
+const SURFACE_ENEMY_FRAMES = 3;
+const SURFACE_TURRET_DIM = 10;
+const SURFACE_TURRET_FRAMES = 2;
 const ENEMY_SPAWN_TRY_COUNT = 100;
 
 function spawnSurfaceEnemies() {
@@ -57,7 +59,7 @@ function surfaceEnemyClass(startX,startY) {
 		for(var i=0;i<howManyWP;i++) {
 			this.patrolWaypoints.push({x:this.x+wpData[i].x,y:this.origY+wpData[i].y});
 		}
-		if(this.patrolWaypoints.length>0) { // has rails? start on them
+		if(this.patrolWaypoints.length>1) { // has rails? start on them
 			this.x = this.patrolWaypoints[0].x;
 			this.origY = this.patrolWaypoints[0].y;
 		} else if(howManyWP==1) { // single point, so no waypoints
@@ -83,13 +85,19 @@ function surfaceEnemyClass(startX,startY) {
 			context.closePath();
 			context.stroke();
 		}
-		drawAnimFrame("frog tank",this.x,this.y, this.frame, SURFACE_ENEMY_DIM,SURFACE_ENEMY_DIM,
+		if(this.patrolWaypoints.length>1) {
+			drawAnimFrame("frog tank",this.x,this.y, this.frame, SURFACE_ENEMY_DIM,SURFACE_ENEMY_DIM,
 				this.drawAngle,
 				undefined, heightScale);
+		} else {
+			drawAnimFrame("turret",this.x,this.y, this.frame, SURFACE_TURRET_DIM,SURFACE_TURRET_DIM,
+				this.drawAngle,
+				undefined, heightScale);
+		}
 	}
 
 	this.move = function() {
-		if(this.patrolWaypoints.length>0) {
+		if(this.patrolWaypoints.length>1) {
 			var currentWaypoint = this.patrolWaypoints[this.waypointIndex];
 			var angTo = Math.atan2((currentWaypoint.y - this.origY), (currentWaypoint.x - this.x));
 			this.drawAngle = angTo;
@@ -112,7 +120,13 @@ function surfaceEnemyClass(startX,startY) {
 	}
 
 	this.animate = function() {
-		if(++this.frame>=SURFACE_ENEMY_FRAMES) {
+		var framesTotal;
+		if(this.patrolWaypoints.length>0) {
+			framesTotal = SURFACE_ENEMY_FRAMES;
+		} else {
+			framesTotal = SURFACE_TURRET_FRAMES;
+		}
+		if(++this.frame>=framesTotal) {
 			this.frame = 0;
 		}
 	}
