@@ -73,15 +73,15 @@ function surfaceEnemyClass(startX,startY) {
 		this.y = this.origY-bgDrawY;
 		var heightHere = depthAt(this.x,this.origY);
 		var heightScale = 0.8+0.9*(heightHere/255.0);
-		if(debugDraw_surfacePaths && this.patrolWaypoints.length>0) {
+		if(debugDraw_surfacePaths && this.patrolWaypoints.length>0 &&  gameState == GAME_STATE_LEVEL_DEBUG) {
 			context.strokeStyle="gray";
-			/*context.beginPath();
+			context.beginPath();
 			context.moveTo(this.patrolWaypoints[0].x,this.patrolWaypoints[0].y-bgDrawY);
 			for(var i=1;i<this.patrolWaypoints.length;i++) {
 				context.lineTo(this.patrolWaypoints[i].x,this.patrolWaypoints[i].y-bgDrawY);
 			}
 			context.closePath();
-			context.stroke();*/
+			context.stroke();
 		}
 		drawAnimFrame("turret",this.x,this.y, this.frame, SURFACE_ENEMY_DIM,SURFACE_ENEMY_DIM,
 				this.drawAngle,
