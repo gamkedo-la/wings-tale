@@ -1,4 +1,4 @@
-const ENEMY_DIMO_DIM = 24;
+const ENEMY_DIMO_DIM = 172;
 const ENEMY_DIMO_FRAMES = 6;
 
 enemyDimoClass.prototype = new moveDrawClass();
