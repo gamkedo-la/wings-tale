@@ -6,7 +6,6 @@ const SURFACE_TURRET_FRAMES = 2;
 const ENEMY_SPAWN_TRY_COUNT = 100;
 
 function spawnSurfaceEnemies() {
-	// TSC - comment to remove later
 	// was used for random gen in early stages, now replaced by level data
 
 	/*
