@@ -158,11 +158,22 @@ function editInsert() {
 		if(surfaceWaypointSelected > 0) { // -1 means none, 0 is root object
 			var thisPt = surfaceList[surfaceSelected].patrolWaypoints[surfaceWaypointSelected];
 			surfaceList[surfaceSelected].patrolWaypoints.splice(surfaceWaypointSelected,0,
-				{x:thisPt.x+20,y:thisPt.y-15});
+				{x:thisPt.x+20,y:thisPt.y-15}); // inject extra point with an offset
 				surfaceWaypointSelected++;
 		} else { // root selected, spawn whole object
-			var surfaceNewCopy = new tentacleClass( surfaceList[surfaceSelected].x+30,
-													surfaceList[surfaceSelected].origY);
+			var surfaceNewCopy;
+			var offsetX = 30, offsetY = 10;
+			surfaceNewCopy = groundTypeToObject(surfaceList[surfaceSelected].myKind,
+				surfaceList[surfaceSelected].x+offsetX,surfaceList[surfaceSelected].origY+offsetY);
+
+			if(surfaceList[surfaceSelected].myKind == GROUND_KIND_TANK) {
+				surfaceNewCopy.patrolWaypoints = JSON.parse(JSON.stringify( surfaceList[surfaceSelected].patrolWaypoints ));
+				for(var i=0;i<surfaceNewCopy.patrolWaypoints.length;i++) {
+					surfaceNewCopy.patrolWaypoints[i].x += offsetX;
+					surfaceNewCopy.patrolWaypoints[i].y += offsetY;
+				}
+			}
+
 			surfaceList.push(surfaceNewCopy);
 			surfaceWaypointSelected = -1; // avoid accidental selection of non-existent waypoint
 			surfaceSelected = surfaceList.length-1;
@@ -338,7 +349,8 @@ function editorDrag() {
 				surfaceList[surfaceSelected].x += dragX*scaleDragPixelsX;
 				surfaceList[surfaceSelected].origY += dragY*scaleDragPixelsY;
 				// if it has waypoints, keep 0,0 with it
-				if(surfaceList[surfaceSelected].patrolWaypoints != undefined) {
+				if(surfaceList[surfaceSelected].patrolWaypoints != undefined &&
+						surfaceList[surfaceSelected].patrolWaypoints[0] !== undefined) {
 					surfaceList[surfaceSelected].patrolWaypoints[0].x = surfaceList[surfaceSelected].x;
 					surfaceList[surfaceSelected].patrolWaypoints[0].y = surfaceList[surfaceSelected].origY;
 					for(var i=1;i<surfaceList[surfaceSelected].patrolWaypoints.length;i++) {
