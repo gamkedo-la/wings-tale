@@ -5,9 +5,6 @@
 // player.scoreUI.draw(value,x,y);
 
 function score_gui() {
-    
-    console.log("score gui initializing");
-    
     var currentValue = 0; // target value
     var displayedValue = 0; // what is on screen
     var scoreString = ""; // padded with zeroes

@@ -33,38 +33,53 @@ function loadImages() {
       theFile: "level-select-island-draft-2.png",
     },
     {
-      imgName: "level menu space",
-      theFile: "level-select-space-draft-2.png",
-    },
-    {
-      imgName: "level menu moon",
-      theFile: "level-select-moon-draft-2.png",
-    },
-    {
       imgName: "level menu island highlight",
       theFile: "level-select-island-highlight.png",
+    },
+    {
+      imgName: "text island",
+      theFile: "text-island.png",
+    },
+
+    {
+      imgName: "level menu space",
+      theFile: "level-select-space-draft-2.png",
     },
     {
       imgName: "level menu space highlight",
       theFile: "level-select-space-highlight.png",
     },
     {
-      imgName: "level menu moon highlight",
-      theFile: "level-select-moon-highlight.png",
-    },
-    {
-      imgName: "text island",
-      theFile: "text-island.png",
-    },
-    {
       imgName: "text space",
       theFile: "text-space.png",
+    },
+
+    {
+      imgName: "level menu moon",
+      theFile: "level-select-moon-draft-2.png",
+    },
+    {
+      imgName: "level menu moon highlight",
+      theFile: "level-select-moon-highlight.png",
     },
     {
       imgName: "text moon",
       theFile: "text-moon.png",
     },
 
+    {
+      imgName: "level menu lava",
+      theFile: "level-select-lava-draft-2.png",
+    },
+    {
+      imgName: "level menu lava highlight",
+      theFile: "level-select-lava-highlight.png",
+    },
+    {
+      imgName: "text lava",
+      theFile: "text-lava.png",
+    },
+ 
     // note: in order to getbitmapdata on this we need to be
     // running on a web server due to browser local file security
     { imgName: "depth map", theFile: "islandLevelDepth.png" },

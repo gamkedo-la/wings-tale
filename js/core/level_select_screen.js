@@ -17,12 +17,13 @@ function LevelSelectScreen() {
     const LEVEL_SELECT_HEIGHT = scaledCanvas.height / 3;
     const LEVEL_SELECT_WIDTH = scaledCanvas.width / 4;
     const LEVEL_SELECT_Y = scaledCanvas.height / 3;
-    const LEVEL_SELECT_X = scaledCanvas.width / 10;
+    const LEVEL_SELECT_X = scaledCanvas.width / 15;
 
     const level_selections = [
       "level menu island",
       "level menu space",
       "level menu moon",
+      "level menu lava",
     ];
 
     // Render level selections
@@ -34,6 +35,14 @@ function LevelSelectScreen() {
         LEVEL_SELECT_WIDTH,
         LEVEL_SELECT_HEIGHT
       );
+
+      LEVEL_RECTS[i] = {
+        x: LEVEL_SELECT_X + (LEVEL_SELECT_WIDTH + MARGIN) * i,
+        y: LEVEL_SELECT_Y,
+        width: LEVEL_SELECT_WIDTH,
+        height: LEVEL_SELECT_HEIGHT,
+        name: level_selections[i],
+      };
     }
 
     //  ----- TEXT -----
@@ -42,7 +51,7 @@ function LevelSelectScreen() {
     const TEXT_X = LEVEL_SELECT_X + TEXT_WIDTH / 2;
     const TEXT_Y = LEVEL_SELECT_Y + LEVEL_SELECT_HEIGHT + MARGIN;
 
-    const level_text = ["text island", "text space", "text moon"];
+    const level_text = ["text island", "text space", "text moon", "text lava"];
 
     // Render level names
     for (var i = 0; i < level_text.length; i++) {

@@ -48,6 +48,7 @@ var curDepthMap = "depth map";
 
 window.onload = function () {
   setupCanvas();
+  initializeLevelSelectScreen();
 
   if (cheatKeepPowerupsOnDeath) {
     console.log("The cheat/debug feature KeepPowerupsOnDeath is on!");
@@ -59,7 +60,7 @@ window.onload = function () {
 
   loadImages();
 
-  mouseSetup();
+  inputSetup();
 
   if (!gameDevelopmentMode) {
     context.fillStyle = "black";
@@ -84,73 +85,7 @@ function loadingDoneSoStartGame() {
   createEditorSpawnKindPatterns();
 
   if (gameDevelopmentMode) {
-    //draw level select screen when in game dev mode
-    var levX = 0;
-    var levWid = images[levNames[0]].width;
-
-    // LEVEL MENU BACKGROUND
-    scaledCtx.drawImage(
-      images["level menu"],
-      0,
-      0,
-      scaledCanvas.width,
-      scaledCanvas.height
-    );
-
-    const MARGIN = 25; // spacing between UI elements
-
-    //  ----- LEVEL SELECTIONS-----
-    const LEVEL_SELECT_HEIGHT = scaledCanvas.height / 3;
-    const LEVEL_SELECT_WIDTH = scaledCanvas.width / 4;
-    const LEVEL_SELECT_Y = scaledCanvas.height / 3;
-    const LEVEL_SELECT_X = scaledCanvas.width / 10;
-
-    const level_selections = [
-      "level menu island",
-      "level menu space",
-      "level menu moon",
-    ];
-
-    // Render level selections
-    for (var i = 0; i < level_selections.length; i++) {
-      scaledCtx.drawImage(
-        images[level_selections[i]],
-        LEVEL_SELECT_X + (LEVEL_SELECT_WIDTH + MARGIN) * i,
-        LEVEL_SELECT_Y,
-        LEVEL_SELECT_WIDTH,
-        LEVEL_SELECT_HEIGHT
-      );
-
-      LEVEL_RECTS[i] = {
-        x: LEVEL_SELECT_X + (LEVEL_SELECT_WIDTH + MARGIN) * i,
-        y: LEVEL_SELECT_Y,
-        width: LEVEL_SELECT_WIDTH,
-        height: LEVEL_SELECT_HEIGHT,
-        name: level_selections[i],
-      };
-    }
-
-    document.addEventListener("mousemove", mousemoved);
-    document.addEventListener("mousemove", handleLevelHover);
-
-    //  ----- TEXT -----
-    const TEXT_HEIGHT = 18;
-    const TEXT_WIDTH = 96;
-    const TEXT_X = LEVEL_SELECT_X + TEXT_WIDTH / 2;
-    const TEXT_Y = LEVEL_SELECT_Y + LEVEL_SELECT_HEIGHT + MARGIN;
-
-    const level_text = ["text island", "text space", "text moon"];
-
-    // Render level names
-    for (var i = 0; i < level_text.length; i++) {
-      scaledCtx.drawImage(
-        images[level_text[i]],
-        TEXT_X + (LEVEL_SELECT_WIDTH + MARGIN) * i,
-        TEXT_Y,
-        TEXT_WIDTH,
-        TEXT_HEIGHT
-      );
-    }
+    levelSelectScreen.draw();
     stretchLowResCanvasToVisibleCanvas();
   }
 }
@@ -178,9 +113,7 @@ function loadedAndClicked(evt) {
 
     createDepthSpawnReference();
     startDisplayIntervals();
-    inputSetup();
     initializeTitleScreen();
-    initializeLevelSelectScreen();
     initializeControlsMenu();
     reset();
 
@@ -432,7 +365,6 @@ function update() {
 
     case GAME_STATE_LEVEL_SELECT:
       levelSelectScreen.draw();
-      console.log("Help me!");
       break;
 
     case GAME_STATE_CONTROLS:

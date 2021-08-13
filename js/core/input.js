@@ -111,14 +111,14 @@ function keyRelease(evt) {
 function mouseSetup() {
   document.addEventListener("mousedown", handleMouseClick);
   document.addEventListener("mouseup", handleMouseRelease);
+  document.addEventListener("mousemove", mousemoved);
+  document.addEventListener("wheel", editorWheel, false);
 }
 
 function inputSetup() {
   document.addEventListener("keydown", keyPush);
   document.addEventListener("keyup", keyRelease);
-  document.addEventListener("mousemove", mousemoved);
-  document.addEventListener("wheel", editorWheel, false);
-  document.removeEventListener("mousemove", handleLevelHover);
+  mouseSetup();
 }
 
 function editorWheel(evt) {
@@ -319,6 +319,10 @@ function mousemoved(evt) {
   }
   mouseX = Math.floor((unscaledMouseX * GAME_W) / SCALED_W);
   mouseY = Math.floor((unscaledMouseY * GAME_H) / SCALED_H);
+
+  if(gameState == GAME_STATE_LEVEL_SELECT) {
+    handleLevelHover();
+  }
 }
 
 function handleMouseRelease(evt) {
@@ -365,6 +369,11 @@ function handleMouseClick(evt) {
 }
 
 function handleLevelHover() {
+  if (imagesLoaded == false) {
+    // invalid unless loading finished
+    return;
+  }
+
   scaledCanvas.style.cursor = "initial";
   for (var i = 0; i < LEVEL_RECTS.length; i++) {
     if (
