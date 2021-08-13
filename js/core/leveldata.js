@@ -48,10 +48,14 @@ var moonSpawnSeq = [
 	{percDuration:0.5,kind:ENEMY_SWOOP,driftX:0.8,percXMin:0.1,percXMax:0.15,speed:1.0,wave:5,ticksBetween:2000},
 	{percDuration:0.5,kind:ENEMY_BUG,driftX:-0.8,percXMin:0.85,percXMax:0.9,speed:1.0,wave:5,ticksBetween:2000},
 ];
+var lavaSpawnSeq = 
+	[{"groundData":[{"groundKind":0,"x":120,"y":2900,"track":[{"x":0,"y":0},{"x":-70,"y":0},{"x":-80,"y":-40}]}]},{"percDuration":0.05,"kind":4,"driftX":0.8,"percXMin":0.1,"percXMax":0.15,"speed":1,"wave":5,"ticksBetween":10},{"percDuration":0.05,"kind":0,"driftX":-0.8,"percXMin":0.85,"percXMax":0.9,"speed":1,"wave":5,"ticksBetween":10}]
+	;
 
 var levSeq = [islandSpawnSeq,
             spaceSpawnSeq,
-            moonSpawnSeq];
+            moonSpawnSeq,
+            lavaSpawnSeq];
 
 var levelProgressInPixels = 0;
 var levelProgressPerc = 0; // gets updated based on levelProgressInPixels
@@ -61,8 +65,9 @@ var bgDrawY = 0; // also used for drawing and collision of surface enemies
 const LEVEL_ISLAND = 0;
 const LEVEL_SPACE = 1;
 const LEVEL_MOON = 2;
+const LEVEL_LAVA = 3;
 var levNow = 0;
-var levNames = ['level island','level space','level moon'];
+var levNames = ['level island','level space','level moon','level lava'];
 var currentLevelImageName = levNames[levNow];
 
 var levData = [];
@@ -133,6 +138,8 @@ function processAndRemoveGroundLevelData() {
 }
 
 function startLevel(whichLevel) {
+	createDepthSpawnReference();
+
     spawnSeqStep = 0;
 
 	levData = JSON.parse(JSON.stringify(whichLevel)); // deep/clean copy since we'll modify it during loading

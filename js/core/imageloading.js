@@ -24,10 +24,21 @@ function loadImages() {
     { imgName: "frog tank", theFile: "enemyspacefrog.png" },
     { imgName: "defense_ring_unit", theFile: "defense_ring_unit.png" },
     //{imgName: "level island", theFile: "level-islands.png"},
+
     { imgName: "level island", theFile: "islandLevelPaint.png" },
+    { imgName: "depth map", theFile: "islandLevelDepth.png" },
+
     { imgName: "level space", theFile: "spaceLevelPaint.png" },
+    { imgName: "depth space", theFile: "spaceLevelDepth.png" },
+
     { imgName: "level moon", theFile: "moonLevelPaint.png" },
+    { imgName: "depth moon", theFile: "moonLevelDepth.png" },
+
+    { imgName: "level lava", theFile: "lavaLevelPaint.png" },
+    { imgName: "depth lava", theFile: "lavaLevelDepth.png" },
+
     { imgName: "level menu", theFile: "level-select-bg.png" },
+
     {
       imgName: "level menu island",
       theFile: "level-select-island-draft-2.png",
@@ -80,11 +91,6 @@ function loadImages() {
       theFile: "text-lava.png",
     },
  
-    // note: in order to getbitmapdata on this we need to be
-    // running on a web server due to browser local file security
-    { imgName: "depth map", theFile: "islandLevelDepth.png" },
-    { imgName: "depth space", theFile: "spaceLevelDepth.png" },
-    { imgName: "depth moon", theFile: "moonLevelDepth.png" },
     {
       imgName: "controls menu background",
       theFile: "controlsMenuBackground.png",

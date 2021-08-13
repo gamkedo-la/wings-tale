@@ -111,11 +111,9 @@ function loadedAndClicked(evt) {
 
     gameFirstClickedToStart = true;
 
-    createDepthSpawnReference();
     startDisplayIntervals();
     initializeTitleScreen();
     initializeControlsMenu();
-    reset();
 
     scaledCanvas.style.cursor = "initial";
 
@@ -130,8 +128,9 @@ function loadedAndClicked(evt) {
         return;
       }
       currentLevelImageName = levNames[levNow];
-      reset();
     }
+
+    reset();
   }
 }
 
@@ -141,18 +140,19 @@ function createDepthSpawnReference() {
   let img = [];
   switch (levNow) {
     case LEVEL_ISLAND:
-      img = images["depth map"];
       curDepthMap = "depth map";
       break;
     case LEVEL_SPACE:
-      img = images["depth space"];
       curDepthMap = "depth space";
       break;
     case LEVEL_MOON:
-      img = images["depth moon"];
       curDepthMap = "depth moon";
       break;
+    case LEVEL_LAVA:
+      curDepthMap = "depth lava";
+      break;
   }
+  img = images[curDepthMap];
   depthSpawnCanvas.width = img.width;
   depthSpawnCanvas.height = img.height;
   depthSpawnContext.drawImage(img, 0, 0);
@@ -195,14 +195,16 @@ function reset() {
     console.log(`${e}`);
   }
   try {
-    if(levNow==LEVEL_ISLAND){
+    if(levNow==LEVEL_ISLAND) {
        gameMusic = playSound(sounds.Island_Song, 1, 0, 0.5, true);
     }
-    else if (levNow==LEVEL_SPACE){
+    else if (levNow==LEVEL_SPACE) {
       gameMusic = playSound(sounds.Space_Song, 1, 0, 0.5, true);
     }
-    else if (levNow==LEVEL_MOON){
+    else if (levNow==LEVEL_MOON) {
       gameMusic = playSound(sounds.Moon_Song, 1, 0, 0.5, true); 
+    } else if (levNow==LEVEL_LAVA) {
+      gameMusic = playSound(sounds.Moon_Song, 1, 0, 0.5, true);  // no separate song yet, reusing moon
     }
 
   } catch (e) {
@@ -266,47 +268,17 @@ function drawBackground() {
     GAME_W,
     GAME_H
   );
-  switch (levNow) {
-    case LEVEL_ISLAND:
-      fxContext.drawImage(
-        images["depth map"],
-        0,
-        bgDrawY,
-        GAME_W,
-        GAME_H,
-        0,
-        0,
-        GAME_W,
-        GAME_H
-      );
-      break;
-    case LEVEL_SPACE:
-      fxContext.drawImage(
-        images["depth space"],
-        0,
-        bgDrawY,
-        GAME_W,
-        GAME_H,
-        0,
-        0,
-        GAME_W,
-        GAME_H
-      );
-      break;
-    case LEVEL_MOON:
-      fxContext.drawImage(
-        images["depth moon"],
-        0,
-        bgDrawY,
-        GAME_W,
-        GAME_H,
-        0,
-        0,
-        GAME_W,
-        GAME_H
-      );
-      break;
-  }
+   fxContext.drawImage(
+    images[curDepthMap],
+    0,
+    bgDrawY,
+    GAME_W,
+    GAME_H,
+    0,
+    0,
+    GAME_W,
+    GAME_H
+  );
 
   // note: these functions require the game to run on a web server
   // due to local file browser security - they will fail on file://
