@@ -120,14 +120,11 @@ function loadedAndClicked(evt) {
     if (!gameDevelopmentMode) {
       gameState = GAME_STATE_TITLE;
     } else {
-      gameState = GAME_STATE_PLAY;
-      var levWid = images[levNames[0]].width;
-      levNow = Math.floor(unscaledMouseX / levWid);
-
-      if (levNow >= levNames.length) {
+      if(levelSelectScreen.mouseOverLevel != -1) {
+        levelSelectScreen.startHightlightedLevel();
+      } else {
         return;
       }
-      currentLevelImageName = levNames[levNow];
     }
 
     reset();

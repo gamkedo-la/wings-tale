@@ -356,54 +356,7 @@ function handleMouseClick(evt) {
     } else if (gameState == GAME_STATE_TITLE) {
       gameState = GAME_STATE_LEVEL_SELECT;
     } else if (gameState == GAME_STATE_LEVEL_SELECT) {
-      gameState = GAME_STATE_PLAY;
-      var levWid = images[levNames[0]].width;
-      levNow = Math.floor(unscaledMouseX / levWid);
-      if (levNow >= levNames.length) {
-        return;
-      }
-      currentLevelImageName = levNames[levNow];
-      reset();
+      levelSelectScreen.startHightlightedLevel();
     }
   }, 750);
-}
-
-function handleLevelHover() {
-  if (imagesLoaded == false) {
-    // invalid unless loading finished
-    return;
-  }
-
-  scaledCanvas.style.cursor = "initial";
-  for (var i = 0; i < LEVEL_RECTS.length; i++) {
-    if (
-      unscaledMouseX >= LEVEL_RECTS[i].x &&
-      unscaledMouseX <= LEVEL_RECTS[i].width + LEVEL_RECTS[i].x &&
-      unscaledMouseY >= LEVEL_RECTS[i].y &&
-      unscaledMouseY <= LEVEL_RECTS[i].height + LEVEL_RECTS[i].y
-    ) {
-      scaledCtx.drawImage(
-        images[LEVEL_RECTS[i].name + " highlight"],
-        LEVEL_RECTS[i].x,
-        LEVEL_RECTS[i].y,
-        LEVEL_RECTS[i].width,
-        LEVEL_RECTS[i].height
-      );
-      scaledCanvas.style.cursor = "pointer";
-    } else {
-      scaledCtx.drawImage(
-        images[LEVEL_RECTS[i].name],
-        LEVEL_RECTS[i].x,
-        LEVEL_RECTS[i].y,
-        LEVEL_RECTS[i].width,
-        LEVEL_RECTS[i].height
-      );
-    }
-  }
-}
-
-function spawnSpecificEnemyAtRandomPosition(enemy){
-  var usingStep = {percDuration:randRange(0.01,0.10),kind:enemy,driftX:randRange(-1.0,1.0),percXMin:randRange(0.1,1.0),percXMax:randRange(0.1,1.0),speed:randRange(1.0,2.0),wave:randRange(1,10),ticksBetween:randRange(10,2000)};
-  
-  spawnKind(usingStep);
 }

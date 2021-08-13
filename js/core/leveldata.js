@@ -77,6 +77,12 @@ var sameTimeSpawnTicks = [];
 var spawnRanges = [];
 var enemyList=[];
 
+function spawnSpecificEnemyAtRandomPosition(enemy){
+  var usingStep = {percDuration:randRange(0.01,0.10),kind:enemy,driftX:randRange(-1.0,1.0),percXMin:randRange(0.1,1.0),percXMax:randRange(0.1,1.0),speed:randRange(1.0,2.0),wave:randRange(1,10),ticksBetween:randRange(10,2000)};
+  
+  spawnKind(usingStep);
+}
+
 function JSONSurfaceSpawnData() {
 	var groundJSON = {groundData:[]};
 	for(var i=0;i<surfaceList.length;i++) {
