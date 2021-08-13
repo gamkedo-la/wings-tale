@@ -248,15 +248,41 @@ function reset() {
   animateEachLists = [playerList, enemyList, powerupList, surfaceList];
 }
 
+const LEVEL_BG_FRAMES = 4;
+const BG_FRAME_TICK_DELAY = 10; // how many game logic ticks pass before background animation advances
+var bgFrameDir = 1; // ping pongs back and forth, to ensure a loop and use half the frame data
+var bgFrame = 0;
+var ticksPerBGFrame = BG_FRAME_TICK_DELAY;
+
 function drawBackground() {
   bgDrawY =
     images[currentLevelImageName].height - GAME_H - levelProgressInPixels;
   if (bgDrawY < 0) {
     bgDrawY = 0;
   }
+
+  // currently only used by Lava stage, could also use for waves, star twinkle, moon... dust sparkle?
+  if(levNow == LEVEL_LAVA) {
+    ticksPerBGFrame--;
+    if(ticksPerBGFrame<0) {
+      bgFrame+=bgFrameDir;
+      ticksPerBGFrame = BG_FRAME_TICK_DELAY;
+
+      if(bgFrame >= LEVEL_BG_FRAMES) {
+        bgFrameDir = -1;
+        bgFrame += bgFrameDir; // corrects for going too far, will spend two frames at end
+      }
+      if(bgFrame < 0) {
+        bgFrameDir = 1;
+        bgFrame += bgFrameDir; // corrects for going too far, will spend two frames at start
+      }
+    }
+  } else {
+    bgFrame = 0;
+  }
   context.drawImage(
     images[currentLevelImageName],
-    0,
+    bgFrame*GAME_W,
     bgDrawY,
     GAME_W,
     GAME_H,
