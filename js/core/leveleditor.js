@@ -250,6 +250,35 @@ function editorButtons() {
   scaledCtx.stroke();
 }
 
+var tickRates = // discrete rates with noticeable difference, granual +/- incrementals weren't helpful
+	[
+	0,
+	2,
+	5,
+	10,
+	20,
+	35,
+	];
+
+// we store as specific tick intervals, this finds where that was in the options and goes up/down by 1
+function nextPrevTickRate(ticksWere, changeDownOrUp) {
+	var tickIndex = tickRates.length - 1; // assume highest if no other value found
+	for(var i=0;i<tickRates.length;i++) {
+		if(tickRates[i] >= ticksWere) {
+			tickIndex = i;
+			break;
+		}
+	}
+	tickIndex += changeDownOrUp;
+	if(tickIndex<0) {
+		tickIndex=0;
+	}
+	if(tickIndex>=tickRates.length) {
+		tickIndex=tickRates.length-1;
+	}
+	return tickRates[tickIndex];
+}
+
 function editorKeyboard(keyCode) {
 	var scootXBy = 0.05;
 	var durationChange = 0.01;
@@ -258,15 +287,12 @@ function editorKeyboard(keyCode) {
 	switch (keyCode) { // keys that require selection
 		case KEY_Q:
 			if(mouseOverLevData != -1) {
-				levData[mouseOverLevData].ticksBetween++;
+				levData[mouseOverLevData].ticksBetween = nextPrevTickRate(levData[mouseOverLevData].ticksBetween, 1);
 			}
 			break;
 		case KEY_E:
 			if(mouseOverLevData != -1) {
-				levData[mouseOverLevData].ticksBetween--;
-				if (levData[mouseOverLevData].ticksBetween < 0) {
-					levData[mouseOverLevData].ticksBetween = 0;
-				}
+				levData[mouseOverLevData].ticksBetween = nextPrevTickRate(levData[mouseOverLevData].ticksBetween, -1);
 			}
 			break;
 		default:
