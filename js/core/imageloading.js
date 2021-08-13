@@ -26,7 +26,7 @@ function loadImages() {
     //{imgName: "level island", theFile: "level-islands.png"},
 
     { imgName: "level island", theFile: "islandLevelPaint.png" },
-    { imgName: "depth map", theFile: "islandLevelDepth.png" },
+    { imgName: "depth island", theFile: "islandLevelDepth.png" },
 
     { imgName: "level space", theFile: "spaceLevelPaint.png" },
     { imgName: "depth space", theFile: "spaceLevelDepth.png" },

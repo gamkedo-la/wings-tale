@@ -44,7 +44,7 @@ var bossFight = false;
 var gameFirstClickedToStart = false;
 var imagesLoaded = false;
 
-var curDepthMap = "depth map";
+var curDepthMap = "depth island";
 
 window.onload = function () {
   setupCanvas();
@@ -137,7 +137,7 @@ function createDepthSpawnReference() {
   let img = [];
   switch (levNow) {
     case LEVEL_ISLAND:
-      curDepthMap = "depth map";
+      curDepthMap = "depth island";
       break;
     case LEVEL_SPACE:
       curDepthMap = "depth space";
