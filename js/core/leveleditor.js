@@ -92,6 +92,7 @@ function editorHandleClick() {
 }
 
 function editPlay() {
+	levSeq[levNow] = copyOfCurrentLevelData(); // overwrite level data in this spot to play test it
   gameState = GAME_STATE_PLAY;
   dragMode = DRAG_MODE_NONE;
   reset();
@@ -354,9 +355,13 @@ function editorDrag() {
 }
 
 function printLevelSeq() {
+	console.log( JSON.stringify(copyOfCurrentLevelData()) );
+}
+
+function copyOfCurrentLevelData() {
 	var levelOut = JSON.parse(JSON.stringify(levData)); // deep/clean copy since we'll modify it during loading
 	levelOut.unshift(JSONSurfaceSpawnData());	
-	console.log( JSON.stringify(levelOut) );
+	return levelOut;
 }
 
 function drawLevelSpawnData() { // for level debug display (may become editable later)
