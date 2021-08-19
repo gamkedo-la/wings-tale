@@ -12,7 +12,7 @@ var enemyEditorToPattern = [ // string used by level editor to show the graphic 
 		"stallchase", // ENEMY_STALL_CHASE = 2;
 		"shockball", // ENEMY_SHOCK = 3;
 		"dimo",	//ENEMY_DIM = 5
-		"player",	//ENEMY_SMALLALIEN = 6
+		"smallalien",	//ENEMY_SMALLALIEN = 6
 		// note: none needed for ENEMY_KINDS, that const is aENEMY_KINDS clue for editor to wrap cycling type
 	];
 // replaces strings in the array with usable pattern data for spawn boxes, only call once at start

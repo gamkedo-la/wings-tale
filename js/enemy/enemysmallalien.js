@@ -37,7 +37,7 @@ function enemySmallAlienClass(usingStep) {
 	}
 
 	this.draw = function() { // splode graphic just as placeholder
-		drawAnimFrame("player",this.x,this.y, this.frame, ENEMY_SMALLALIEN_DIM,ENEMY_SMALLALIEN_DIM);
+		drawAnimFrame("smallalien",this.x,this.y, this.frame, ENEMY_SMALLALIEN_DIM,ENEMY_SMALLALIEN_DIM);
 	}
 	this.animate = function() {
 		if(++this.frame>=ENEMY_SMALLALIEN_FRAMES) {
