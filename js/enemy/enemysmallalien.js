@@ -1,18 +1,18 @@
-const ENEMY_STALLCHASE_DIM = 16;
-const ENEMY_STALLCHASE_FRAMES = 3;
+const ENEMY_SMALLALIEN_DIM = 24;
+const ENEMY_SMALLALIEN_FRAMES = 3;
 
-enemyStallChaseClass.prototype = new moveDrawClass();
+enemySmallAlienClass.prototype = new moveDrawClass();
 
-function enemyStallChaseClass(usingStep) {
+function enemySmallAlienClass(usingStep) {
 	this.x = (usingStep.driftX*stepPerc + usingStep.percXMin+
 		Math.random()*(usingStep.percXMax-usingStep.percXMin))*canvas.width;
-	this.y = -ENEMY_STALLCHASE_DIM;
+	this.y = -ENEMY_SMALLALIEN_DIM;
 	this.gotoX = this.x;
 	this.gotoY = this.y+100;
-	this.frame = Math.floor(Math.random()*ENEMY_STALLCHASE_FRAMES);
+	this.frame = Math.floor(Math.random()*ENEMY_SMALLALIEN_FRAMES);
 	this.speed = usingStep.speed;
 
-	this.collW = this.collH = ENEMY_STALLCHASE_DIM;
+	this.collW = this.collH = ENEMY_SMALLALIEN_DIM;
 
 	this.myTarget;
 	if(twoPlayerGame == false) {
@@ -39,10 +39,10 @@ function enemyStallChaseClass(usingStep) {
 	}
 
 	this.draw = function() { // splode graphic just as placeholder
-		drawAnimFrame("stallchase",this.x,this.y, this.frame, ENEMY_STALLCHASE_DIM,ENEMY_STALLCHASE_DIM);
+		drawAnimFrame("smallalien",this.x,this.y, this.frame, ENEMY_SMALLALIEN_DIM,ENEMY_SMALLALIEN_DIM);
 	}
 	this.animate = function() {
-		if(++this.frame>=ENEMY_STALLCHASE_FRAMES) {
+		if(++this.frame>=ENEMY_SMALLALIEN_FRAMES) {
 			this.frame = 0;
 		}
 	}

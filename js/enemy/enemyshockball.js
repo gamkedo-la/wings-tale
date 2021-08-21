@@ -1,5 +1,6 @@
 const ENEMY_SHOCKBALL_DIM = 24;
 const ENEMY_SHOCKBALL_FRAMES = 3;
+const ENEMY_SHOCKBALL_SPEED = 7;
 
 enemyShockBallClass.prototype = new moveDrawClass();
 
@@ -10,25 +11,19 @@ function enemyShockBallClass(usingStep) {
 	this.gotoX = this.x;
 	this.gotoY = this.y+100;
 	this.frame = Math.floor(Math.random()*ENEMY_SHOCKBALL_FRAMES);
-	this.speed = usingStep.speed;
 
-	this.myTarget;
-	if(twoPlayerGame == false) {
-		this.myTarget = playerList[0];
-	} else { // pick random target
-		this.myTarget = (Math.random()<0.5 ? playerList[0] : playerList[1]);
-	}
+	this.collW = this.collH = ENEMY_SHOCKBALL_DIM;
 
 	this.move = function() {
 		var distToGoto = approxDist(this.x,this.y,this.gotoX, this.gotoY);
 		
-		if(distToGoto > this.speed) {
+		if(distToGoto > ENEMY_SHOCKBALL_SPEED) {
 			var angAt = Math.atan2(this.gotoY-this.y,this.gotoX-this.x);
-			this.x += Math.cos(angAt)*this.speed;
-			this.y += Math.sin(angAt)*this.speed;
+			this.x += Math.cos(angAt)*ENEMY_SHOCKBALL_SPEED;
+			this.y += Math.sin(angAt)*ENEMY_SHOCKBALL_SPEED;
 		} else {
-			this.gotoX = this.myTarget.x;
-			this.gotoY = this.myTarget.y;
+			this.gotoX = Math.random()*GAME_W;
+			this.gotoY = Math.random()*GAME_H;
 		}
 
 		if(this.x<0 || this.x>GAME_W || this.y>GAME_H) {

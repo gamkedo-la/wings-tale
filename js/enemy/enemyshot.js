@@ -29,6 +29,8 @@ function enemyShotClass(startX, startY, totalSpeed = ENEMY_SHOT_SPEED) {
 	this.yv = Math.sin(this.ang) * totalSpeed;
 	this.readyToRemove = false;
 
+	this.collW = this.collH = ENEMY_SHOT_DIM;
+
 	this.move = function() {
 		this.x += this.xv;
 		this.y += this.yv;

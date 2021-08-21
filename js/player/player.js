@@ -54,6 +54,8 @@ function playerClass() {
   this.combo = new comboCounter(); // "4x COMBO!" gui
   this.scoreUI = new score_gui();
 
+  this.collW = this.collH = PLAYER_DIM;
+
   this.reset = function () {
     if (this.cheatInvulnerable) {
       return;

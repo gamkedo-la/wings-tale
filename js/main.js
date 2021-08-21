@@ -1,5 +1,7 @@
 var gameDevelopmentMode = true; //skip intro stuff
 
+var debugDraw_colliders = true;
+
 var nDefenseOrbs = 33;
 var debuggingDisplay = true;
 var debugDraw_surfacePaths = true;
@@ -389,7 +391,6 @@ function update() {
       listCollideExplode(
         shotList,
         enemyList,
-        (SHOT_COLLISION_DIM + ENEMY_STALLCHASE_DIM) / 2,
         function (at, to) {
           
           //console.log("shot hit!");
@@ -411,19 +412,16 @@ function update() {
       for (var i = 0; i < playerList.length; i++) {
         listCollideExplode(
           enemyList,
-          playerList[i].defenseRingUnitList,
-          (DEFENSE_RING_ORB_DIM + ENEMY_DIM) / 2
+          playerList[i].defenseRingUnitList
         );
         listCollideExplode(
           enemyShotList,
-          playerList[i].defenseRingUnitList,
-          (ENEMY_SHOT_DIM + DEFENSE_RING_ORB_DIM) / 2
+          playerList[i].defenseRingUnitList
         );
       }
       listCollideExplode(
         playerList,
         enemyList,
-        (ENEMY_DIM + PLAYER_DIM) / 2,
         function (elementA, elementB) {
           elementA.reset();
         }
@@ -431,7 +429,6 @@ function update() {
       listCollideExplode(
         playerList,
         enemyShotList,
-        (SHOT_DIM + PLAYER_DIM) / 2,
         function (elementA, elementB) {
           elementA.reset();
         }
@@ -439,7 +436,6 @@ function update() {
       listCollideExplode(
         playerList,
         powerupList,
-        (POWERUP_H + PLAYER_DIM) / 2,
         function (elementA, elementB) {
           elementB.doEffect(elementA);
         }

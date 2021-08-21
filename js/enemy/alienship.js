@@ -3,7 +3,7 @@ const ALIENSHIP_IMAGE_NAME = "alien ship";
 
 function alienshipClass() {
     this.frame=0;
-
+    
     this.reset = function() {
     }
 

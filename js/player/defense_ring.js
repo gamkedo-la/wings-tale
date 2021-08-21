@@ -28,6 +28,8 @@ function defenseRingClass(onPlayer, inPlace) {
     this.frame = 0;
     this.readyToRemove = false;
 
+    this.collW = this.collH = DEFENSE_RING_ORB_DIM;
+
     this.setPlayerPos = function(){
         this.playerPosX = this.myPlayer.x;
         this.playerPosY = this.myPlayer.x;

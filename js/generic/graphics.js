@@ -60,6 +60,13 @@ function drawBox(centerX,centerY,sizeFromCenter,color) {
 	context.rect(centerX-sizeFromCenter,centerY-sizeFromCenter,sizeFromCenter*2,sizeFromCenter*2);
 	context.stroke();
 }
+function drawColl(collObj,color) {
+	context.beginPath();
+	context.strokeStyle = color;
+	context.rect(collObj.x-collObj.collW/2,collObj.y-collObj.collH/2,
+			collObj.collW,collObj.collH);
+	context.stroke();
+}
 
 function startDisplayIntervals() {
 	setInterval(update,1000/TARGET_MOTION_FPS);

@@ -3,7 +3,8 @@ const ENEMY_SWOOP = 1;
 const ENEMY_STALL_CHASE = 2;
 const ENEMY_SHOCK = 3;
 const ENEMY_DIMO = 4;
-const ENEMY_KINDS = 5;
+const ENEMY_KINDS = 6;
+const ENEMY_SMALLALIEN = 5;
 var enemySpawnDebugColor = ["lime","yellow","cyan","pink", "orange"];
 var enemyEditorToPattern = [ // string used by level editor to show the graphic in spawn volumes
 		"bug", // ENEMY_BUG = 0;
@@ -11,7 +12,8 @@ var enemyEditorToPattern = [ // string used by level editor to show the graphic 
 		"stallchase", // ENEMY_STALL_CHASE = 2;
 		"shockball", // ENEMY_SHOCK = 3;
 		"dimo",	//ENEMY_DIM = 5
-		// note: none needed for ENEMY_KINDS, that const is a clue for editor to wrap cycling type
+		"smallalien",	//ENEMY_SMALLALIEN = 6
+		// note: none needed for ENEMY_KINDS, that const is aENEMY_KINDS clue for editor to wrap cycling type
 	];
 // replaces strings in the array with usable pattern data for spawn boxes, only call once at start
 function createEditorSpawnKindPatterns() {
@@ -236,6 +238,9 @@ function spawnKind(usingStep) {
 			break;
 		case ENEMY_DIMO:
 			enemyList.push(new enemyDimoClass(usingStep));
+			break;
+		case ENEMY_SMALLALIEN:
+			enemyList.push(new enemySmallAlienClass(usingStep));
 			break;
 	}
 }
