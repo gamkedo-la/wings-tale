@@ -32,11 +32,7 @@ function animateList(whichList) {
 function listCollideExplode(listA, listB, optionalResultFunction) {
 	for(var a=0;a<listA.length;a++) {
 		for(var b=0;b<listB.length;b++) {
-			var dist=approxDist(listA[a].x,listA[a].y,listB[b].x,listB[b].y);
-
-			var collisionRange = (listA[a].collDim + listB[b].collDim)/2;
-
-			if(dist< collisionRange) {
+			if(boxOverLap(listA[a],listB[b])) {
 				//explode at impact site!
 				spawnSplode(listB[b].x,listB[b].y);
 
@@ -60,7 +56,7 @@ function listCollideRangeOfPoint(listA, atX, atY, pointRadius, optionalResultFun
 	for(var a=0;a<listA.length;a++) {
 		var dist=approxDist(listA[a].x,listA[a].y,atX,atY);
 
-		if(dist< listA[a].collDim/2+pointRadius) {
+		if(dist< listA[a].collW/2+pointRadius) {
 			spawnSplode(listA[a].x,listA[a].y);
 			
 			if (listA[a].readyToRemove == false && // prevent multiple hits to same target in frame from spawning powerups etc
@@ -77,7 +73,7 @@ function listCollideRangeOfPoint(listA, atX, atY, pointRadius, optionalResultFun
 function moveDrawClass(startX,startY) {
 	this.x = startX;
 	this.y = startY;
-	this.collDim = 20; // can override with separate collW and collH if not roundish
+	this.collW = this.collH = 20;
 	this.readyToRemove = false;
 
 	this.neverRemove = false; // overrides readyToRemove (used for players, respawn only)

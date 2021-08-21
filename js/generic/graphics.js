@@ -63,16 +63,8 @@ function drawBox(centerX,centerY,sizeFromCenter,color) {
 function drawColl(collObj,color) {
 	context.beginPath();
 	context.strokeStyle = color;
-	if(typeof collObj.collW !== 'undefined') {
-		context.rect(collObj.x-collObj.collW/2,collObj.y-collObj.collH/2,
-				collObj.collW,collObj.collH);
-	} else if(typeof collObj.collDim !== 'undefined') {
-		context.moveTo(collObj.x,collObj.y-collObj.collDim/2);
-		context.lineTo(collObj.x+collObj.collDim/2,collObj.y);
-		context.lineTo(collObj.x,collObj.y+collObj.collDim/2);
-		context.lineTo(collObj.x-collObj.collDim/2,collObj.y);
-		context.closePath();
-	} // if neither is defined, then no collider info available for this
+	context.rect(collObj.x-collObj.collW/2,collObj.y-collObj.collH/2,
+			collObj.collW,collObj.collH);
 	context.stroke();
 }
 

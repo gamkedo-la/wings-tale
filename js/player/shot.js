@@ -33,7 +33,6 @@ function shotClass(
   this.yv = momentumY + Math.sin(this.ang) * totalSpeed;
   this.shotLength = shotLength; // not counting front/back end caps. in case we want it to grow, shrink, etc.
 
-  this.collDim = SHOT_COLLISION_DIM;
   this.collW = SHOT_DIM;
   this.collH = SHOT_DIM*4;
 

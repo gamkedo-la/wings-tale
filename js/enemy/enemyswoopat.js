@@ -13,7 +13,7 @@ function enemySwoopAtClass(usingStep) {
 	this.yv = 0;
 	this.frame = Math.floor(Math.random()*ENEMY_SWOOP_FRAMES);
 
-	this.collDim = ENEMY_SWOOP_DIM;
+	this.collW = this.collH = ENEMY_SWOOP_DIM;
 
 	this.myTarget;
 	if(twoPlayerGame == false) {

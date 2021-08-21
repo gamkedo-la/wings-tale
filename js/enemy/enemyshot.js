@@ -29,7 +29,7 @@ function enemyShotClass(startX, startY, totalSpeed = ENEMY_SHOT_SPEED) {
 	this.yv = Math.sin(this.ang) * totalSpeed;
 	this.readyToRemove = false;
 
-	this.collDim = ENEMY_SHOT_DIM;
+	this.collW = this.collH = ENEMY_SHOT_DIM;
 
 	this.move = function() {
 		this.x += this.xv;

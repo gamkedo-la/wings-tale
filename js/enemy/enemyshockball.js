@@ -12,7 +12,7 @@ function enemyShockBallClass(usingStep) {
 	this.gotoY = this.y+100;
 	this.frame = Math.floor(Math.random()*ENEMY_SHOCKBALL_FRAMES);
 
-	this.collDim = ENEMY_SHOCKBALL_DIM;
+	this.collW = this.collH = ENEMY_SHOCKBALL_DIM;
 
 	this.move = function() {
 		var distToGoto = approxDist(this.x,this.y,this.gotoX, this.gotoY);

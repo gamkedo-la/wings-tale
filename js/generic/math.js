@@ -27,14 +27,14 @@ function pointInBox(x,y, // coordinate
 // center coordinate of each and each object's full (not half) width and height
 function boxOverLap(obj1,obj2){
 	var x1 = obj1.x;
-	var x1 = obj1.y;
-	var w1 = obj1.coll.w;
-	var h1 = obj1.coll.h;
+	var y1 = obj1.y;
+	var w1 = obj1.collW;
+	var h1 = obj1.collH;
 
 	var x2 = obj2.x;
-	var x2 = obj2.y;
-	var w2 = obj2.coll.w;
-	var h2 = obj2.coll.h;
+	var y2 = obj2.y;
+	var w2 = obj2.collW;
+	var h2 = obj2.collH;
 
 	var l1=x1-w1/2;
 	var r1=x1+w1/2;

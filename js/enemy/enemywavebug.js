@@ -23,7 +23,7 @@ function enemyWaveBugClass(usingStep) {
 	this.freq = randRange(ENEMY_WAVES_FREQ_MIN,ENEMY_WAVES_FREQ_MAX);
 	this.speed = usingStep.speed;
 
-	this.collDim = ENEMY_DIM;
+	this.collW = this.collH = ENEMY_DIM;
 
 	this.move = function() {
 		this.x = this.startX + this.waveSize*

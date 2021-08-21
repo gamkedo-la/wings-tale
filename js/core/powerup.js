@@ -23,7 +23,7 @@ function powerupClass(atX, atY) {
   this.kind = Math.floor(Math.random() * POWERUP_KINDS);
   this.readyToRemove = false;
 
-  this.collDim = POWERUP_H;
+  this.collW = this.collH = POWERUP_H;
 
   var ang = randAng();
   this.xv = Math.cos(ang) * POWERUP_SPEED;

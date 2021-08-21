@@ -52,7 +52,7 @@ function surfaceEnemyClass(startX,startY) {
 							{x:startX-50,y:startY-50},
 							{x:startX+50,y:startY-50}]; // default, mainly shows up in editor
 	
-	this.collDim = SURFACE_ENEMY_DIM;
+	this.collW = this.collH = SURFACE_ENEMY_DIM;
 
 	this.loadWaypoints = function(wpData) {
 		var howManyWP = wpData.length;
