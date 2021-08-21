@@ -1,10 +1,10 @@
-const ALIENSHIP_FRAMES = 0;
-const ALIENSHIP_IMAGE_NAME = "alien ship";
+bossLavaDragonClass.prototype = new moveDrawClass();
 
-function alienshipClass() {
-    this.frame=0;
-    
+function bossLavaDragonClass() {
     this.reset = function() {
+    }
+
+    this.move = function(){
     }
 
     this.draw = function(){

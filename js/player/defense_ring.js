@@ -8,7 +8,7 @@ const RING_FRAMES = 4;
 const DEFENSE_RING_ORB_DIM = 6;
 
 function spawnDefenseRingUnit(forPlayer) {
-	forPlayer.defenseRingUnitList.push(new defenseRingClass(forPlayer,forPlayer.defenseRingUnitList.length));
+	forPlayer.defenseRingUnitList.push(new defenseRingClass(forPlayer));
 }
 
 function resetDefenseRing(forPlayer){
@@ -20,23 +20,17 @@ function resetDefenseRing(forPlayer){
 
 defenseRingClass.prototype = new moveDrawClass();
 
-function defenseRingClass(onPlayer, inPlace) {
-    this.x; this.y;
+function defenseRingClass(onPlayer) {
     this.myPlayer = onPlayer;
-    this.myPlace = inPlace;
+    this.x=this.myPlayer.x; this.y=this.myPlayer.y; // won't stay at center, just ensures valid initial values
+    this.myPlace = this.myPlayer.defenseRingUnitList.length;
 	this.dfRingAngle = 0;
-    this.frame = 0;
     this.readyToRemove = false;
+    this.frame = 0;
 
     this.collW = this.collH = DEFENSE_RING_ORB_DIM;
-
-    this.setPlayerPos = function(){
-        this.playerPosX = this.myPlayer.x;
-        this.playerPosY = this.myPlayer.x;
-    }
     
     this.draw = function(){
-        //console.log(this.frame);
         drawAnimFrame("defense_ring_unit", this.x, this.y, this.frame, RING_FRAME_W, RING_FRAME_H);
     }
 

@@ -33,7 +33,7 @@ function listCollideExplode(listA, listB, optionalResultFunction) {
 	for(var a=0;a<listA.length;a++) {
 		for(var b=0;b<listB.length;b++) {
 			if(boxOverLap(listA[a],listB[b])) {
-				//explode at impact site!
+				//explode at impact site
 				spawnSplode(listB[b].x,listB[b].y);
 
 				if (listA[a].readyToRemove == false &&
@@ -71,6 +71,8 @@ function listCollideRangeOfPoint(listA, atX, atY, pointRadius, optionalResultFun
 }
 
 function moveDrawClass(startX,startY) {
+    this.frame=0;
+    
 	this.x = startX;
 	this.y = startY;
 	this.collW = this.collH = 20;
