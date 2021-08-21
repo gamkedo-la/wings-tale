@@ -12,6 +12,9 @@ function enemyDimoClass(usingStep) {
 	this.frame = Math.floor(Math.random()*ENEMY_DIMO_FRAMES);
 	this.speed = usingStep.speed;
 
+	this.collW = 80;
+	this.collH = 35;
+
 	this.myTarget;
 	if(twoPlayerGame == false) {
 		this.myTarget = playerList[0];

@@ -12,6 +12,8 @@ function enemySmallAlienClass(usingStep) {
 	this.frame = Math.floor(Math.random()*ENEMY_SMALLALIEN_FRAMES);
 	this.speed = usingStep.speed;
 
+	this.collDim = ENEMY_SMALLALIEN_DIM;
+
 	this.myTarget;
 	if(twoPlayerGame == false) {
 		this.myTarget = playerList[0];

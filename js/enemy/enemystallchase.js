@@ -12,6 +12,8 @@ function enemyStallChaseClass(usingStep) {
 	this.frame = Math.floor(Math.random()*ENEMY_STALLCHASE_FRAMES);
 	this.speed = usingStep.speed;
 
+	this.collDim = ENEMY_STALLCHASE_DIM;
+
 	this.myTarget;
 	if(twoPlayerGame == false) {
 		this.myTarget = playerList[0];

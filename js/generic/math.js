@@ -22,3 +22,33 @@ function pointInBox(x,y, // coordinate
 				l,t,w,h){ // left, top, width, height
 	return (x>l && y>t && x<l+w && y<t+h);
 }
+
+// note on arguments: not top-left and bottom right coords, but instead
+// center coordinate of each and each object's full (not half) width and height
+function boxOverLap(obj1,obj2){
+	var x1 = obj1.x;
+	var x1 = obj1.y;
+	var w1 = obj1.coll.w;
+	var h1 = obj1.coll.h;
+
+	var x2 = obj2.x;
+	var x2 = obj2.y;
+	var w2 = obj2.coll.w;
+	var h2 = obj2.coll.h;
+
+	var l1=x1-w1/2;
+	var r1=x1+w1/2;
+	var t1=y1-h1/2;
+	var b1=y1+h1/2;
+
+	var l2=x2-w2/2;
+	var r2=x2+w2/2;
+	var t2=y2-h2/2;
+	var b2=y2+h2/2;
+
+	return (r1<l2 || // 1 is left of 2, or
+			b1<t2 || // 1 is above 2
+			l1>r2 || // 1 is right of 2
+			t1>b2    // 1 is below 2
+			) == false; // none of those conditions were met?
+}

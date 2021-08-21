@@ -1,3 +1,4 @@
+// todo: next 2 const values were named before other enemy kinds, should add _BUG_
 const ENEMY_DIM = 7;
 const ENEMY_FRAMES = 3;
 
@@ -21,6 +22,8 @@ function enemyWaveBugClass(usingStep) {
 	this.waveSize = usingStep.wave;
 	this.freq = randRange(ENEMY_WAVES_FREQ_MIN,ENEMY_WAVES_FREQ_MAX);
 	this.speed = usingStep.speed;
+
+	this.collDim = ENEMY_DIM;
 
 	this.move = function() {
 		this.x = this.startX + this.waveSize*

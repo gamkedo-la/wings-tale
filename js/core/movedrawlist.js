@@ -2,6 +2,9 @@
 function drawList(whichList) {
 	for(var i=0;i<whichList.length;i++) {
 		whichList[i].draw();
+		if(debugDraw_colliders) {
+			drawColl(whichList[i],"lime");
+		}
 	}
 }
 
@@ -26,10 +29,12 @@ function animateList(whichList) {
 }
 
 // explosion will be on center of B position, so make second list enemy etc. instead of shot
-function listCollideExplode(listA, listB, collisionRange, optionalResultFunction) {
+function listCollideExplode(listA, listB, optionalResultFunction) {
 	for(var a=0;a<listA.length;a++) {
 		for(var b=0;b<listB.length;b++) {
 			var dist=approxDist(listA[a].x,listA[a].y,listB[b].x,listB[b].y);
+
+			var collisionRange = (listA[a].collDim + listB[b].collDim)/2;
 
 			if(dist< collisionRange) {
 				//explode at impact site!
@@ -51,11 +56,11 @@ function listCollideExplode(listA, listB, collisionRange, optionalResultFunction
 	} // listA
 }
 
-function listCollideRangeOfPoint(listA, atX, atY, collisionRange, optionalResultFunction) {
+function listCollideRangeOfPoint(listA, atX, atY, pointRadius, optionalResultFunction) {
 	for(var a=0;a<listA.length;a++) {
 		var dist=approxDist(listA[a].x,listA[a].y,atX,atY);
 
-		if(dist< collisionRange) {
+		if(dist< listA[a].collDim/2+pointRadius) {
 			spawnSplode(listA[a].x,listA[a].y);
 			
 			if (listA[a].readyToRemove == false && // prevent multiple hits to same target in frame from spawning powerups etc
@@ -72,6 +77,7 @@ function listCollideRangeOfPoint(listA, atX, atY, collisionRange, optionalResult
 function moveDrawClass(startX,startY) {
 	this.x = startX;
 	this.y = startY;
+	this.collDim = 20; // can override with separate collW and collH if not roundish
 	this.readyToRemove = false;
 
 	this.neverRemove = false; // overrides readyToRemove (used for players, respawn only)
