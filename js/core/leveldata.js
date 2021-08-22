@@ -147,7 +147,9 @@ function processAndRemoveGroundLevelData() {
 function startLevel(whichLevel) {
 	createDepthSpawnReference();
 
-    spawnSeqStep = 0;
+	stageBoss = null;
+
+  spawnSeqStep = 0;
 
 	levData = JSON.parse(JSON.stringify(whichLevel)); // deep/clean copy since we'll modify it during loading
 	processAndRemoveGroundLevelData();

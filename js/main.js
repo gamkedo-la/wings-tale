@@ -2,7 +2,7 @@ var gameDevelopmentMode = true; //skip intro stuff
 
 var debugDraw_colliders = true;
 
-var nDefenseOrbs = 33;
+var nDefenseOrbs = 2;//33;
 var debuggingDisplay = true;
 var debugDraw_surfacePaths = true;
 
@@ -11,8 +11,8 @@ let p2AI = true;
 
 var playerList = [new playerClass(), new playerClass()];
 var readyToReset = false; // to avoid calling reset() mid list iterations
-var octopusBoss = new octopusClass();
-var alienshipBoss = new alienshipClass();
+
+var bossList = [];
 
 var gamepads = new GamepadManager();
 
@@ -40,8 +40,6 @@ if (!gameDevelopmentMode) {
 }
 
 var gameMusic = {};
-
-var bossFight = false;
 
 var gameFirstClickedToStart = false;
 var imagesLoaded = false;
@@ -242,12 +240,13 @@ function reset() {
     enemyList,
     enemyShotList,
     shotList,
-    playerList,
+    bossList,
     splodeList,
+    playerList
   ];
 
   // excludes lists which share a common animation frame to be in sync (ex. all shots show same animation frame at same time)
-  animateEachLists = [playerList, enemyList, powerupList, surfaceList];
+  animateEachLists = [playerList, enemyList, powerupList, surfaceList, bossList];
 }
 
 const LEVEL_BG_FRAMES = 4;
@@ -369,15 +368,36 @@ function update() {
       break;
 
     case GAME_STATE_PLAY:
-      levelProgressInPixels += levelProgressRate;
-      levelProgressPerc =
-        levelProgressInPixels / images[currentLevelImageName].height;
       if (levelProgressPerc > 1.0) {
         levelProgressPerc = 1.0;
-        bossFight = true;
+        
+        if (bossList.length == 0) {
+          var stageBoss;
+          switch(levNow) {
+            case LEVEL_ISLAND:
+              stageBoss = new bossOctopusClass();
+              break;
+            case LEVEL_SPACE:
+              stageBoss = new bossAlienshipClass();
+              break;
+            case LEVEL_MOON:
+              stageBoss = new bossAlienshipClass();// Likely to not be the same as the space boss
+              break;
+            case LEVEL_LAVA:
+              stageBoss = new bossLavaDragonClass();
+              break;
+          }
+          stageBoss.reset();
+          bossList.push(stageBoss);
+        }
+
       } else {
-        bossFight = false;
+        levelProgressInPixels += levelProgressRate;
       }
+
+      levelProgressPerc =
+        levelProgressInPixels / images[currentLevelImageName].height;
+
       spawnEnemyUpdate();
 
       if (twoPlayerGame && p2AI) {
@@ -447,17 +467,6 @@ function update() {
         drawList(drawMoveList[i]);
       }
 
-      if (bossFight) {
-        if (levNow==LEVEL_ISLAND) {
-        octopusBoss.draw();
-        }
-        else if (levNow==LEVEL_SPACE) {
-        alienshipBoss.draw();
-        }
-        else if (levNow==LEVEL_MOON) {   // This code is for spawning moon stage boss, currently spawns alien ship
-        alienshipBoss.draw();
-        }
-      }
       break;
     case GAME_STATE_LEVEL_DEBUG:
       editorDraw();

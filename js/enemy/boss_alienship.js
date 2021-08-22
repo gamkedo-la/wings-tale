@@ -1,10 +1,13 @@
 const ALIENSHIP_FRAMES = 0;
 const ALIENSHIP_IMAGE_NAME = "alien ship";
 
-function alienshipClass() {
-    this.frame=0;
-    
+bossAlienshipClass.prototype = new moveDrawClass();
+
+function bossAlienshipClass() {
     this.reset = function() {
+    }
+
+    this.move = function(){
     }
 
     this.draw = function(){

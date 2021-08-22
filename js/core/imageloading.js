@@ -18,6 +18,9 @@ function loadImages() {
     { imgName: "octopus", theFile: "GiantOctopus.png" },
     { imgName: "tentacle", theFile: "tentacle.png" },
     { imgName: "alien ship", theFile: "AlienShip.png" },
+    { imgName: "firedragon", theFile: "firedragon-neckball.png" },
+    { imgName: "firedragon_head", theFile: "firedragon-head.png" },
+
     { imgName: "smallalien", theFile: "enemysmallalien.png" },
     { imgName: "dimo", theFile: "enemyDimo.png" },
     { imgName: "powerup", theFile: "powerup.png" },

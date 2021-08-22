@@ -1,10 +1,13 @@
 const OCTOPUS_FRAMES = 0;
 const OCTOPUS_IMAGE_NAME = "octopus";
 
-function octopusClass() {
-    this.frame=0;
+bossOctopusClass.prototype = new moveDrawClass();
 
+function bossOctopusClass() {
     this.reset = function() {
+    }
+
+    this.move = function(){
     }
 
     this.draw = function(){
