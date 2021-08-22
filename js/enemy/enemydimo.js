@@ -1,4 +1,4 @@
-const ENEMY_DIMO_DIM = 172;
+const ENEMY_DIMO_DIM = 123;
 const ENEMY_DIMO_FRAMES = 6;
 
 enemyDimoClass.prototype = new moveDrawClass();
@@ -30,7 +30,7 @@ function enemyDimoClass(usingStep) {
 			this.x += Math.cos(angAt)*this.speed;
 			this.y += Math.sin(angAt)*this.speed;
 		} else {
-			this.gotoX = this.myTarget.x;
+			this.gotoX = this.myTarget.x ;
 			this.gotoY = this.myTarget.y;
 		}
 
