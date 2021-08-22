@@ -253,27 +253,32 @@ function playerKeyHold(evt, keyFrom, whichPlayer, setTo) {
     if (setTo == false) {
       // key relase only
       playerList[whichPlayer].shotsNumber++;
+      console.log("cheatKeyShots: playerList[whichPlayer].shotsNumber: " + playerList[whichPlayer].shotsNumber);
     }
   } else if (evt.keyCode == inputList[keyFrom].cheatKeyBomb) {
     if (setTo == false) {
       // key relase only
       playerList[whichPlayer].bombCount++;
+      console.log("cheatKeyBomb: playerList[whichPlayer].bombCount: " + playerList[whichPlayer].bombCount);
     }
   } else if (evt.keyCode == inputList[keyFrom].cheatKeyGhost) {
     if (setTo == false) {
       // key relase only
       playerList[whichPlayer].ghostCount++;
+      console.log("cheatKeyGhost: playerList[whichPlayer].ghostCount: " + playerList[whichPlayer].ghostCount);
     }
   } else if (evt.keyCode == inputList[keyFrom].cheatKeyNoDamage) {
     if (setTo == false) {
       // key relase only
       playerList[whichPlayer].invulnerableBlinkToggle = true;
       playerList[whichPlayer].cheatInvulnerable = true;
+      console.log("cheatKeyNoDamage: playerList[whichPlayer].cheatInvulnerable: " + playerList[whichPlayer].cheatInvulnerable);
     }
   } else if (evt.keyCode == inputList[keyFrom].cheatKeyMovement) {
     if (setTo == false) {
       // key relase only
       playerList[whichPlayer].speed = 6;
+      console.log("cheatKeyMovement: playerList[whichPlayer].speed: " + playerList[whichPlayer].speed);
     }
   } else if (evt.keyCode == inputList[keyFrom].cheatKeyReset) {
     if (setTo == false) {
@@ -283,12 +288,14 @@ function playerKeyHold(evt, keyFrom, whichPlayer, setTo) {
       playerList[whichPlayer].ghostCount = 0;
       playerList[whichPlayer].cheatInvulnerable = false;
       playerList[whichPlayer].speed = 3;
+      console.log("cheatKeyReset!");
     }
   } else if (evt.keyCode == inputList[keyFrom].cheatKeySpawnBug) {
     if (setTo == false) {
       // key relase only
       spawnSpecificEnemyAtRandomPosition(ENEMY_BUG);
     }
+    console.log("cheatKeySpawnBug!");
   } else {
     validGameKey = false;
   }
