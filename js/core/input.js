@@ -253,32 +253,32 @@ function playerKeyHold(evt, keyFrom, whichPlayer, setTo) {
     if (setTo == false) {
       // key relase only
       playerList[whichPlayer].shotsNumber++;
-      console.log("cheatKeyShots: playerList[whichPlayer].shotsNumber: " + playerList[whichPlayer].shotsNumber);
+      console.log("cheatKeyShots: Player " + (whichPlayer + 1) + " shotsNumber: " + playerList[whichPlayer].shotsNumber);
     }
   } else if (evt.keyCode == inputList[keyFrom].cheatKeyBomb) {
     if (setTo == false) {
       // key relase only
       playerList[whichPlayer].bombCount++;
-      console.log("cheatKeyBomb: playerList[whichPlayer].bombCount: " + playerList[whichPlayer].bombCount);
+      console.log("cheatKeyBomb: Player " + (whichPlayer + 1) + " bombCount: " + playerList[whichPlayer].bombCount);
     }
   } else if (evt.keyCode == inputList[keyFrom].cheatKeyGhost) {
     if (setTo == false) {
       // key relase only
       playerList[whichPlayer].ghostCount++;
-      console.log("cheatKeyGhost: playerList[whichPlayer].ghostCount: " + playerList[whichPlayer].ghostCount);
+      console.log("cheatKeyGhost: Player " + (whichPlayer + 1) + " ghostCount: " + playerList[whichPlayer].ghostCount);
     }
   } else if (evt.keyCode == inputList[keyFrom].cheatKeyNoDamage) {
     if (setTo == false) {
       // key relase only
       playerList[whichPlayer].invulnerableBlinkToggle = true;
       playerList[whichPlayer].cheatInvulnerable = true;
-      console.log("cheatKeyNoDamage: playerList[whichPlayer].cheatInvulnerable: " + playerList[whichPlayer].cheatInvulnerable);
+      console.log("cheatKeyNoDamage: Player " + (whichPlayer + 1) + " cheatInvulnerable: " + playerList[whichPlayer].cheatInvulnerable);
     }
   } else if (evt.keyCode == inputList[keyFrom].cheatKeyMovement) {
     if (setTo == false) {
       // key relase only
       playerList[whichPlayer].speed = 6;
-      console.log("cheatKeyMovement: playerList[whichPlayer].speed: " + playerList[whichPlayer].speed);
+      console.log("cheatKeyMovement: Player " + (whichPlayer + 1) + " speed: " + playerList[whichPlayer].speed);
     }
   } else if (evt.keyCode == inputList[keyFrom].cheatKeyReset) {
     if (setTo == false) {
