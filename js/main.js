@@ -387,6 +387,7 @@ function update() {
               stageBoss = new bossLavaDragonClass();
               break;
           }
+          stageBoss.reset();
           bossList.push(stageBoss);
         }
 

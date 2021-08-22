@@ -7,12 +7,14 @@ const GAME_H = 240;
 const SCALED_W = 800;
 const SCALED_H = 600;
 
+// 40x50 is a circle in this stretch, so 5/4 height
+const RATIO_CIRCLE_TALLER = (SCALED_W/SCALED_H) / (GAME_H/GAME_W);
+
 const W_RATIO = GAME_W / SCALED_W;
 const H_RATIO = GAME_H / SCALED_H;
 
 const PARALLAX_OFFSET_X = 83;
 const PARALLAX_OFFSET_Y = 85;
-
 
 const TARGET_MOTION_FPS = 30;
 const SHARED_ANIMATION_FRAMES_PER_SEC = 8;

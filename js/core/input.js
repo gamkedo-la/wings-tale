@@ -210,7 +210,7 @@ function keyHoldUpdate(evt, setTo) {
         break;
       case KEY_PLUS:
         if (!setTo) {
-          levelProgressInPixels += images[currentLevelImageName].height / 10;
+          levelProgressInPixels += images[currentLevelImageName].height;
         }
         break;
       default:
