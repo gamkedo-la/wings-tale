@@ -27,6 +27,7 @@ const KEY_N = 78;
 const KEY_O = 79;
 const KEY_P = 80;
 const KEY_Q = 81;
+const KEY_R = 82;//toggle laser shot powerup cheat
 const KEY_S = 83;
 const KEY_T = 84;
 const KEY_W = 87;
@@ -62,6 +63,7 @@ function inputPlayerClass() {
   this.cheatKeyShots;
   this.cheatKeyBomb;
   this.cheatKeyGhost;
+  this.cheatKeyLaser;
   this.cheatKeyReset;
   this.cheatKeyNoDamage;
   this.cheatKeyMovement;
@@ -81,6 +83,7 @@ function assignKeyMapping() {
   inputList[0].cheatKeyBomb = KEY_2;
   inputList[0].cheatKeyGhost = KEY_3;
   inputList[0].cheatKeyReset = KEY_4;
+  inputList[0].cheatKeyLaser = KEY_R;
   inputList[0].cheatKeyMovement = KEY_P;
   inputList[0].cheatKeyNoDamage = KEY_6;
   inputList[0].cheatKeySpawnBug = KEY_J;
@@ -296,7 +299,22 @@ function playerKeyHold(evt, keyFrom, whichPlayer, setTo) {
       spawnSpecificEnemyAtRandomPosition(ENEMY_BUG);
     }
     console.log("cheatKeySpawnBug!");
-  } else {
+  } else if (evt.keyCode == inputList[keyFrom].cheatKeyLaser) {
+    if (setTo == false)
+    //key release only
+    {
+      if (!playerList[whichPlayer].hasLaserPowerUp)
+      {
+        playerList[whichPlayer].hasLaserPowerUp = true;
+      }
+      else
+      {
+        playerList[whichPlayer].hasLaserPowerUp = false;
+      }
+      console.log("playerList[whichPlayer].hasLaserPowerUp? " + playerList[whichPlayer].hasLaserPowerUp);
+    }
+  } 
+  else {
     validGameKey = false;
   }
   return validGameKey;
