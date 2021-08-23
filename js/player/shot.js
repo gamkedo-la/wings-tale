@@ -24,7 +24,8 @@ function shotClass(
   angle,
   momentumX,
   momentumY,
-  shotLength = 2
+  shotLength = 2,
+  playerWhoShot
 ) {
   this.ang = degToShipRad(angle);
   this.x = startX + Math.cos(this.ang) * 12; // for lateral spacing when there's a spread
@@ -34,7 +35,7 @@ function shotClass(
   this.shotLength = shotLength; // not counting front/back end caps. in case we want it to grow, shrink, etc.
 
   this.collW = SHOT_DIM;
-  this.collH = SHOT_DIM*4;
+  this.collH = playerWhoShot.hasLaserPowerUp ? playerWhoShot.y : SHOT_DIM*4;
 
   this.move = function () {
     this.x += this.xv;

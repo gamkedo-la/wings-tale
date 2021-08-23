@@ -242,6 +242,17 @@ function playerClass() {
             shotAngSpan = -(this.shotsNumber - 1) * (shotDegSpread * 0.5);
           playSound(sounds.playerShot);
           for (var i = 0; i < this.shotsNumber; i++) {
+            /*
+            function shotClass(
+  startX,
+  startY,
+  totalSpeed,
+  angle,
+  momentumX,
+  momentumY,
+  shotLength = 2,
+  playerWhoShot
+  */
             newShot = new shotClass(
               fromX,
               this.hasLaserPowerUp ? fromY - LASER_SHOT_LENGTH * 2 : fromY,
@@ -249,7 +260,8 @@ function playerClass() {
               shotAngSpan + shotDegSpread * i,
               pmx,
               pmy,
-              this.hasLaserPowerUp ? LASER_SHOT_LENGTH : 2
+              this.hasLaserPowerUp ? LASER_SHOT_LENGTH : 2,
+              this
             );
             newShot.ownedByPlayer = this; // so we know who shot it
             shotList.push(newShot);
