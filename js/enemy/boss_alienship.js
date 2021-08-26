@@ -4,14 +4,27 @@ const ALIENSHIP_IMAGE_NAME = "alien ship";
 bossAlienshipClass.prototype = new moveDrawClass();
 
 function bossAlienshipClass() {
+    this.xv=2;
+
     this.reset = function() {
+        this.x=0;
+        this.y=120;
+        console.log ("Alien Boss Spawned");
     }
 
     this.move = function(){
+        this.x += this.xv;
+        if(this.x>GAME_W){
+            this.xv = -this.xv;
+        }
+        if(this.x<0){
+            this.xv = -this.xv;
+        }
     }
 
     this.draw = function(){
-        drawAnimFrame(ALIENSHIP_IMAGE_NAME, 128, 120, this.frame, 256, 240);
+        drawAnimFrame(ALIENSHIP_IMAGE_NAME, this.x, this.y, this.frame, 256, 240);
+        console.log ("Alien Boss Drawn")
     }
 
     this.animate = function() {
