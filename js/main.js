@@ -2,7 +2,7 @@ var gameDevelopmentMode = true; //skip intro stuff
 
 var debugDraw_colliders = true;
 
-var nDefenseOrbs = 2;//33;
+var nDefenseOrbs = 2; //33;
 var debuggingDisplay = true;
 var debugDraw_surfacePaths = true;
 
@@ -120,7 +120,7 @@ function loadedAndClicked(evt) {
     if (!gameDevelopmentMode) {
       gameState = GAME_STATE_TITLE;
     } else {
-      if(levelSelectScreen.mouseOverLevel != -1) {
+      if (levelSelectScreen.mouseOverLevel != -1) {
         levelSelectScreen.startHightlightedLevel();
       } else {
         return;
@@ -185,25 +185,23 @@ function animateSprites() {
 function reset() {
   // console.log("reached reset "+levNow);
   try {
-    if (gameMusic && gameMusic.sound) { // can be null
+    if (gameMusic && gameMusic.sound) {
+      // can be null
       gameMusic.sound.stop();
     }
   } catch (e) {
     console.log(`${e}`);
   }
   try {
-    if(levNow==LEVEL_ISLAND) {
-       gameMusic = playSound(sounds.Island_Song, 1, 0, 0.5, true);
-    }
-    else if (levNow==LEVEL_SPACE) {
+    if (levNow == LEVEL_ISLAND) {
+      gameMusic = playSound(sounds.Island_Song, 1, 0, 0.5, true);
+    } else if (levNow == LEVEL_SPACE) {
       gameMusic = playSound(sounds.Space_Song, 1, 0, 0.5, true);
+    } else if (levNow == LEVEL_MOON) {
+      gameMusic = playSound(sounds.Moon_Song, 1, 0, 0.5, true);
+    } else if (levNow == LEVEL_LAVA) {
+      gameMusic = playSound(sounds.Moon_Song, 1, 0, 0.5, true); // no separate song yet, reusing moon
     }
-    else if (levNow==LEVEL_MOON) {
-      gameMusic = playSound(sounds.Moon_Song, 1, 0, 0.5, true); 
-    } else if (levNow==LEVEL_LAVA) {
-      gameMusic = playSound(sounds.Moon_Song, 1, 0, 0.5, true);  // no separate song yet, reusing moon
-    }
-
   } catch (e) {
     console.log(`${e}`);
   }
@@ -242,11 +240,17 @@ function reset() {
     shotList,
     bossList,
     splodeList,
-    playerList
+    playerList,
   ];
 
   // excludes lists which share a common animation frame to be in sync (ex. all shots show same animation frame at same time)
-  animateEachLists = [playerList, enemyList, powerupList, surfaceList, bossList];
+  animateEachLists = [
+    playerList,
+    enemyList,
+    powerupList,
+    surfaceList,
+    bossList,
+  ];
 }
 
 const LEVEL_BG_FRAMES = 4;
@@ -263,17 +267,17 @@ function drawBackground() {
   }
 
   // currently only used by Lava stage, could also use for waves, star twinkle, moon... dust sparkle?
-  if(levNow == LEVEL_LAVA) {
+  if (levNow == LEVEL_LAVA) {
     ticksPerBGFrame--;
-    if(ticksPerBGFrame<0) {
-      bgFrame+=bgFrameDir;
+    if (ticksPerBGFrame < 0) {
+      bgFrame += bgFrameDir;
       ticksPerBGFrame = BG_FRAME_TICK_DELAY;
 
-      if(bgFrame >= LEVEL_BG_FRAMES) {
+      if (bgFrame >= LEVEL_BG_FRAMES) {
         bgFrameDir = -1;
         bgFrame += bgFrameDir; // corrects for going too far, will spend two frames at end
       }
-      if(bgFrame < 0) {
+      if (bgFrame < 0) {
         bgFrameDir = 1;
         bgFrame += bgFrameDir; // corrects for going too far, will spend two frames at start
       }
@@ -283,7 +287,7 @@ function drawBackground() {
   }
   context.drawImage(
     images[currentLevelImageName],
-    bgFrame*GAME_W,
+    bgFrame * GAME_W,
     bgDrawY,
     GAME_W,
     GAME_H,
@@ -292,7 +296,7 @@ function drawBackground() {
     GAME_W,
     GAME_H
   );
-   fxContext.drawImage(
+  fxContext.drawImage(
     images[curDepthMap],
     0,
     bgDrawY,
@@ -370,10 +374,10 @@ function update() {
     case GAME_STATE_PLAY:
       if (levelProgressPerc > 1.0) {
         levelProgressPerc = 1.0;
-        
+
         if (bossList.length == 0) {
           var stageBoss;
-          switch(levNow) {
+          switch (levNow) {
             case LEVEL_ISLAND:
               stageBoss = new bossOctopusClass();
               break;
@@ -381,7 +385,7 @@ function update() {
               stageBoss = new bossAlienshipClass();
               break;
             case LEVEL_MOON:
-              stageBoss = new bossAlienshipClass();// Likely to not be the same as the space boss
+              stageBoss = new bossAlienshipClass(); // Likely to not be the same as the space boss
               break;
             case LEVEL_LAVA:
               stageBoss = new bossLavaDragonClass();
@@ -390,7 +394,6 @@ function update() {
           stageBoss.reset();
           bossList.push(stageBoss);
         }
-
       } else {
         levelProgressInPixels += levelProgressRate;
       }
@@ -408,44 +411,29 @@ function update() {
         moveList(drawMoveList[i]);
       }
 
-      listCollideExplode(
-        shotList,
-        enemyList,
-        function (at, to) {
-          
-          //console.log("shot hit!");
-          if (at.ownedByPlayer) {
-              at.ownedByPlayer.combo.add();
-              // note: if the global playerScore gets refactored into
-              // a property of the player class (to allow >1 player)
-              // then this is a good place to increase the score
-              // example: at.ownedByPlayer.score += 10;
-              playerScore += 10; // FIXME - each enemy could have to.scoreEarned
-          }
-
-          if (Math.random() < SKY_POWERUP_DROP_PERCENT) {
-            powerupList.push(new powerupClass(at.x, to.y));
-          }
+      listCollideExplode(shotList, enemyList, function (at, to) {
+        //console.log("shot hit!");
+        if (at.ownedByPlayer) {
+          at.ownedByPlayer.combo.add();
+          // note: if the global playerScore gets refactored into
+          // a property of the player class (to allow >1 player)
+          // then this is a good place to increase the score
+          // example: at.ownedByPlayer.score += 10;
+          playerScore += 10; // FIXME - each enemy could have to.scoreEarned
         }
-      );
+
+        if (Math.random() < SKY_POWERUP_DROP_PERCENT) {
+          powerupList.push(new powerupClass(at.x, to.y));
+        }
+      });
 
       for (var i = 0; i < playerList.length; i++) {
-        listCollideExplode(
-          enemyList,
-          playerList[i].defenseRingUnitList
-        );
-        listCollideExplode(
-          enemyShotList,
-          playerList[i].defenseRingUnitList
-        );
+        listCollideExplode(enemyList, playerList[i].defenseRingUnitList);
+        listCollideExplode(enemyShotList, playerList[i].defenseRingUnitList);
       }
-      listCollideExplode(
-        playerList,
-        enemyList,
-        function (elementA, elementB) {
-          elementA.reset();
-        }
-      );
+      listCollideExplode(playerList, enemyList, function (elementA, elementB) {
+        elementA.reset();
+      });
       listCollideExplode(
         playerList,
         enemyShotList,
@@ -460,6 +448,10 @@ function update() {
           elementB.doEffect(elementA);
         }
       );
+
+      listCollideExplode(shotList, bossList, function (elementA, elementB) {
+        elementB.health -= 1;
+      });
 
       drawBackground();
       drawRippleEffect();
