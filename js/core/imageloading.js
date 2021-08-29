@@ -17,6 +17,7 @@ function loadImages() {
     { imgName: "shockball", theFile: "enemyenergyspark.png" },
     { imgName: "octopus", theFile: "GiantOctopus.png" },
     { imgName: "tentacle", theFile: "tentacle.png" },
+    { imgName: "volcano", theFile: "surface-volcano.png" },
     { imgName: "alien ship", theFile: "AlienShip.png" },
     { imgName: "firedragon", theFile: "firedragon-neckball.png" },
     { imgName: "firedragon_head", theFile: "firedragon-head.png" },

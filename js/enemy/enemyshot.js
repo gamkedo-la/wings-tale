@@ -13,16 +13,20 @@ function animateEnemyShots() {
 
 enemyShotClass.prototype = new moveDrawClass();
 
-function enemyShotClass(startX, startY, totalSpeed = ENEMY_SHOT_SPEED) {
-	var playerTarget;
-	if(twoPlayerGame == false) {
-		playerTarget = playerList[0];
+function enemyShotClass(startX, startY, totalSpeed = ENEMY_SHOT_SPEED, angOverride) {
+	if(typeof angOverride !== 'undefined') {
+			this.ang = angOverride;
 	} else {
-		var dist1 = approxDist(startX,startY,playerList[0].x,playerList[0].y)
-		var dist2 = approxDist(startX,startY,playerList[1].x,playerList[1].y)
-		playerTarget = (dist1 < dist2 ? playerList[0] : playerList[1]);
+		var playerTarget;
+		if(twoPlayerGame == false) {
+			playerTarget = playerList[0];
+		} else {
+			var dist1 = approxDist(startX,startY,playerList[0].x,playerList[0].y)
+			var dist2 = approxDist(startX,startY,playerList[1].x,playerList[1].y)
+			playerTarget = (dist1 < dist2 ? playerList[0] : playerList[1]);
+		}
+		this.ang = Math.atan2((playerTarget.y - startY), (playerTarget.x - startX));
 	}
-	this.ang = Math.atan2((playerTarget.y - startY), (playerTarget.x - startX));
 	this.x = startX;
 	this.y = startY;
 	this.xv = Math.cos(this.ang) * totalSpeed;

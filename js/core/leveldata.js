@@ -24,7 +24,8 @@ function createEditorSpawnKindPatterns() {
 
 const GROUND_KIND_TANK = 0;
 const GROUND_KIND_TENTACLE = 1;
-const GROUND_KINDS = 2;
+const GROUND_KIND_VOLCANO = 2;
+const GROUND_KINDS = 3;
 
 const SPAWN_WITH_NEXT = 0.0;
 const NO_DEPTH_LOOKUP_DEFAULT_HEIGHT = 128;
@@ -49,8 +50,8 @@ var moonSpawnSeq =
 	]},{percDuration:0.5,kind:ENEMY_SWOOP,driftX:0.8,percXMin:0.1,percXMax:0.15,speed:1.0,wave:5,ticksBetween:2000},{percDuration:0.5,kind:ENEMY_BUG,driftX:-0.8,percXMin:0.85,percXMax:0.9,speed:1.0,wave:5,ticksBetween:2000},]
 ;
 var lavaSpawnSeq = 
-	[{"groundData":[{"groundKind":0,"x":120,"y":2900,"track":[{"x":0,"y":0},{"x":-70,"y":0},{"x":-80,"y":-40}]}]},{"percDuration":0.05,"kind":4,"driftX":0.9,"percXMin":0,"percXMax":0.40,"speed":1,"wave":5,"ticksBetween":15},{"percDuration":0.05,"kind":0,"driftX":-0.8,"percXMin":0.85,"percXMax":0.9,"speed":1,"wave":5,"ticksBetween":10}]
-	;
+	[{"groundData":[{"groundKind":2,"x":63,"y":3688}]},{"percDuration":0.05,"kind":4,"driftX":0.9,"percXMin":0,"percXMax":0.4,"speed":1,"wave":5,"ticksBetween":15},{"percDuration":0.05,"kind":0,"driftX":-0.8,"percXMin":0.85,"percXMax":0.9,"speed":1,"wave":5,"ticksBetween":10}]
+;
 
 var levSeq = [islandSpawnSeq,
             spaceSpawnSeq,
@@ -112,6 +113,9 @@ function groundTypeToObject(kind,atX,atY) {
 			break;
 		case GROUND_KIND_TENTACLE:
 			returnObj = new tentacleClass(atX,atY);
+			break;
+		case GROUND_KIND_VOLCANO:
+			returnObj = new volcanoEnemyClass(atX,atY);
 			break;
 		default:
 			console.log("unrecognized ground type for value: "+kind);
