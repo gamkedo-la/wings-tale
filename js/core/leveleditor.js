@@ -400,7 +400,7 @@ function drawLevelSpawnData() { // for level debug display (may become editable 
 			}
 
 			frontEdge = backEdge;
-			backEdge = (1.0-nextPerc)*mapLength-bgDrawY;
+			backEdge = (1.0-nextPerc)*mapLength-bgDrawY-GAME_H;
 			prevNonSkipI = i;
 		}
 
