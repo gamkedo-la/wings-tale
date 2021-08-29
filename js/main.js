@@ -236,9 +236,9 @@ function reset() {
     powerupList,
     shotGroundList,
     enemyList,
-    enemyShotList,
     shotList,
     bossList,
+    enemyShotList,
     splodeList,
     playerList,
   ];

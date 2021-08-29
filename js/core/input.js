@@ -213,6 +213,7 @@ function keyHoldUpdate(evt, setTo) {
       case KEY_PLUS: // skip to boss cheat
         if (!setTo) {
           enemyList.length = 0; // remove other enemies. note: can't use = [];, referenced elsewhere
+          enemyShotList.length = 0;
           levelProgressInPixels += images[currentLevelImageName].height;
         }
         break;

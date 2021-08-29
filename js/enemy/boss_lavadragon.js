@@ -10,6 +10,7 @@ const DRAGON_MOVE_SPEED = 0.3;
 const DRAGON_SHOT_SPEED = 0.5;
 const DRAGON_SHOT_BURST = 7;
 const DRAGON_SHOT_RELOAD = 120;
+const DRAGON_SHOT_Y_OFFSET = 11; // where mouth is from center of head
 
 bossLavaDragonClass.prototype = new moveDrawClass();
 bossLavaDragon_Neck_Class.prototype = new moveDrawClass();
@@ -96,7 +97,7 @@ function bossLavaDragon_Neck_Class(baseAngOffset,jointOffset) {
         if(this.reloadTime--<0) {
             this.reloadTime = DRAGON_SHOT_RELOAD;
             for(var i=0;i<DRAGON_SHOT_BURST;i++) {
-                new enemyShotClass(offsetX, offsetY,DRAGON_SHOT_SPEED,
+                new enemyShotClass(offsetX, offsetY+DRAGON_SHOT_Y_OFFSET,DRAGON_SHOT_SPEED,
                     i*(Math.PI*2/(DRAGON_SHOT_BURST)));
             }
         }
