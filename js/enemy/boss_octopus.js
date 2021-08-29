@@ -16,17 +16,19 @@ function bossOctopusClass() {
     { x: 240, y: 16 },
     { x: 240, y: 64 },
   ];
+  this.currentTentacle = 0;
   this.x = GAME_W / 2;
   this.y = 64;
-  this.health = 10;
+  this.health = 100;
   this.collW = this.collH = 64;
   this.readyToRemove = false;
 
   this.reset = function () {};
 
   this.move = function () {
+    console.log(this.health);
     if (this.health <= 0) {
-      return;
+      console.log("octopus dead");
     }
     this.tentacleShotTimer -= 1;
     this.mainShotTimer -= 1;
@@ -42,12 +44,13 @@ function bossOctopusClass() {
   };
 
   this.shoot = function () {
-    var tentacle =
-      this.tentacle_positions[
-        Math.floor(Math.random() * this.tentacle_positions.length)
-      ];
+    var tentacle = this.tentacle_positions[this.currentTentacle];
     newShot = new enemyShotClass(tentacle.x, tentacle.y, ENEMY_SHOT_SPEED);
     enemyShotList.push(newShot);
+    this.currentTentacle++;
+    if (this.currentTentacle > this.tentacle_positions.length - 1) {
+      this.currentTentacle = 0;
+    }
   };
 
   this.shootFromFace = function () {

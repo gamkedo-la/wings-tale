@@ -459,6 +459,19 @@ function update() {
         drawList(drawMoveList[i]);
       }
 
+      if (bossList[0]?.health <= 0) {
+        bossList.splice(0, 1);
+        levelProgressInPixels = 0;
+        levelProgressPerc = 0.0;
+        levNow++;
+        currentLevelImageName = levNames[levNow];
+        playerScore += 1000;
+        if (levNow == LEVEL_LAVA) {
+          playerScore += 1000;
+        }
+        startLevel(levSeq[levNow]);
+      }
+
       break;
     case GAME_STATE_LEVEL_DEBUG:
       editorDraw();
