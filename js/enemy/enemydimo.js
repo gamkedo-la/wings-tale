@@ -12,6 +12,8 @@ function enemyDimoClass(usingStep) {
 	this.frame = Math.floor(Math.random()*ENEMY_DIMO_FRAMES);
 	this.speed = usingStep.speed;
 
+	this.health = 6;
+
 	this.collW = 60;
 	this.collH = 32;
 
