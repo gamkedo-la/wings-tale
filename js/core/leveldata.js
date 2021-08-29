@@ -178,10 +178,8 @@ function spawnEnemyUpdate() {
 	{
 		return;
 	}
-	
 	if(levelProgressPerc>spawnRanges[spawnSeqStep] && 
 		spawnSeqStep<levData.length-1 ) { // so last one will go until end of stage
-
 		sameTimeSpawnSteps.length = 0;
 		sameTimeSpawnTicks.length = 0;
 		while(levData[spawnSeqStep].percDuration == SPAWN_WITH_NEXT &&
@@ -202,13 +200,10 @@ function spawnEnemyUpdate() {
 	if(spawnSeqStep==0) {
 		stepPerc = levelProgressPerc/levData[spawnSeqStep].percDuration;
 	} else if(spawnSeqStep < levData.length) {
-		stepPerc = (levelProgressPerc-levData[spawnSeqStep-1].percDuration)/
-					(levData[spawnSeqStep].percDuration-levData[spawnSeqStep-1].percDuration); 
-		if(stepPerc>1) { // ex. ran out of level description, so freeze it after drift
-			stepPerc=1;
-		}
-	} else {
-		stepPerc = 0;
+		stepPerc = 1.0+(levelProgressPerc-spawnRanges[spawnSeqStep])/
+					(levData[spawnSeqStep].percDuration); 
+	} else { // ex. ran out of level description, so freeze it after drift
+		stepPerc = 1;
 	}
 	// console.log("stepPerc is "+stepPerc);
 

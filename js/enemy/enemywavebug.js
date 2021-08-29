@@ -5,7 +5,7 @@ const ENEMY_FRAMES = 3;
 const ENEMY_WAVES_AMPLITUDE_MIN = 15;
 const ENEMY_WAVES_AMPLITUDE_MAX = 35;
 
-const ENEMY_WAVES_FREQ_MIN = 0.02;
+const ENEMY_WAVES_FREQ = 0.04;
 const ENEMY_WAVES_FREQ_MAX = 0.08;
 
 const ENEMY_SPEED_MIN = 0.8;
@@ -14,13 +14,13 @@ const ENEMY_SPEED_MAX = 2.5;
 enemyWaveBugClass.prototype = new moveDrawClass();
 
 function enemyWaveBugClass(usingStep) {
-	this.startX = this.x = (usingStep.driftX*stepPerc + usingStep.percXMin+
-		Math.random()*(usingStep.percXMax-usingStep.percXMin))*canvas.width;
+	var centerX = 0.5*(Math.abs(usingStep.percXMax)+Math.abs(usingStep.percXMin));
+	this.startX = this.x = (usingStep.driftX*stepPerc+centerX)*canvas.width;
+	this.waveSize = GAME_W*Math.abs(usingStep.percXMax-usingStep.percXMin);//usingStep.wave;
 	this.y = -ENEMY_DIM;
 	this.frame = Math.floor(Math.random()*ENEMY_FRAMES);
-	this.phaseOff = Math.random();
-	this.waveSize = usingStep.wave;
-	this.freq = randRange(ENEMY_WAVES_FREQ_MIN,ENEMY_WAVES_FREQ_MAX);
+	this.phaseOff = levelProgressInPixels/GAME_H;
+	this.freq = ENEMY_WAVES_FREQ;
 	this.speed = usingStep.speed;
 
 	this.collW = this.collH = ENEMY_DIM;
