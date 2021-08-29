@@ -43,8 +43,12 @@ function listCollideExplode(listA, listB, optionalResultFunction) {
 				}
 				
 				//remove both
-				listA[a].readyToRemove = true;
-				listB[b].readyToRemove = true;
+				// listA[a].readyToRemove = true;
+				// listB[b].readyToRemove = true;
+
+				//Instead of removing both directly, we check for the "health" of the objects.
+				checkForHealthToRemove(listA[a]);
+				checkForHealthToRemove(listB[b]);
 					
 				break; // break since don't compare against any others for this removed one
 			}
@@ -64,10 +68,18 @@ function listCollideRangeOfPoint(listA, atX, atY, pointRadius, optionalResultFun
 				optionalResultFunction(listA[a]);
 			}
 
-			listA[a].readyToRemove = true;			
+			//listA[a].readyToRemove = true;
+			checkForHealthToRemove(listA[a]);			
 			// break; // NOTE: specifically no break, used for bomb etc. so same one could take out multiple!
 		}
 	} // listA
+}
+
+function checkForHealthToRemove(listObject) {
+	listObject.health -= 1;
+	if (listObject.health <= 0) {
+		listObject.readyToRemove = true;
+	}
 }
 
 function moveDrawClass(startX,startY) {
@@ -77,6 +89,7 @@ function moveDrawClass(startX,startY) {
 	this.y = startY;
 	this.collW = this.collH = 20;
 	this.readyToRemove = false;
+	this.health = 1;
 
 	this.neverRemove = false; // overrides readyToRemove (used for players, respawn only)
 

@@ -22,6 +22,7 @@ function enemyWaveBugClass(usingStep) {
 	this.phaseOff = levelProgressInPixels/GAME_H;
 	this.freq = ENEMY_WAVES_FREQ;
 	this.speed = usingStep.speed;
+	//this.health = 2;
 
 	this.collW = this.collH = ENEMY_DIM;
 
