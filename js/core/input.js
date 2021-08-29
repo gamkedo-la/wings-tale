@@ -11,7 +11,6 @@ var cumulativeDrag = 0; // total amount of drag since button down, for click det
 const KEY_ENTER = 13;
 const KEY_SPACE = 32;
 const KEY_MINUS = 189;
-const KEY_EQUALS = 187;
 
 const KEY_A = 65;
 const KEY_C = 67;
@@ -211,8 +210,9 @@ function keyHoldUpdate(evt, setTo) {
           }
         }
         break;
-      case KEY_PLUS:
+      case KEY_PLUS: // skip to boss cheat
         if (!setTo) {
+          enemyList.length = 0; // remove other enemies. note: can't use = [];, referenced elsewhere
           levelProgressInPixels += images[currentLevelImageName].height;
         }
         break;

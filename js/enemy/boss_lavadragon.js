@@ -2,26 +2,44 @@ const LAVA_NECK_FRAMES = 8;
 const LAVA_NECK_JOINTS = 6;
 const LAVA_NECK_JOINT_LEN = 34;
 
+// how far it moves back and forth
+const DRAGON_BACK_Y = -120;
+const DRAGON_FRONT_Y = -35;
+const DRAGON_MOVE_SPEED = 0.3;
+
+const DRAGON_SHOT_SPEED = 0.5;
+const DRAGON_SHOT_BURST = 7;
+const DRAGON_SHOT_RELOAD = 120;
+
 bossLavaDragonClass.prototype = new moveDrawClass();
 bossLavaDragon_Neck_Class.prototype = new moveDrawClass();
 
 function bossLavaDragonClass() {
     this.neckList = [];
     this.rightNeck;
+    this.yv = DRAGON_MOVE_SPEED;
 
     this.reset = function() {
         this.x = GAME_W/2;
-        this.y = -40;
+        this.y = DRAGON_BACK_Y;
         this.neckList = [];
         this.neckList.push(new bossLavaDragon_Neck_Class(0.0,Math.PI*0.25));
         this.neckList.push(new bossLavaDragon_Neck_Class(0.1,Math.PI*-0.25));
         this.neckList.push(new bossLavaDragon_Neck_Class(-0.2,Math.PI*0.125));
         for(var i=0;i<this.neckList.length;i++) {
             this.neckList[i].reset();
+            this.neckList[i].reloadTime = DRAGON_SHOT_RELOAD*((i+1)/this.neckList.length);
         }
     }
 
     this.move = function(){
+        this.y += this.yv;
+        if(this.y>DRAGON_FRONT_Y){
+            this.yv = -this.yv;
+        }
+        if(this.y<DRAGON_BACK_Y){
+            this.yv = -this.yv;
+        }
     }
 
     this.draw = function(){
@@ -44,6 +62,7 @@ function bossLavaDragonClass() {
 function bossLavaDragon_Neck_Class(baseAngOffset,jointOffset) {
     this.neckAngles;
     this.neckAnglesOsc; // oscillator
+    this.reloadTime = DRAGON_SHOT_RELOAD;
 
     this.reset = function() {
         this.neckAngles = [];
@@ -74,11 +93,15 @@ function bossLavaDragon_Neck_Class(baseAngOffset,jointOffset) {
         drawAnimFrame("firedragon_head",
                     offsetX,offsetY,
                     0, 28, 35); // no animations hooked up yet, tie to firing
-        if (50 * Math.random() < 1) {
-            new enemyShotClass(offsetX, offsetY);
+        if(this.reloadTime--<0) {
+            this.reloadTime = DRAGON_SHOT_RELOAD;
+            for(var i=0;i<DRAGON_SHOT_BURST;i++) {
+                new enemyShotClass(offsetX, offsetY,DRAGON_SHOT_SPEED,
+                    i*(Math.PI*2/(DRAGON_SHOT_BURST)));
+            }
         }
         for(var i=0;i<LAVA_NECK_JOINTS;i++) {
-            this.neckAngles[i] += 0.01*Math.cos(this.neckAnglesOsc[i]);
+            this.neckAngles[i] += 0.005*Math.cos(this.neckAnglesOsc[i]);
             this.neckAnglesOsc[i] += 0.04+Math.random()*0.01;
         }
     }
