@@ -5,7 +5,7 @@ bossOctopusClass.prototype = new moveDrawClass();
 
 function bossOctopusClass() {
   this.defaultTentacleShotTimer = 15;
-  this.defaultMainShotTImer = 45;
+  this.defaultMainShotTImer = 90;
   this.tentacleShotTimer = this.defaultTentacleShotTimer;
   this.mainShotTimer = this.defaultMainShotTImer;
   this.tentacle_positions = [
@@ -26,10 +26,6 @@ function bossOctopusClass() {
   this.reset = function () {};
 
   this.move = function () {
-    console.log(this.health);
-    if (this.health <= 0) {
-      console.log("octopus dead");
-    }
     this.tentacleShotTimer -= 1;
     this.mainShotTimer -= 1;
     if (this.tentacleShotTimer <= 0) {
@@ -54,8 +50,12 @@ function bossOctopusClass() {
   };
 
   this.shootFromFace = function () {
-    newShot = new enemyShotClass(this.x, this.y, ENEMY_SHOT_SPEED);
-    enemyShotList.push(newShot);
+    newShot1 = new shotClass(this.x - 16, this.y - 16, 10, 180, 0, 2, 10, this);
+    newShot2 = new shotClass(this.x, this.y, 10, 180, 0, 2, 10, this);
+    newShot3 = new shotClass(this.x + 16, this.y - 16, 10, 180, 0, 2, 10, this);
+    enemyShotList.push(newShot1);
+    enemyShotList.push(newShot2);
+    enemyShotList.push(newShot3);
   };
 
   this.draw = function () {
