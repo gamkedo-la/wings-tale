@@ -50,6 +50,7 @@ const KEY_RIGHT = 39;
 const KEY_DOWN = 40;
 const KEY_LEFT = 37;
 const KEY_PLUS = 187;
+const KEY_PLUS_FIREFOX = 61;
 
 function inputPlayerClass() {
   // set to keycode by player
@@ -211,6 +212,7 @@ function keyHoldUpdate(evt, setTo) {
         }
         break;
       case KEY_PLUS: // skip to boss cheat
+      case KEY_PLUS_FIREFOX: // skip to boss cheat firefox plus key
         if (!setTo) {
           enemyList.length = 0; // remove other enemies. note: can't use = [];, referenced elsewhere
           enemyShotList.length = 0;
