@@ -85,12 +85,30 @@ function bossLavaDragon_Neck_Class(baseAngOffset, jointOffset) {
     var offsetAng = Math.PI * 0.5; // downward
     for (var i = 0; i < this.neckAngles.length; i++) {
       drawAnimFrame("firedragon", offsetX, offsetY, this.frame, 28, 35);
+      if (this.hitFlashFrames) {
+        this.hitFlashFrames--;
+        context.globalCompositeOperation = "lighter"; // brighten stuff up
+        drawAnimFrame("firedragon", offsetX, offsetY, this.frame, 28, 35);
+        drawAnimFrame("firedragon", offsetX, offsetY, this.frame, 28, 35);
+        context.globalCompositeOperation = "source-over"; // restore to default
+      }
+
       offsetAng += this.neckAngles[i];
       offsetX +=
         (Math.cos(offsetAng) * LAVA_NECK_JOINT_LEN) / RATIO_CIRCLE_TALLER;
       offsetY += Math.sin(offsetAng) * LAVA_NECK_JOINT_LEN;
     }
+
     drawAnimFrame("firedragon_head", offsetX, offsetY, 0, 28, 35); // no animations hooked up yet, tie to firing
+    if (this.hitFlashFrames) {
+        this.hitFlashFrames--;
+        context.globalCompositeOperation = "lighter"; // brighten stuff up
+        drawAnimFrame("firedragon_head", offsetX, offsetY, 0, 28, 35); // no animations hooked up yet, tie to firing
+        drawAnimFrame("firedragon_head", offsetX, offsetY, 0, 28, 35); // no animations hooked up yet, tie to firing
+        context.globalCompositeOperation = "source-over"; // restore to default
+      }
+
+
     if (this.reloadTime-- < 0) {
       this.reloadTime = DRAGON_SHOT_RELOAD;
       for (var i = 0; i < DRAGON_SHOT_BURST; i++) {
@@ -115,5 +133,8 @@ function bossLavaDragon_Neck_Class(baseAngOffset, jointOffset) {
     }
   };
 
-  this.takeDamage = function () {};
+  this.takeDamage = function () {
+    //console.log("flashing lava dragon boss on hit!");
+    this.hitFlashFrames = HIT_FLASH_FRAMECOUNT;
+  };
 }

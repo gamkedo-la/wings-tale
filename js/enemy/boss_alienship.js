@@ -24,6 +24,14 @@ function bossAlienshipClass() {
   this.draw = function () {
     drawAnimFrame(ALIENSHIP_IMAGE_NAME, this.x, this.y, this.frame, 256, 240);
 
+    if (this.hitFlashFrames) {
+        this.hitFlashFrames--;
+        context.globalCompositeOperation = "lighter"; // brighten stuff up
+        drawAnimFrame(ALIENSHIP_IMAGE_NAME, this.x, this.y, this.frame, 256, 240);
+        drawAnimFrame(ALIENSHIP_IMAGE_NAME, this.x, this.y, this.frame, 256, 240);
+        context.globalCompositeOperation = "source-over"; // restore to default
+    }
+
     if (50 * Math.random() < 1) {
       new enemyShotClass(this.x, this.y);
     }
@@ -40,5 +48,8 @@ function bossAlienshipClass() {
     }
   };
 
-  this.takeDamage = function () {};
+  this.takeDamage = function () {
+    //console.log("flashing alien ship boss on hit!");
+    this.hitFlashFrames = HIT_FLASH_FRAMECOUNT;
+  };
 }

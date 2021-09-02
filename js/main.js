@@ -30,6 +30,8 @@ const GAME_STATE_LEVEL_SELECT = 3;
 const GAME_STATE_LOADING_SPLASH = 4;
 const GAME_STATE_LEVEL_DEBUG = 5;
 
+const HIT_FLASH_FRAMECOUNT = 2; // enemy/boss flash after takeDamage
+
 const LEVEL_RECTS = [{ x: 0, y: 0, width: 0, height: 0 }]; // Array of rectangles representing the levels in the level select menu
 
 var gameState;
@@ -421,6 +423,9 @@ function update() {
           // example: at.ownedByPlayer.score += 10;
           playerScore += 10; // FIXME - each enemy could have to.scoreEarned
         }
+
+        // optionally flash just like bosses
+        to.hitFlashFrames = HIT_FLASH_FRAMECOUNT;
 
         if (Math.random() < SKY_POWERUP_DROP_PERCENT) {
           powerupList.push(new powerupClass(at.x, to.y));

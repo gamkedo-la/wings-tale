@@ -130,6 +130,10 @@ function bossOctopusClass() {
   };
 
   this.takeDamage = function () {
+
+    //console.log("flashing octopus boss on hit!");
+    //this.hitFlashFrames = HIT_FLASH_FRAMECOUNT; // unused as we replace images on this boss below
+
     this.health -= 1;
     this.image = OCTOPUS_IMAGE_NAME + "_damaged";
 

@@ -43,6 +43,17 @@ function enemyDimoClass(usingStep) {
 
 	this.draw = function() { // splode graphic just as placeholder
 		drawAnimFrame("dimo",this.x,this.y, this.frame, ENEMY_DIMO_DIM,ENEMY_DIMO_DIM);
+
+        if (this.hitFlashFrames) {
+            //console.log("flashing dimo ship!");
+            this.hitFlashFrames--;
+            context.globalCompositeOperation = "lighter"; // brighten stuff up
+            drawAnimFrame("dimo",this.x,this.y, this.frame, ENEMY_DIMO_DIM,ENEMY_DIMO_DIM);
+            drawAnimFrame("dimo",this.x,this.y, this.frame, ENEMY_DIMO_DIM,ENEMY_DIMO_DIM);
+            context.globalCompositeOperation = "source-over"; // restore to default
+        }
+    
+
 	}
 	this.animate = function() {
 		if(++this.frame>=ENEMY_DIMO_FRAMES) {
