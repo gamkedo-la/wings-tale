@@ -16,6 +16,7 @@ function loadImages() {
     { imgName: "stallchase", theFile: "enemyaliendrone.png" },
     { imgName: "shockball", theFile: "enemyenergyspark.png" },
     { imgName: "octopus", theFile: "GiantOctopus.png" },
+    { imgName: "octopus_damaged", theFile: "GiantOctopus-damaged.png" },
     { imgName: "tentacle", theFile: "tentacle.png" },
     { imgName: "volcano", theFile: "surface-volcano.png" },
     { imgName: "alien ship", theFile: "AlienShip.png" },
@@ -95,7 +96,7 @@ function loadImages() {
       imgName: "text lava",
       theFile: "text-lava.png",
     },
- 
+
     {
       imgName: "controls menu background",
       theFile: "controlsMenuBackground.png",

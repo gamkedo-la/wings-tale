@@ -450,7 +450,7 @@ function update() {
       );
 
       listCollideExplode(shotList, bossList, function (elementA, elementB) {
-        elementB.health -= 1;
+        elementB.takeDamage();
       });
 
       drawBackground();
