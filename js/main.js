@@ -2,7 +2,7 @@ var gameDevelopmentMode = true; //skip intro stuff
 
 var debugDraw_colliders = false;
 
-var nDefenseOrbs = 2; //33;
+var nDefenseOrbs = 4; //33;
 var debuggingDisplay = true;
 var debugDraw_surfacePaths = true;
 
@@ -49,6 +49,7 @@ var imagesLoaded = false;
 var curDepthMap = "depth island";
 
 window.onload = function () {
+  SetupPowerupDropOdds();
   setupCanvas();
   initializeLevelSelectScreen();
 
