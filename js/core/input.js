@@ -306,14 +306,7 @@ function playerKeyHold(evt, keyFrom, whichPlayer, setTo) {
     if (setTo == false)
     //key release only
     {
-      if (!playerList[whichPlayer].hasLaserPowerUp)
-      {
-        playerList[whichPlayer].hasLaserPowerUp = true;
-      }
-      else
-      {
-        playerList[whichPlayer].hasLaserPowerUp = false;
-      }
+      playerList[whichPlayer].hasLaserPowerUp = !playerList[whichPlayer].hasLaserPowerUp;
       console.log("playerList[whichPlayer].hasLaserPowerUp? " + playerList[whichPlayer].hasLaserPowerUp);
     }
   } 

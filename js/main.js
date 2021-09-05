@@ -397,7 +397,7 @@ function update() {
           stageBoss.reset();
           bossList.push(stageBoss);
         }
-      } else {
+      } else {        
         levelProgressInPixels += levelProgressRate;
       }
 
@@ -429,7 +429,7 @@ function update() {
         to.hitFlashFrames = HIT_FLASH_FRAMECOUNT;
 
         if (Math.random() < SKY_POWERUP_DROP_PERCENT) {
-          powerupList.push(new powerupClass(at.x, to.y));
+          spawnNewPowerup(at.x, to.y);
         }
       });
 

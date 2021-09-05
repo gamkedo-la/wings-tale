@@ -9,7 +9,7 @@ const INVULNERABLE_DURATION_DECREMENT = 0.1;
 const FRAMES_BETWEEN_PLAYER_SHOTS = 3;
 
 const GROUND_POWERUP_DROP_PERCENT = 0.5;
-const SKY_POWERUP_DROP_PERCENT = 0.08;
+const SKY_POWERUP_DROP_PERCENT = 0.1;
 
 var shotDegSpread = 3.7;
 var bombDegSpread = 6;
@@ -30,7 +30,6 @@ function playerClass() {
   this.ghostCount = 0;
   this.homingBombFramesLeft = HOMING_POWERUP_FRAMES;
   this.hasLaserPowerUp = false;
-  this.laserIsFiring = false;
   this.speed = 3;
 
   this.invulnerableTimeLeft = 0;
@@ -240,17 +239,20 @@ function playerClass() {
         }
       }
 
+      var extraLaserSpread = 3;
+
       if (this.holdFire) {
         if (readyToFire) { // doesn't need to reload
           var newShot,
-            shotAngSpan = -(this.shotsNumber - 1) * (shotDegSpread * 0.5);
+            shotAngSpan = -(this.shotsNumber - 1) * (shotDegSpread * 0.5) *
+                (this.hasLaserPowerUp ? extraLaserSpread : 1);
           playSound(sounds.playerShot);
           for (var i = 0; i < this.shotsNumber; i++) {
             newShot = new shotClass(
               fromX,
               this.hasLaserPowerUp ? fromY - LASER_SHOT_LENGTH * 2 : fromY,
               SHOT_SPEED,
-              shotAngSpan + shotDegSpread * i,
+              shotAngSpan + shotDegSpread * i * (this.hasLaserPowerUp ? extraLaserSpread : 1),
               pmx,
               pmy,
               this.hasLaserPowerUp ? LASER_SHOT_LENGTH : 2,

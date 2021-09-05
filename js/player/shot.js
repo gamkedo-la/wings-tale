@@ -28,11 +28,14 @@ function shotClass(
   playerWhoShot
 ) {
   this.ang = degToShipRad(angle);
-  this.x = startX + Math.cos(this.ang) * 12; // for lateral spacing when there's a spread
+  this.x = startX + 
+        Math.cos(this.ang) * (playerWhoShot.hasLaserPowerUp ? 40 : 12);
   this.y = startY;
-  this.xv = momentumX + Math.cos(this.ang) * totalSpeed;
-  this.yv = momentumY + Math.sin(this.ang) * totalSpeed;
+  this.xv = playerWhoShot.hasLaserPowerUp ? 0 : momentumX + Math.cos(this.ang) * totalSpeed;
+  this.yv = playerWhoShot.hasLaserPowerUp ? 0 : momentumY + Math.sin(this.ang) * totalSpeed;
   this.shotLength = shotLength; // not counting front/back end caps. in case we want it to grow, shrink, etc.
+
+  this.lifetimeIfLaser = 3;
 
   this.collW = SHOT_DIM;
   this.collH = playerWhoShot.hasLaserPowerUp ? playerWhoShot.y : SHOT_DIM*4;
@@ -40,7 +43,8 @@ function shotClass(
   this.move = function () {
     this.x += this.xv;
     this.y += this.yv;
-    if (this.y < 0 || this.x < 0 || this.x > GAME_W || this.y > GAME_H) {
+    if (this.y < 0 || this.x < 0 || this.x > GAME_W || this.y > GAME_H || 
+          (playerWhoShot.hasLaserPowerUp && this.lifetimeIfLaser--<0)) {
       this.readyToRemove = true;
       // a bullet flying off screen resets the player's combo counter
       if (this.ownedByPlayer) this.ownedByPlayer.combo.reset();

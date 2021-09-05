@@ -16,10 +16,10 @@ var powerupDropOdds = [];
 
 // first as whole numbers, proportional, which get converted to percentages
 powerupDropOdds[POWER_UP_KIND_SHOTS] = 3;
-powerupDropOdds[POWER_UP_KIND_MOVEMENT] = 2;
 powerupDropOdds[POWER_UP_KIND_BOMB] = 1;
 powerupDropOdds[POWER_UP_KIND_GHOST] = 1;
 powerupDropOdds[POWERUP_KIND_LASER] = 1;
+powerupDropOdds[POWER_UP_KIND_MOVEMENT] = 2;
 
 function SetupPowerupDropOdds() {
   var totalCount = 0;
@@ -34,6 +34,10 @@ function SetupPowerupDropOdds() {
     cumulativeFloor += beforeCumulative / totalCount;
   }
   powerupDropOdds[powerupDropOdds.length]=1.0; // extra element for remaining probability
+}
+
+function spawnNewPowerup(atX,atY) {
+  powerupList.push(new powerupClass(atX,atY));
 }
 
 powerupClass.prototype = new moveDrawClass();
