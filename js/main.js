@@ -1,6 +1,6 @@
 var gameDevelopmentMode = true; //skip intro stuff
 
-var debugDraw_colliders = false;
+var debugDraw_colliders = true;
 
 var nDefenseOrbs = 4; //33;
 var debuggingDisplay = true;

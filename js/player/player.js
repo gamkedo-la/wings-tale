@@ -1,6 +1,7 @@
 const PLAYER_DIM = 20;
 const PLAYER_FRAME_W = 21;
 const PLAYER_FRAME_H = 20;
+const PLAYER_COLLIDER_SIZE = 4;
 const PLAYER_FRAMES = 3;
 const EDGE_MARGIN = PLAYER_DIM;
 const INVULNERABLE_DURATION = 5;
@@ -53,7 +54,7 @@ function playerClass() {
   this.combo = new comboCounter(); // "4x COMBO!" gui
   this.scoreUI = new score_gui();
 
-  this.collW = this.collH = PLAYER_DIM;
+  this.collW = this.collH = PLAYER_COLLIDER_SIZE;
 
   this.reset = function () {
     if (this.cheatInvulnerable) {
