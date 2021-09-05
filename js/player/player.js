@@ -217,6 +217,10 @@ function playerClass() {
     var ghostIdx = 0;
     var fromX = this.x;
     var fromY = this.y;
+    var readyToFire = (this.reloadTime <= 0); // don't want ghosts to all affect reload
+    if(readyToFire == false) {
+      this.reloadTime--;
+    }
     do {
       if (this.holdBomb && this.wasHoldingBomb != this.holdBomb) {
         var bombAngSpan = -(this.bombCount - 1) * (bombDegSpread * 0.5);
@@ -237,22 +241,11 @@ function playerClass() {
       }
 
       if (this.holdFire) {
-        if (this.reloadTime <= 0) {
+        if (readyToFire) { // doesn't need to reload
           var newShot,
             shotAngSpan = -(this.shotsNumber - 1) * (shotDegSpread * 0.5);
           playSound(sounds.playerShot);
           for (var i = 0; i < this.shotsNumber; i++) {
-            /*
-            function shotClass(
-  startX,
-  startY,
-  totalSpeed,
-  angle,
-  momentumX,
-  momentumY,
-  shotLength = 2,
-  playerWhoShot
-  */
             newShot = new shotClass(
               fromX,
               this.hasLaserPowerUp ? fromY - LASER_SHOT_LENGTH * 2 : fromY,
@@ -267,12 +260,6 @@ function playerClass() {
             shotList.push(newShot);
           }
           this.reloadTime = FRAMES_BETWEEN_PLAYER_SHOTS;
-        } else {
-          this.reloadTime--;
-        }
-
-        if (this.hasLaserPowerUp) {
-          console.log("Player has laser power up!");
         }
       }
 

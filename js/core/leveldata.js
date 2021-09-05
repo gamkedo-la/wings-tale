@@ -208,6 +208,10 @@ function spawnEnemyUpdate() {
 	// console.log("stepPerc is "+stepPerc);
 
 	if(enemySpawnTickCount-- < 0) {
+		if(levData[spawnSeqStep] == undefined) {
+			console.log("spawn error? crash avoided");
+			return;
+		}
 		enemySpawnTickCount=levData[spawnSeqStep].ticksBetween;
 		spawnKind(levData[spawnSeqStep]);
 	}
