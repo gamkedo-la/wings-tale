@@ -14,6 +14,7 @@ function loadImages() {
     { imgName: "bug", theFile: "enemybug.png" },
     { imgName: "swoop", theFile: "space-pineapple.png" },
     { imgName: "stallchase", theFile: "enemyaliendrone.png" },
+    { imgName: "fire snake", theFile: "enemyfireSnakev1.png" },
     { imgName: "shockball", theFile: "enemyenergyspark.png" },
     { imgName: "octopus", theFile: "GiantOctopus.png" },
     { imgName: "octopus_damaged", theFile: "GiantOctopus-damaged.png" },
