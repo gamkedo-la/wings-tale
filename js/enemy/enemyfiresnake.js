@@ -24,12 +24,6 @@ function enemyFireSnakeClass(usingStep) {
 
 	this.move = function() {
 		if(this.framesTillNextTarget-- > 0) {
-			//var angAt = Math.atan2(this.gotoY-this.y,this.gotoX-this.x);
-
-/*float perp_dot(vector2 a, vector2 b) {    return -a.y*b.x + a.x*by;}
-int sign(float value) {    return (value < 0) ? -1 : (value > 0 ? 1 : 0);}
-int relative_direction(vector2 a, vector2 b, vector2 c) {    vector2 v1 = b - a;    vector2 v2 = c - b;
-		return sign(perp_dot(v1, v2));}*/
 			var movingX = Math.cos(this.drawAngle);
 			var movingY = Math.sin(this.drawAngle);
 			var towardX = (this.gotoX-this.x);
