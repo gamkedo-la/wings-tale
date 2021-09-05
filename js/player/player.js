@@ -3,6 +3,8 @@ const PLAYER_FRAME_W = 21;
 const PLAYER_FRAME_H = 20;
 const PLAYER_COLLIDER_SIZE = 4;
 const PLAYER_FRAMES = 3;
+const PLAYER_ANGLE_MAX = 10;
+const PLAYER_ANGLE_STEP = 2;
 const EDGE_MARGIN = PLAYER_DIM;
 const INVULNERABLE_DURATION = 5;
 const INVULNERABLE_DURATION_DECREMENT = 0.1;
@@ -25,6 +27,8 @@ function playerClass() {
   // used for ghost player sources
   this.trailX = [];
   this.trailY = [];
+
+  this.angle = 0;
 
   this.shotsNumber = 1;
   this.bombCount = 1;
@@ -117,7 +121,8 @@ function playerClass() {
           fromY,
           this.frame,
           PLAYER_FRAME_W,
-          PLAYER_FRAME_H
+          PLAYER_FRAME_H,
+          this.angle * Math.PI / 180
         );
       }
       drawAnimFrame(
@@ -126,8 +131,10 @@ function playerClass() {
         this.y,
         this.frame,
         PLAYER_FRAME_W,
-        PLAYER_FRAME_H
+        PLAYER_FRAME_H,
+        this.angle * Math.PI / 180
       );
+
       drawAnimFrame(
         "bomb sight",
         this.x,
@@ -164,18 +171,29 @@ function playerClass() {
       this.invulnerableTimeLeft -= INVULNERABLE_DURATION_DECREMENT;
     }
 
+    if (!(this.holdRight && this.holdLeft)) {
+      if (this.angle > 0) {
+        this.angle -= PLAYER_ANGLE_STEP / 2;
+      }
+      if (this.angle < 0) {
+        this.angle += PLAYER_ANGLE_STEP / 2;
+      }
+    }
+
     // input handling
     if (this.holdUp) {
       this.yv = -this.speed;
     }
     if (this.holdRight) {
       this.xv = this.speed;
+      this.angle += (this.angle < PLAYER_ANGLE_MAX) ? PLAYER_ANGLE_STEP : 0;
     }
     if (this.holdDown) {
       this.yv = this.speed;
     }
     if (this.holdLeft) {
       this.xv = -this.speed;
+      this.angle -= (this.angle > -PLAYER_ANGLE_MAX) ? PLAYER_ANGLE_STEP : 0;
     }
 
     if (Math.abs(this.xv) + Math.abs(this.yv) > GHOST_MIN_MOVE_SPEED) {
