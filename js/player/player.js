@@ -1,6 +1,7 @@
 const PLAYER_DIM = 20;
 const PLAYER_FRAME_W = 21;
 const PLAYER_FRAME_H = 20;
+const PLAYER_COLLIDER_SIZE = 4;
 const PLAYER_FRAMES = 3;
 const EDGE_MARGIN = PLAYER_DIM;
 const INVULNERABLE_DURATION = 5;
@@ -9,7 +10,7 @@ const INVULNERABLE_DURATION_DECREMENT = 0.1;
 const FRAMES_BETWEEN_PLAYER_SHOTS = 3;
 
 const GROUND_POWERUP_DROP_PERCENT = 0.5;
-const SKY_POWERUP_DROP_PERCENT = 0.02;
+const SKY_POWERUP_DROP_PERCENT = 0.1;
 
 var shotDegSpread = 3.7;
 var bombDegSpread = 6;
@@ -30,7 +31,6 @@ function playerClass() {
   this.ghostCount = 0;
   this.homingBombFramesLeft = HOMING_POWERUP_FRAMES;
   this.hasLaserPowerUp = false;
-  this.laserIsFiring = false;
   this.speed = 3;
 
   this.invulnerableTimeLeft = 0;
@@ -54,7 +54,7 @@ function playerClass() {
   this.combo = new comboCounter(); // "4x COMBO!" gui
   this.scoreUI = new score_gui();
 
-  this.collW = this.collH = PLAYER_DIM;
+  this.collW = this.collH = PLAYER_COLLIDER_SIZE;
 
   this.reset = function () {
     if (this.cheatInvulnerable) {
@@ -217,6 +217,10 @@ function playerClass() {
     var ghostIdx = 0;
     var fromX = this.x;
     var fromY = this.y;
+    var readyToFire = (this.reloadTime <= 0); // don't want ghosts to all affect reload
+    if(readyToFire == false) {
+      this.reloadTime--;
+    }
     do {
       if (this.holdBomb && this.wasHoldingBomb != this.holdBomb) {
         var bombAngSpan = -(this.bombCount - 1) * (bombDegSpread * 0.5);
@@ -236,28 +240,20 @@ function playerClass() {
         }
       }
 
+      var extraLaserSpread = 3;
+
       if (this.holdFire) {
-        if (this.reloadTime <= 0) {
+        if (readyToFire) { // doesn't need to reload
           var newShot,
-            shotAngSpan = -(this.shotsNumber - 1) * (shotDegSpread * 0.5);
+            shotAngSpan = -(this.shotsNumber - 1) * (shotDegSpread * 0.5) *
+                (this.hasLaserPowerUp ? extraLaserSpread : 1);
           playSound(sounds.playerShot);
           for (var i = 0; i < this.shotsNumber; i++) {
-            /*
-            function shotClass(
-  startX,
-  startY,
-  totalSpeed,
-  angle,
-  momentumX,
-  momentumY,
-  shotLength = 2,
-  playerWhoShot
-  */
             newShot = new shotClass(
               fromX,
               this.hasLaserPowerUp ? fromY - LASER_SHOT_LENGTH * 2 : fromY,
               SHOT_SPEED,
-              shotAngSpan + shotDegSpread * i,
+              shotAngSpan + shotDegSpread * i * (this.hasLaserPowerUp ? extraLaserSpread : 1),
               pmx,
               pmy,
               this.hasLaserPowerUp ? LASER_SHOT_LENGTH : 2,
@@ -267,12 +263,6 @@ function playerClass() {
             shotList.push(newShot);
           }
           this.reloadTime = FRAMES_BETWEEN_PLAYER_SHOTS;
-        } else {
-          this.reloadTime--;
-        }
-
-        if (this.hasLaserPowerUp) {
-          console.log("Player has laser power up!");
         }
       }
 

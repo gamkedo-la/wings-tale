@@ -14,6 +14,7 @@ function loadImages() {
     { imgName: "bug", theFile: "enemybug.png" },
     { imgName: "swoop", theFile: "space-pineapple.png" },
     { imgName: "stallchase", theFile: "enemyaliendrone.png" },
+    { imgName: "fire snake", theFile: "enemyfireSnakev1.png" },
     { imgName: "shockball", theFile: "enemyenergyspark.png" },
     { imgName: "octopus", theFile: "GiantOctopus.png" },
     { imgName: "octopus_damaged", theFile: "GiantOctopus-damaged.png" },
@@ -28,6 +29,7 @@ function loadImages() {
     { imgName: "powerup", theFile: "powerup.png" },
     { imgName: "turret", theFile: "enemyturret.png" },
     { imgName: "frog tank", theFile: "enemyspacefrog.png" },
+    { imgName: "space frog", theFile: "space-frog.png" },
     { imgName: "defense_ring_unit", theFile: "defense_ring_unit.png" },
     //{imgName: "level island", theFile: "level-islands.png"},
 

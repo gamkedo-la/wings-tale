@@ -3,7 +3,7 @@ const POWERUP_W = 10;
 const POWERUP_H = 12;
 const POWERUP_FRAMES = 2;
 const POWER_UP_FRAME_DRAG = 4; // slow down animation framerate
-const POWERUP_SPEED = 1;
+const POWERUP_SPEED = 0.3;
 
 const POWER_UP_KIND_SHOTS = 0;
 const POWER_UP_KIND_BOMB = 1;
@@ -12,6 +12,33 @@ const POWERUP_KIND_LASER = 3;
 const POWER_UP_KIND_MOVEMENT = 4;
 const POWERUP_KINDS = 5;
 
+var powerupDropOdds = [];
+
+// first as whole numbers, proportional, which get converted to percentages
+powerupDropOdds[POWER_UP_KIND_SHOTS] = 3;
+powerupDropOdds[POWER_UP_KIND_BOMB] = 1;
+powerupDropOdds[POWER_UP_KIND_GHOST] = 1;
+powerupDropOdds[POWERUP_KIND_LASER] = 1;
+powerupDropOdds[POWER_UP_KIND_MOVEMENT] = 2;
+
+function SetupPowerupDropOdds() {
+  var totalCount = 0;
+  var cumulativeFloor = 0; // ex. if type 1 is 20% and type 2 is 10%, type 2 is 0.2+0.1=0.3
+  for(var i=0;i<powerupDropOdds.length;i++) {
+    totalCount += powerupDropOdds[i];
+  }
+  
+  for(var i=0;i<powerupDropOdds.length;i++) {
+    var beforeCumulative = powerupDropOdds[i]; 
+    powerupDropOdds[i] = cumulativeFloor;
+    cumulativeFloor += beforeCumulative / totalCount;
+  }
+  powerupDropOdds[powerupDropOdds.length]=1.0; // extra element for remaining probability
+}
+
+function spawnNewPowerup(atX,atY) {
+  powerupList.push(new powerupClass(atX,atY));
+}
 
 powerupClass.prototype = new moveDrawClass();
 
@@ -20,7 +47,13 @@ function powerupClass(atX, atY) {
   this.x = atX;
   this.y = atY;
   this.frame = Math.floor(Math.random() * POWERUP_FRAMES);
-  this.kind = Math.floor(Math.random() * POWERUP_KINDS);
+  var typeDiceRoll = Math.random();
+  for(var i=0;i<powerupDropOdds.length;i++) {
+    if(typeDiceRoll < powerupDropOdds[i+1]) { // safe to use +1, has a 1.0 dummy end case
+      this.kind = i;
+      break; // quit the for-loop
+    }
+  }
   this.readyToRemove = false;
 
   this.collW = this.collH = POWERUP_H;
@@ -40,24 +73,24 @@ function powerupClass(atX, atY) {
   this.doEffect = function (onPlayer) {
     switch (this.kind) {
       case POWER_UP_KIND_SHOTS:
-        onPlayer.shotsNumber += 4;
-        playerScore += 500;
+        onPlayer.shotsNumber ++
+        playerScore += 125;
         break;
       case POWER_UP_KIND_BOMB:
         onPlayer.bombCount += 1;
-        playerScore += 750;
+        playerScore += 500;
         break;
       case POWER_UP_KIND_GHOST:
         onPlayer.ghostCount += 1;
-        playerScore += 2500;
+        playerScore += 1000;
         break;
       case POWER_UP_KIND_MOVEMENT:
-          onPlayer.speed = 6;
-          playerScore += 1200;
+          onPlayer.speed = 3;
+          playerScore += 1000;
         break;
       case POWERUP_KIND_LASER:
         onPlayer.hasLaserPowerUp = true;
-        playerScore += 1500;
+        playerScore += 1000;
         break;
       default:
         console.log(
