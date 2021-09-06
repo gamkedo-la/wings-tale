@@ -24,20 +24,20 @@ powerupDropOdds[POWER_UP_KIND_MOVEMENT] = 2;
 function SetupPowerupDropOdds() {
   var totalCount = 0;
   var cumulativeFloor = 0; // ex. if type 1 is 20% and type 2 is 10%, type 2 is 0.2+0.1=0.3
-  for(var i=0;i<powerupDropOdds.length;i++) {
+  for (var i = 0; i < powerupDropOdds.length; i++) {
     totalCount += powerupDropOdds[i];
   }
-  
-  for(var i=0;i<powerupDropOdds.length;i++) {
-    var beforeCumulative = powerupDropOdds[i]; 
+
+  for (var i = 0; i < powerupDropOdds.length; i++) {
+    var beforeCumulative = powerupDropOdds[i];
     powerupDropOdds[i] = cumulativeFloor;
     cumulativeFloor += beforeCumulative / totalCount;
   }
-  powerupDropOdds[powerupDropOdds.length]=1.0; // extra element for remaining probability
+  powerupDropOdds[powerupDropOdds.length] = 1.0; // extra element for remaining probability
 }
 
-function spawnNewPowerup(atX,atY) {
-  powerupList.push(new powerupClass(atX,atY));
+function spawnNewPowerup(atX, atY) {
+  powerupList.push(new powerupClass(atX, atY));
 }
 
 powerupClass.prototype = new moveDrawClass();
@@ -48,8 +48,9 @@ function powerupClass(atX, atY) {
   this.y = atY;
   this.frame = Math.floor(Math.random() * POWERUP_FRAMES);
   var typeDiceRoll = Math.random();
-  for(var i=0;i<powerupDropOdds.length;i++) {
-    if(typeDiceRoll < powerupDropOdds[i+1]) { // safe to use +1, has a 1.0 dummy end case
+  for (var i = 0; i < powerupDropOdds.length; i++) {
+    if (typeDiceRoll < powerupDropOdds[i + 1]) {
+      // safe to use +1, has a 1.0 dummy end case
       this.kind = i;
       break; // quit the for-loop
     }
@@ -73,7 +74,7 @@ function powerupClass(atX, atY) {
   this.doEffect = function (onPlayer) {
     switch (this.kind) {
       case POWER_UP_KIND_SHOTS:
-        onPlayer.shotsNumber ++
+        onPlayer.shotsNumber++;
         playerScore += 125;
         break;
       case POWER_UP_KIND_BOMB:
@@ -82,11 +83,12 @@ function powerupClass(atX, atY) {
         break;
       case POWER_UP_KIND_GHOST:
         onPlayer.ghostCount += 1;
+        onPlayer.ghostColors.push(getRandomInt(1, GHOST_COLOR_MAX));
         playerScore += 1000;
         break;
       case POWER_UP_KIND_MOVEMENT:
-          onPlayer.speed = 3;
-          playerScore += 1000;
+        onPlayer.speed = 3;
+        playerScore += 1000;
         break;
       case POWERUP_KIND_LASER:
         onPlayer.hasLaserPowerUp = true;

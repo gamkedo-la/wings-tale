@@ -288,6 +288,9 @@ function playerKeyHold(evt, keyFrom, whichPlayer, setTo) {
     if (setTo == false) {
       // key relase only
       playerList[whichPlayer].ghostCount++;
+      playerList[whichPlayer].ghostColors.push(
+        getRandomInt(1, GHOST_COLOR_MAX)
+      );
       console.log(
         "cheatKeyGhost: Player " +
           (whichPlayer + 1) +

@@ -4,6 +4,10 @@ function loadImages() {
   startedLoading = true;
   const imageList = [
     { imgName: "player", theFile: "player01.png" },
+    { imgName: "player_ghost_1", theFile: "player02.png" },
+    { imgName: "player_ghost_2", theFile: "player03.png" },
+    { imgName: "player_ghost_3", theFile: "player04.png" },
+    { imgName: "player_ghost_4", theFile: "player05.png" },
     // {imgName: "player", theFile: "player.png"},
     { imgName: "player shot", theFile: "playershot.png" }, // original single flashing square
     { imgName: "player shot 2", theFile: "playershot2.png" }, // start,end,flashing middle frames for line

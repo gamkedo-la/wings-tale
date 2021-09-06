@@ -18,6 +18,7 @@ var shotDegSpread = 3.7;
 var bombDegSpread = 6;
 const GHOST_DIST_MULT = 9;
 const GHOST_MIN_MOVE_SPEED = 0.7;
+const GHOST_COLOR_MAX = 4;
 
 const HOMING_POWERUP_FRAMES = 300;
 
@@ -59,6 +60,7 @@ function playerClass() {
   this.scoreUI = new score_gui();
 
   this.collW = this.collH = PLAYER_COLLIDER_SIZE;
+  this.ghostColors = [];
 
   this.reset = function () {
     if (this.cheatInvulnerable) {
@@ -83,6 +85,7 @@ function playerClass() {
         this.shotsNumber = 1;
         this.bombCount = 1;
         this.ghostCount = 0;
+        this.ghostColors = [];
         this.homingBombFramesLeft = HOMING_POWERUP_FRAMES;
         this.hasLaserPowerUp = false;
         this.speed = 3;
@@ -98,7 +101,7 @@ function playerClass() {
     // FIXME:
     // playerScore is a global but the game can have two players
     // therefore perhaps score should become a property of the player class
-    this.scoreUI.draw(playerScore,8,8); 
+    this.scoreUI.draw(playerScore, 8, 8);
 
     if (this.invulnerableTimeLeft > 0) {
       if (Math.round(this.invulnerableTimeLeft * 10) % 4 == 0) {
@@ -116,13 +119,13 @@ function playerClass() {
         fromY = this.trailY[ghostIdx];
 
         drawAnimFrame(
-          "player",
+          "player_ghost_" + this.ghostColors[i],
           fromX,
           fromY,
           this.frame,
           PLAYER_FRAME_W,
           PLAYER_FRAME_H,
-          this.angle * Math.PI / 180
+          (this.angle * Math.PI) / 180
         );
       }
       drawAnimFrame(
@@ -132,7 +135,7 @@ function playerClass() {
         this.frame,
         PLAYER_FRAME_W,
         PLAYER_FRAME_H,
-        this.angle * Math.PI / 180
+        (this.angle * Math.PI) / 180
       );
 
       drawAnimFrame(
@@ -186,14 +189,14 @@ function playerClass() {
     }
     if (this.holdRight) {
       this.xv = this.speed;
-      this.angle += (this.angle < PLAYER_ANGLE_MAX) ? PLAYER_ANGLE_STEP : 0;
+      this.angle += this.angle < PLAYER_ANGLE_MAX ? PLAYER_ANGLE_STEP : 0;
     }
     if (this.holdDown) {
       this.yv = this.speed;
     }
     if (this.holdLeft) {
       this.xv = -this.speed;
-      this.angle -= (this.angle > -PLAYER_ANGLE_MAX) ? PLAYER_ANGLE_STEP : 0;
+      this.angle -= this.angle > -PLAYER_ANGLE_MAX ? PLAYER_ANGLE_STEP : 0;
     }
 
     if (Math.abs(this.xv) + Math.abs(this.yv) > GHOST_MIN_MOVE_SPEED) {
@@ -235,8 +238,8 @@ function playerClass() {
     var ghostIdx = 0;
     var fromX = this.x;
     var fromY = this.y;
-    var readyToFire = (this.reloadTime <= 0); // don't want ghosts to all affect reload
-    if(readyToFire == false) {
+    var readyToFire = this.reloadTime <= 0; // don't want ghosts to all affect reload
+    if (readyToFire == false) {
       this.reloadTime--;
     }
     do {
@@ -261,17 +264,23 @@ function playerClass() {
       var extraLaserSpread = 3;
 
       if (this.holdFire) {
-        if (readyToFire) { // doesn't need to reload
+        if (readyToFire) {
+          // doesn't need to reload
           var newShot,
-            shotAngSpan = -(this.shotsNumber - 1) * (shotDegSpread * 0.5) *
-                (this.hasLaserPowerUp ? extraLaserSpread : 1);
+            shotAngSpan =
+              -(this.shotsNumber - 1) *
+              (shotDegSpread * 0.5) *
+              (this.hasLaserPowerUp ? extraLaserSpread : 1);
           playSound(sounds.playerShot);
           for (var i = 0; i < this.shotsNumber; i++) {
             newShot = new shotClass(
               fromX,
               this.hasLaserPowerUp ? fromY - LASER_SHOT_LENGTH * 2 : fromY,
               SHOT_SPEED,
-              shotAngSpan + shotDegSpread * i * (this.hasLaserPowerUp ? extraLaserSpread : 1),
+              shotAngSpan +
+                shotDegSpread *
+                  i *
+                  (this.hasLaserPowerUp ? extraLaserSpread : 1),
               pmx,
               pmy,
               this.hasLaserPowerUp ? LASER_SHOT_LENGTH : 2,
