@@ -20,7 +20,7 @@ function bossOctopusClass() {
   this.currentTentacle = 0;
   this.x = GAME_W / 2;
   this.y = 64;
-  this.health = 100;
+  this.health = 250;
   this.collW = 64;
   this.collH = 256;
   this.readyToRemove = false;
@@ -130,7 +130,6 @@ function bossOctopusClass() {
   };
 
   this.takeDamage = function () {
-
     //console.log("flashing octopus boss on hit!");
     //this.hitFlashFrames = HIT_FLASH_FRAMECOUNT; // unused as we replace images on this boss below
 
