@@ -26,7 +26,7 @@ const KEY_N = 78;
 const KEY_O = 79;
 const KEY_P = 80;
 const KEY_Q = 81;
-const KEY_R = 82;//toggle laser shot powerup cheat
+const KEY_R = 82; //toggle laser shot powerup cheat
 const KEY_S = 83;
 const KEY_T = 84;
 const KEY_W = 87;
@@ -211,12 +211,19 @@ function keyHoldUpdate(evt, setTo) {
           }
         }
         break;
-      case KEY_PLUS: // skip to boss cheat
-      case KEY_PLUS_FIREFOX: // skip to boss cheat firefox plus key
+      case KEY_PLUS: // skip to next level segment cheat
+      case KEY_PLUS_FIREFOX: // skip to next level segment firefox plus key
         if (!setTo) {
           enemyList.length = 0; // remove other enemies. note: can't use = [];, referenced elsewhere
           enemyShotList.length = 0;
-          levelProgressInPixels += images[currentLevelImageName].height;
+          levelProgressInPixels += images[currentLevelImageName].height * 0.1;
+        }
+        break;
+      case KEY_MINUS: // skip to previous level segment
+        if (!setTo) {
+          enemyList.length = 0; // remove other enemies. note: can't use = [];, referenced elsewhere
+          enemyShotList.length = 0;
+          levelProgressInPixels -= images[currentLevelImageName].height * 0.1;
         }
         break;
       default:
@@ -259,32 +266,57 @@ function playerKeyHold(evt, keyFrom, whichPlayer, setTo) {
     if (setTo == false) {
       // key relase only
       playerList[whichPlayer].shotsNumber++;
-      console.log("cheatKeyShots: Player " + (whichPlayer + 1) + " shotsNumber: " + playerList[whichPlayer].shotsNumber);
+      console.log(
+        "cheatKeyShots: Player " +
+          (whichPlayer + 1) +
+          " shotsNumber: " +
+          playerList[whichPlayer].shotsNumber
+      );
     }
   } else if (evt.keyCode == inputList[keyFrom].cheatKeyBomb) {
     if (setTo == false) {
       // key relase only
       playerList[whichPlayer].bombCount++;
-      console.log("cheatKeyBomb: Player " + (whichPlayer + 1) + " bombCount: " + playerList[whichPlayer].bombCount);
+      console.log(
+        "cheatKeyBomb: Player " +
+          (whichPlayer + 1) +
+          " bombCount: " +
+          playerList[whichPlayer].bombCount
+      );
     }
   } else if (evt.keyCode == inputList[keyFrom].cheatKeyGhost) {
     if (setTo == false) {
       // key relase only
       playerList[whichPlayer].ghostCount++;
-      console.log("cheatKeyGhost: Player " + (whichPlayer + 1) + " ghostCount: " + playerList[whichPlayer].ghostCount);
+      console.log(
+        "cheatKeyGhost: Player " +
+          (whichPlayer + 1) +
+          " ghostCount: " +
+          playerList[whichPlayer].ghostCount
+      );
     }
   } else if (evt.keyCode == inputList[keyFrom].cheatKeyNoDamage) {
     if (setTo == false) {
       // key relase only
       playerList[whichPlayer].invulnerableBlinkToggle = true;
       playerList[whichPlayer].cheatInvulnerable = true;
-      console.log("cheatKeyNoDamage: Player " + (whichPlayer + 1) + " cheatInvulnerable: " + playerList[whichPlayer].cheatInvulnerable);
+      console.log(
+        "cheatKeyNoDamage: Player " +
+          (whichPlayer + 1) +
+          " cheatInvulnerable: " +
+          playerList[whichPlayer].cheatInvulnerable
+      );
     }
   } else if (evt.keyCode == inputList[keyFrom].cheatKeyMovement) {
     if (setTo == false) {
       // key relase only
       playerList[whichPlayer].speed = 6;
-      console.log("cheatKeyMovement: Player " + (whichPlayer + 1) + " speed: " + playerList[whichPlayer].speed);
+      console.log(
+        "cheatKeyMovement: Player " +
+          (whichPlayer + 1) +
+          " speed: " +
+          playerList[whichPlayer].speed
+      );
     }
   } else if (evt.keyCode == inputList[keyFrom].cheatKeyReset) {
     if (setTo == false) {
@@ -303,14 +335,18 @@ function playerKeyHold(evt, keyFrom, whichPlayer, setTo) {
     }
     console.log("cheatKeySpawnBug!");
   } else if (evt.keyCode == inputList[keyFrom].cheatKeyLaser) {
-    if (setTo == false)
-    //key release only
-    {
-      playerList[whichPlayer].hasLaserPowerUp = !playerList[whichPlayer].hasLaserPowerUp;
-      console.log("playerList[" + whichPlayer + "].hasLaserPowerUp? " + playerList[whichPlayer].hasLaserPowerUp);
+    if (setTo == false) {
+      //key release only
+      playerList[whichPlayer].hasLaserPowerUp =
+        !playerList[whichPlayer].hasLaserPowerUp;
+      console.log(
+        "playerList[" +
+          whichPlayer +
+          "].hasLaserPowerUp? " +
+          playerList[whichPlayer].hasLaserPowerUp
+      );
     }
-  } 
-  else {
+  } else {
     validGameKey = false;
   }
   return validGameKey;
@@ -328,7 +364,7 @@ function mousemoved(evt) {
   unscaledMouseX = evt.clientX - rect.left - root.scrollLeft;
   unscaledMouseY = evt.clientY - rect.top - root.scrollTop;
 
-  if(mouseNewDragStarted) {
+  if (mouseNewDragStarted) {
     mouseNewDragStarted = false;
   }
 
@@ -341,7 +377,7 @@ function mousemoved(evt) {
   mouseX = Math.floor((unscaledMouseX * GAME_W) / SCALED_W);
   mouseY = Math.floor((unscaledMouseY * GAME_H) / SCALED_H);
 
-  if(gameState == GAME_STATE_LEVEL_SELECT) {
+  if (gameState == GAME_STATE_LEVEL_SELECT) {
     handleLevelHover();
   }
 }
