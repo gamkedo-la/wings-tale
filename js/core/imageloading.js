@@ -25,6 +25,7 @@ function loadImages() {
     { imgName: "tentacle", theFile: "tentacle.png" },
     { imgName: "volcano", theFile: "surface-volcano.png" },
     { imgName: "alien ship", theFile: "AlienShip.png" },
+    { imgName: "alien ship_damaged", theFile: "AlienShip-damaged.png" },
     { imgName: "firedragon", theFile: "firedragon-neckball.png" },
     { imgName: "firedragon_head", theFile: "firedragon-head.png" },
 

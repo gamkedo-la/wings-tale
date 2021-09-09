@@ -6,6 +6,8 @@ bossAlienshipClass.prototype = new moveDrawClass();
 function bossAlienshipClass() {
   this.xv = 2;
   this.yv = .5;
+  this.image = ALIENSHIP_IMAGE_NAME;
+  this.health = 50;
 
   this.reset = function () {
     this.x = 50;
@@ -33,7 +35,6 @@ function bossAlienshipClass() {
   
   this.draw = function () {
     drawAnimFrame(ALIENSHIP_IMAGE_NAME, this.x, this.y, this.frame, 256, 240);
-
     if (this.hitFlashFrames) {
         this.hitFlashFrames--;
         context.globalCompositeOperation = "lighter"; // brighten stuff up
@@ -64,6 +65,18 @@ function bossAlienshipClass() {
 
   this.takeDamage = function () {
     //console.log("flashing alien ship boss on hit!");
-    this.hitFlashFrames = HIT_FLASH_FRAMECOUNT;
+    //this.hitFlashFrames = HIT_FLASH_FRAMECOUNT;
+    this.health -= 1;
+    this.image = ALIENSHIP_IMAGE_NAME + "_damaged";
+    
+
+    setTimeout(
+      function (boss) {
+        boss.image = ALIENSHIP_IMAGE_NAME;
+      },
+      3,
+      this
+    );
+
   };
 }
