@@ -49,10 +49,11 @@ var spaceSpawnSeq =
 	;
 
 var moonSpawnSeq = 
-	[
-	{"groundData":[
-		{"groundKind":0,"x":120,"y":3650,"track":[{"x":0,"y":0},{"x":-70,"y":0},{"x":-80,"y":-40}]}
-	]},{percDuration:0.5,kind:ENEMY_SWOOP,driftX:0.8,percXMin:0.1,percXMax:0.15,speed:1.0,wave:5,ticksBetween:2000},{percDuration:0.5,kind:ENEMY_BUG,driftX:-0.8,percXMin:0.85,percXMax:0.9,speed:1.0,wave:5,ticksBetween:2000},]
+  [{"groundData":[{"groundKind":0,"x":120,"y":3650,"track":[{"x":0,"y":0},{"x":-70,"y":0},{"x":-80,"y":-40}]},{"groundKind":0,"x":182,"y":3536,"track":[{"x":0,"y":0},{"x":-70,"y":0},{"x":-80,"y":-40}]},{"groundKind":0,"x":166,"y":3336,"track":[{"x":0,"y":0},{"x":-70,"y":0},{"x":-80,"y":-40}]}]},{"percDuration":0.5,"kind":1,"driftX":0.8,"percXMin":0.1,"percXMax":0.15,"speed":1,"wave":5,"ticksBetween":2000},{"percDuration":0.5,"kind":0,"driftX":-0.8,"percXMin":0.85,"percXMax":0.9,"speed":1,"wave":5,"ticksBetween":2000},{percDuration:0.5,kind:ENEMY_SWOOP,driftX:0.8,percXMin:0.1,percXMax:0.15,speed:1.0,wave:5,ticksBetween:2000},{percDuration:0.5,kind:ENEMY_BUG,driftX:-0.8,percXMin:0.85,percXMax:0.9,speed:1.0,wave:5,ticksBetween:2000},]
+	// [
+	// {"groundData":[
+	// 	{"groundKind":0,"x":120,"y":3650,"track":[{"x":0,"y":0},{"x":-70,"y":0},{"x":-80,"y":-40}]}
+	// ]},{percDuration:0.5,kind:ENEMY_SWOOP,driftX:0.8,percXMin:0.1,percXMax:0.15,speed:1.0,wave:5,ticksBetween:2000},{percDuration:0.5,kind:ENEMY_BUG,driftX:-0.8,percXMin:0.85,percXMax:0.9,speed:1.0,wave:5,ticksBetween:2000},]
 ;
 var lavaSpawnSeq = 
 	[{"groundData":[{"groundKind":2,"x":63,"y":3688}]},{"percDuration":0.05,"kind":6,"driftX":0.9,"percXMin":0,"percXMax":0.4,"speed":1,"wave":5,"ticksBetween":15},{"percDuration":0.05,"kind":0,"driftX":-0.8,"percXMin":0.85,"percXMax":0.9,"speed":1,"wave":5,"ticksBetween":10}]
