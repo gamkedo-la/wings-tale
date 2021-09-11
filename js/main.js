@@ -493,15 +493,23 @@ function update() {
         drawLevelTransitionScreen(levNow);
       }
 
-      setTimeout(function () {
-        goingToNextLevel = true;
-      }, LEVEL_TRANSITION_IN_MILLISECONDS / 2);
+      // If the player is at the last level, switch back to the level select menu
+      if (levNow > LEVEL_LAVA) {
+        gameState = GAME_STATE_LEVEL_SELECT;
+      }
+      // Otherwise, transition to the next level
+      else {
+        setTimeout(function () {
+          goingToNextLevel = true;
+        }, LEVEL_TRANSITION_IN_MILLISECONDS / 2);
 
-      setTimeout(function () {
-        startLevel(levSeq[levNow]);
-        gameState = GAME_STATE_PLAY;
-        goingToNextLevel = false;
-      }, LEVEL_TRANSITION_IN_MILLISECONDS);
+        setTimeout(function () {
+          startLevel(levSeq[levNow]);
+          gameState = GAME_STATE_PLAY;
+          goingToNextLevel = false;
+        }, LEVEL_TRANSITION_IN_MILLISECONDS);
+      }
+
       break;
   }
 

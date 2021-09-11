@@ -21,7 +21,6 @@ function drawLevelCompleteScreen(level) {
 }
 
 function drawLevelTransitionScreen(level) {
-  console.log(level);
   context.fillStyle = "black";
   context.fillRect(0, 0, canvas.width, canvas.height);
   context.fillStyle = "white";
