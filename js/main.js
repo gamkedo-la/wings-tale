@@ -29,10 +29,13 @@ const GAME_STATE_TITLE = 2;
 const GAME_STATE_LEVEL_SELECT = 3;
 const GAME_STATE_LOADING_SPLASH = 4;
 const GAME_STATE_LEVEL_DEBUG = 5;
+const GAME_STATE_LEVEL_TRANSITION = 6;
 
 const HIT_FLASH_FRAMECOUNT = 2; // enemy/boss flash after takeDamage
 
 const LEVEL_RECTS = [{ x: 0, y: 0, width: 0, height: 0 }]; // Array of rectangles representing the levels in the level select menu
+
+const LEVEL_TRANSITION_IN_MILLISECONDS = 5000;
 
 var gameState;
 if (!gameDevelopmentMode) {
@@ -45,6 +48,7 @@ var gameMusic = {};
 
 var gameFirstClickedToStart = false;
 var imagesLoaded = false;
+var goingToNextLevel = false;
 
 var curDepthMap = "depth island";
 
@@ -397,7 +401,7 @@ function update() {
           stageBoss.reset();
           bossList.push(stageBoss);
         }
-      } else {        
+      } else {
         levelProgressInPixels += levelProgressRate;
       }
 
@@ -475,12 +479,29 @@ function update() {
         if (levNow == LEVEL_LAVA) {
           playerScore += 1000;
         }
-        startLevel(levSeq[levNow]);
+        gameState = GAME_STATE_LEVEL_TRANSITION;
       }
 
       break;
     case GAME_STATE_LEVEL_DEBUG:
       editorDraw();
+      break;
+    case GAME_STATE_LEVEL_TRANSITION:
+      if (!goingToNextLevel) {
+        drawLevelCompleteScreen(levNow);
+      } else {
+        drawLevelTransitionScreen(levNow);
+      }
+
+      setTimeout(function () {
+        goingToNextLevel = true;
+      }, LEVEL_TRANSITION_IN_MILLISECONDS / 2);
+
+      setTimeout(function () {
+        startLevel(levSeq[levNow]);
+        gameState = GAME_STATE_PLAY;
+        goingToNextLevel = false;
+      }, LEVEL_TRANSITION_IN_MILLISECONDS);
       break;
   }
 
