@@ -3,7 +3,7 @@ const ENEMY_AZMO_FRAMES = 5;
 
 enemyAzmoClass.prototype = new moveDrawClass();
 
-function enemyAzomClass(usingStep) {
+function enemyAzmoClass(usingStep) {
 	this.x = (usingStep.driftX*stepPerc + usingStep.percXMin+
 		Math.random()*(usingStep.percXMax-usingStep.percXMin))*canvas.width;
 	this.y = -ENEMY_AZMO_DIM;
