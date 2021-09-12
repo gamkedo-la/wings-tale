@@ -140,7 +140,7 @@ function playerClass() {
 
       drawAnimFrame(
         "bomb sight",
-        this.x,
+        this.x - this.angle * 4,
         this.y - APPROX_BOMB_RANGE,
         this.frame % 2,
         BOMB_FRAME_W,
