@@ -28,30 +28,47 @@ function animateList(whichList) {
 	}
 }
 
+function handleCollision(objA,objB,optionalResultFunction) {
+	spawnSplode(objB.x,objB.y);
+
+	if (objA.readyToRemove == false &&
+			objB.readyToRemove == false &&
+			typeof optionalResultFunction !== 'undefined') {
+		optionalResultFunction(objA,objB);
+	}
+
+	checkForHealthToRemove(objA);
+	checkForHealthToRemove(objB);
+}
+
 // explosion will be on center of B position, so make second list enemy etc. instead of shot
 function listCollideExplode(listA, listB, optionalResultFunction) {
 	for(var a=0;a<listA.length;a++) {
 		for(var b=0;b<listB.length;b++) {
 			if(boxOverLap(listA[a],listB[b])) {
-				//explode at impact site
-				spawnSplode(listB[b].x,listB[b].y);
-
-				if (listA[a].readyToRemove == false &&
-						listB[b].readyToRemove == false &&
-						typeof optionalResultFunction !== 'undefined') {
-					optionalResultFunction(listA[a],listB[b]);
-				}
-				
-				//remove both
-				// listA[a].readyToRemove = true;
-				// listB[b].readyToRemove = true;
-
-				//Instead of removing both directly, we check for the "health" of the objects.
-				checkForHealthToRemove(listA[a]);
-				checkForHealthToRemove(listB[b]);
-					
+				handleCollision(listA[a],listB[b],optionalResultFunction);					
 				break; // break since don't compare against any others for this removed one
 			}
+		} // listB
+	} // listA
+}
+
+// supposed collList for second list given (originally intended for bosses with multiple colliders)
+function listCollideExplode_Sublist(listA, listBWithSublist, optionalResultFunction) {
+	for(var a=0;a<listA.length;a++) {
+		for(var b=0;b<listBWithSublist.length;b++) {
+			if( typeof listBWithSublist[b].collList === 'undefined') { // no sublist? use normal function
+				if(boxOverLap(listA[a],listBWithSublist[b])) {
+					handleCollision(listA[a],listBWithSublist[b],optionalResultFunction);					
+				}
+			} else {
+				for(var c=0;c<listBWithSublist[b].collList.length;c++) {
+					if(boxOverLap(listA[a],listBWithSublist[b].collList[c])) {
+						handleCollision(listA[a],listBWithSublist[b].collList[c],optionalResultFunction);
+						break; // break since don't compare against any others for this removed one
+					}
+				} // end of for collision sublist
+			} // end of else for no collList
 		} // listB
 	} // listA
 }

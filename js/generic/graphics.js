@@ -62,10 +62,20 @@ function drawBox(centerX,centerY,sizeFromCenter,color) {
 	context.rect(centerX-sizeFromCenter,centerY-sizeFromCenter,sizeFromCenter*2,sizeFromCenter*2);
 	context.stroke();
 }
+
+// uses main x/y of the object
 function drawColl(collObj,color) {
 	context.beginPath();
 	context.strokeStyle = color;
 	context.rect(collObj.x-collObj.collW/2,collObj.y-collObj.collH/2,
+			collObj.collW,collObj.collH);
+	context.stroke();
+}
+// uses separate collX/collY of the object, mostly added for bosses with moving/separate weakpoints etc.
+function drawCollSepCoord(collObj,color) {
+	context.beginPath();
+	context.strokeStyle = color;
+	context.rect(collObj.collX-collObj.collW/2,collObj.collY-collObj.collH/2,
 			collObj.collW,collObj.collH);
 	context.stroke();
 }

@@ -2,6 +2,9 @@ const LAVA_NECK_FRAMES = 8;
 const LAVA_NECK_JOINTS = 6;
 const LAVA_NECK_JOINT_LEN = 34;
 
+const LAVA_HEAD_COLL_W = 20;
+const LAVA_HEAD_COLL_H = 30;
+
 // how far it moves back and forth
 const DRAGON_BACK_Y = -120;
 const DRAGON_FRONT_Y = -35;
@@ -13,12 +16,13 @@ const DRAGON_SHOT_RELOAD = 120;
 const DRAGON_SHOT_Y_OFFSET = 11; // where mouth is from center of head
 
 bossLavaDragonClass.prototype = new moveDrawClass();
-bossLavaDragon_Neck_Class.prototype = new moveDrawClass();
 
 function bossLavaDragonClass() {
   this.neckList = [];
   this.rightNeck;
   this.yv = DRAGON_MOVE_SPEED;
+
+  this.collList = [];
 
   this.reset = function () {
     this.x = GAME_W / 2;
@@ -31,6 +35,11 @@ function bossLavaDragonClass() {
       this.neckList[i].reset();
       this.neckList[i].reloadTime =
         DRAGON_SHOT_RELOAD * ((i + 1) / this.neckList.length);
+      
+      // same number of elements as neck
+      this.collList[i] = 
+          {x:this.neckList[i].x,x:this.neckList[i].y,
+            collW:this.neckList[i].collW,collH:this.neckList[i].collH};
     }
   };
 
@@ -51,6 +60,16 @@ function bossLavaDragonClass() {
       this.neckList[i].y = this.y;
 
       this.neckList[i].draw();
+      
+      // note: next line counts on 1:1 list size and order for neckList and collList
+      this.collList[i].x = this.neckList[i].collX;
+      this.collList[i].y = this.neckList[i].collY;
+    }
+
+    if(debugDraw_colliders) {
+      for (var i = 0; i < this.collList.length; i++) {
+        drawColl(this.collList[i],"white");
+      }
     }
   };
 
@@ -61,10 +80,18 @@ function bossLavaDragonClass() {
   };
 }
 
+bossLavaDragon_Neck_Class.prototype = new moveDrawClass();
+
 function bossLavaDragon_Neck_Class(baseAngOffset, jointOffset) {
   this.neckAngles;
   this.neckAnglesOsc; // oscillator
   this.reloadTime = DRAGON_SHOT_RELOAD;
+
+  // updated to the coord at the end of each neck
+  this.collX = -100;
+  this.collY = -100;
+  this.collW = LAVA_HEAD_COLL_W;
+  this.collH = LAVA_HEAD_COLL_H;
 
   this.reset = function () {
     this.neckAngles = [];
@@ -98,6 +125,10 @@ function bossLavaDragon_Neck_Class(baseAngOffset, jointOffset) {
         (Math.cos(offsetAng) * LAVA_NECK_JOINT_LEN) / RATIO_CIRCLE_TALLER;
       offsetY += Math.sin(offsetAng) * LAVA_NECK_JOINT_LEN;
     }
+
+    // put colliders at the head
+    this.collX = offsetX;
+    this.collY = offsetY;
 
     drawAnimFrame("firedragon_head", offsetX, offsetY, 0, 28, 35); // no animations hooked up yet, tie to firing
     if (this.hitFlashFrames) {
