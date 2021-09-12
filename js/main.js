@@ -243,8 +243,8 @@ function reset() {
     powerupList,
     shotGroundList,
     enemyList,
-    shotList,
     bossList,
+    shotList,
     enemyShotList,
     splodeList,
     playerList,
@@ -392,7 +392,7 @@ function update() {
               stageBoss = new bossAlienshipClass();
               break;
             case LEVEL_MOON:
-              stageBoss = new bossAlienshipClass(); // Likely to not be the same as the space boss
+              stageBoss = new bossMegaFrogClass();
               break;
             case LEVEL_LAVA:
               stageBoss = new bossLavaDragonClass();
