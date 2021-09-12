@@ -32,6 +32,7 @@ function loadImages() {
     { imgName: "firedragon_head", theFile: "firedragon-head.png" },
 
     { imgName: "smallalien", theFile: "enemysmallalien.png" },
+    { imgName: "dimo", theFile: "enemyAzmo.png" },
     { imgName: "dimo", theFile: "enemyDimo.png" },
     { imgName: "powerup", theFile: "powerup.png" },
     { imgName: "turret", theFile: "enemyturret.png" },

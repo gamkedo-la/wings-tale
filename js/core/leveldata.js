@@ -2,17 +2,19 @@ const ENEMY_BUG = 0;
 const ENEMY_SWOOP = 1;
 const ENEMY_STALL_CHASE = 2;
 const ENEMY_SHOCK = 3;
-const ENEMY_DIMO = 4;
-const ENEMY_SMALLALIEN = 5;
-const ENEMY_FIRESNAKE = 6;
-const ENEMY_FIREBIRD = 7;
-const ENEMY_KINDS = 8;
+const ENEMY_AZMO = 4;
+const ENEMY_DIMO = 5;
+const ENEMY_SMALLALIEN = 6;
+const ENEMY_FIRESNAKE = 7;
+const ENEMY_FIREBIRD = 8;
+const ENEMY_KINDS = 9;
 var enemySpawnDebugColor = ["lime","yellow","cyan","pink", "orange", "white", "black", "red"];
 var enemyEditorToPattern = [ // string used by level editor to show the graphic in spawn volumes
 		"bug", // ENEMY_BUG
 		"swoop", // ENEMY_SWOOP 
 		"stallchase", // ENEMY_STALL_CHASE
 		"shockball", // ENEMY_SHOCK
+		"azmo",	//ENEMY_AZMO
 		"dimo",	//ENEMY_DIM
 		"smallalien",	//ENEMY_SMALLALIEN
 		"fire snake",	//ENEMY_FIRESNAKE
@@ -249,6 +251,9 @@ function spawnKind(usingStep) {
 		case ENEMY_SHOCK:
 			enemyList.push(new enemyShockBallClass(usingStep));
 			break;
+		case ENEMY_AZMO:
+		enemyList.push(new enemyAzmoClass(usingStep));
+		break;
 		case ENEMY_DIMO:
 			enemyList.push(new enemyDimoClass(usingStep));
 			break;
