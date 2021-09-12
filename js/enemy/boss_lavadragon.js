@@ -38,7 +38,8 @@ function bossLavaDragonClass() {
       
       // same number of elements as neck
       this.collList[i] = 
-          {x:this.neckList[i].x,x:this.neckList[i].y,
+          {useHealhOfObj:this.neckList[i], // used to check health or mark removal
+            x:this.neckList[i].x,x:this.neckList[i].y,
             collW:this.neckList[i].collW,collH:this.neckList[i].collH};
     }
   };
@@ -50,6 +51,13 @@ function bossLavaDragonClass() {
     }
     if (this.y < DRAGON_BACK_Y) {
       this.yv = -this.yv;
+    }
+
+    moveList(this.neckList,this.collList);
+
+    if(this.collList.length == 0) {
+      this.health = -1;
+      console.log("last head of fire dragon defeated!");
     }
   };
 
@@ -86,6 +94,7 @@ function bossLavaDragon_Neck_Class(baseAngOffset, jointOffset) {
   this.neckAngles;
   this.neckAnglesOsc; // oscillator
   this.reloadTime = DRAGON_SHOT_RELOAD;
+  this.health = 25;
 
   // updated to the coord at the end of each neck
   this.collX = -100;

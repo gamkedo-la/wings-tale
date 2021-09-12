@@ -8,7 +8,8 @@ function drawList(whichList) {
 	}
 }
 
-function moveList(whichList) {
+function moveList(whichList,
+					optionalSyncList = undefined) { // for 1:1 list of collider data with bosses
 	for(var i=whichList.length-1;i>=0;i--) {
 		whichList[i].move();
 		if (whichList[i].readyToRemove) {
@@ -16,6 +17,9 @@ function moveList(whichList) {
 				whichList[i].readyToRemove = false;
 			} else {
 				whichList.splice(i, 1);
+				if(typeof optionalSyncList !== 'undefined') {
+					optionalSyncList.splice(i, 1);
+				}
 			}
 			continue;
 		}
@@ -59,7 +63,7 @@ function listCollideExplode_Sublist(listA, listBWithSublist, optionalResultFunct
 		for(var b=0;b<listBWithSublist.length;b++) {
 			if( typeof listBWithSublist[b].collList === 'undefined') { // no sublist? use normal function
 				if(boxOverLap(listA[a],listBWithSublist[b])) {
-					handleCollision(listA[a],listBWithSublist[b],optionalResultFunction);					
+					handleCollision(listA[a],listBWithSublist[b],optionalResultFunction);
 				}
 			} else {
 				for(var c=0;c<listBWithSublist[b].collList.length;c++) {
@@ -93,9 +97,14 @@ function listCollideRangeOfPoint(listA, atX, atY, pointRadius, optionalResultFun
 }
 
 function checkForHealthToRemove(listObject) {
-	listObject.health -= 1;
-	if (listObject.health <= 0) {
-		listObject.readyToRemove = true;
+	if(typeof listObject.useHealhOfObj !== 'undefined') { // collider for something separate?
+		if (--listObject.useHealhOfObj.health <= 0) {
+			listObject.useHealhOfObj.readyToRemove = true;
+		}
+	} else {
+		if (--listObject.health <= 0) {
+			listObject.readyToRemove = true;
+		}
 	}
 }
 
