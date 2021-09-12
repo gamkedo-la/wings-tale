@@ -5,16 +5,18 @@ const ENEMY_SHOCK = 3;
 const ENEMY_DIMO = 4;
 const ENEMY_SMALLALIEN = 5;
 const ENEMY_FIRESNAKE = 6;
-const ENEMY_KINDS = 7;
-var enemySpawnDebugColor = ["lime","yellow","cyan","pink", "orange", "white", "black"];
+const ENEMY_FIREBIRD = 7;
+const ENEMY_KINDS = 8;
+var enemySpawnDebugColor = ["lime","yellow","cyan","pink", "orange", "white", "black", "red"];
 var enemyEditorToPattern = [ // string used by level editor to show the graphic in spawn volumes
-		"bug", // ENEMY_BUG = 0;
-		"swoop", // ENEMY_SWOOP = 1;
-		"stallchase", // ENEMY_STALL_CHASE = 2;
-		"shockball", // ENEMY_SHOCK = 3;
-		"dimo",	//ENEMY_DIM = 5
-		"smallalien",	//ENEMY_SMALLALIEN = 6
-		"fire snake",	//ENEMY_FIRESNAKE = 7
+		"bug", // ENEMY_BUG
+		"swoop", // ENEMY_SWOOP 
+		"stallchase", // ENEMY_STALL_CHASE
+		"shockball", // ENEMY_SHOCK
+		"dimo",	//ENEMY_DIM
+		"smallalien",	//ENEMY_SMALLALIEN
+		"fire snake",	//ENEMY_FIRESNAKE
+		"fire bird",	//ENEMY_FIREBIRD
 		// note: none needed for ENEMY_KINDS, that const is aENEMY_KINDS clue for editor to wrap cycling type
 	];
 // replaces strings in the array with usable pattern data for spawn boxes, only call once at start
@@ -56,7 +58,7 @@ var moonSpawnSeq =
 	// ]},{percDuration:0.5,kind:ENEMY_SWOOP,driftX:0.8,percXMin:0.1,percXMax:0.15,speed:1.0,wave:5,ticksBetween:2000},{percDuration:0.5,kind:ENEMY_BUG,driftX:-0.8,percXMin:0.85,percXMax:0.9,speed:1.0,wave:5,ticksBetween:2000},]
 ;
 var lavaSpawnSeq = 
-	[{"groundData":[{"groundKind":2,"x":63,"y":3688}]},{"percDuration":0.05,"kind":6,"driftX":0.9,"percXMin":0,"percXMax":0.4,"speed":1,"wave":5,"ticksBetween":15},{"percDuration":0.05,"kind":0,"driftX":-0.8,"percXMin":0.85,"percXMax":0.9,"speed":1,"wave":5,"ticksBetween":10}]
+	[{"groundData":[{"groundKind":2,"x":63,"y":3688}]},{"percDuration":0.05,"kind":7,"driftX":0.9,"percXMin":0,"percXMax":0.4,"speed":1,"wave":5,"ticksBetween":15},{"percDuration":0.05,"kind":0,"driftX":-0.8,"percXMin":0.85,"percXMax":0.9,"speed":1,"wave":5,"ticksBetween":10}]
 ;
 
 var levSeq = [islandSpawnSeq,
@@ -255,6 +257,9 @@ function spawnKind(usingStep) {
 			break;
 		case ENEMY_FIRESNAKE:
 			enemyList.push(new enemyFireSnakeClass(usingStep));
+			break;
+		case ENEMY_FIREBIRD:
+			enemyList.push(new enemyFireBirdClass(usingStep));
 			break;
 	}
 }
