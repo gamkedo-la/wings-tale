@@ -15,7 +15,7 @@ function GamepadManager() {
         console.error("Your browser does not allow the use of gamepads. Please change your browser settings if you want to use a gamepad.");
     }
     
-    console.log("Gamepad is supported");
+    //console.log("Gamepad is supported");
     
     const DEADZONE = 0.15; // was 0.25
     var gamepad = null;

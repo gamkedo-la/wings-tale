@@ -38,6 +38,11 @@ function loadImages() {
     { imgName: "turret", theFile: "enemyturret.png" },
     { imgName: "frog tank", theFile: "enemyspacefrog.png" },
     { imgName: "space frog", theFile: "space-frog.png" },
+    
+    { imgName: "depot", theFile: "depot.png" },
+    { imgName: "office", theFile: "depot.png" },
+    { imgName: "factory", theFile: "depot.png" },
+
     { imgName: "defense_ring_unit", theFile: "defense_ring_unit.png" },
     //{imgName: "level island", theFile: "level-islands.png"},
 
