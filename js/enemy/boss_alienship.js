@@ -1,5 +1,5 @@
 const ALIENSHIP_FRAMES = 0;
-const ALIENSHIP_IMAGE_NAME = "alien ship";
+const ALIENSHIP_IMAGE_NAME = "alien ship_noturrets";
 const ALIENSHIP_TURRET_RELOAD = 15;
 const ALIENSHIP_TURRET_DIM = 20;
 const ALIENSHIP_TURRET_FRAME = 1;
@@ -19,11 +19,11 @@ function bossAlienshipClass() {
     this.x = 50;
     this.y = 120;
     this.turretList = [];
-    this.turretList.push(new bossAlienship_Turret_Class(0,10));
-    this.turretList.push(new bossAlienship_Turret_Class(-60,-10));
-    this.turretList.push(new bossAlienship_Turret_Class(-90,-55));
-    this.turretList.push(new bossAlienship_Turret_Class(60,-10));
-    this.turretList.push(new bossAlienship_Turret_Class(90,-55));
+    this.turretList.push(new bossAlienship_Turret_Class(0,-15));
+    this.turretList.push(new bossAlienship_Turret_Class(-60,-38));
+    this.turretList.push(new bossAlienship_Turret_Class(-89,-83));
+    this.turretList.push(new bossAlienship_Turret_Class(60,-38));
+    this.turretList.push(new bossAlienship_Turret_Class(89,-83));
     for (var i = 0; i < this.turretList.length; i++) {
       this.turretList[i].reset();
       this.turretList[i].reloadTime =
@@ -165,12 +165,12 @@ function bossAlienship_Turret_Class(offsetX, offsetY) {
     this.collX = offsetX;
     this.collY = offsetY;
 
-    drawAnimFrame("firedragon_head", offsetX, offsetY, 0, 28, 35); // no animations hooked up yet, tie to firing
+    drawAnimFrame("alien ship_turret", offsetX, offsetY, 0, 20, 50); // no animations hooked up yet, tie to firing
     if (this.hitFlashFrames) {
         this.hitFlashFrames--;
         context.globalCompositeOperation = "lighter"; // brighten stuff up
-        drawAnimFrame("firedragon_head", offsetX, offsetY, 0, 28, 35); // no animations hooked up yet, tie to firing
-        drawAnimFrame("firedragon_head", offsetX, offsetY, 0, 28, 35); // no animations hooked up yet, tie to firing
+        drawAnimFrame("alien ship_turret", offsetX, offsetY, 0, 20, 50); // no animations hooked up yet, tie to firing
+        drawAnimFrame("alien ship_turret", offsetX, offsetY, 0, 20, 50); // no animations hooked up yet, tie to firing
         context.globalCompositeOperation = "source-over"; // restore to default
       }
   };
