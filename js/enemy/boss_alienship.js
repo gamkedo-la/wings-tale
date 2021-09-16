@@ -1,6 +1,6 @@
 const ALIENSHIP_FRAMES = 0;
 const ALIENSHIP_IMAGE_NAME = "alien ship_noturrets";
-const ALIENSHIP_TURRET_RELOAD = 15;
+const ALIENSHIP_TURRET_RELOAD = 120;
 const ALIENSHIP_TURRET_DIM = 20;
 const ALIENSHIP_TURRET_FRAME = 1;
 
@@ -84,14 +84,15 @@ function bossAlienshipClass() {
         drawColl(this.collList[i],"white");
       }
     }
-
-    /*if (50 * Math.random() < 2) {
+    
+    // Current active turret projectiles
+    if (50 * Math.random() < 2) {
       new enemyShotClass(this.x , this.y + 10);
       new enemyShotClass(this.x - 60, this.y - 10);
       new enemyShotClass(this.x - 90, this.y - 55);
       new enemyShotClass(this.x + 60, this.y - 10);
       new enemyShotClass(this.x + 90, this.y - 55);
-    }*/
+    }
   };
 
   this.animate = function () {
@@ -142,8 +143,10 @@ function bossAlienship_Turret_Class(offsetX, offsetY) {
 
   this.move = function () {
 
-    if (this.reloadTime-- < 0) {
-      this.reloadTime = DRAGON_SHOT_RELOAD;
+    // Disabled Burst Shots
+    
+    /*if (this.reloadTime-- < 0) {
+      this.reloadTime = ALIENSHIP_TURRET_RELOAD;
       for (var i = 0; i < DRAGON_SHOT_BURST; i++) {
         new enemyShotClass(
           this.x + this.offsetX,
@@ -152,8 +155,7 @@ function bossAlienship_Turret_Class(offsetX, offsetY) {
           i * ((Math.PI * 2) / DRAGON_SHOT_BURST)
         );
       }
-    }
-
+    }*/
   };
 
   this.draw = function () {
