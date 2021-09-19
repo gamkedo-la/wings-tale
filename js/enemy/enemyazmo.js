@@ -1,4 +1,4 @@
-const ENEMY_AZMO_DIM = 94;
+const ENEMY_AZMO_DIM = 75;
 const ENEMY_AZMO_FRAMES = 5;
 
 enemyAzmoClass.prototype = new moveDrawClass();

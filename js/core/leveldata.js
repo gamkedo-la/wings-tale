@@ -54,7 +54,7 @@ var islandSpawnSeq = [{"groundData":[{"groundKind":1,"x":28,"y":2400},{"groundKi
 
 var spaceSpawnSeq =
   // [{"groundData":[{"groundKind":3,"x":50,"y":2900},{"groundKind":3,"x":43,"y":2579}]},{"percDuration":0.04383999999999995,"kind":5,"driftX":0.5377999999999995,"percXMin":0.049499999999999954,"percXMax":0.3441,"speed":1,"wave":5,"ticksBetween":20},{"percDuration":0,"kind":1,"driftX":0.34155,"percXMin":0.4,"percXMax":0.6,"speed":1,"wave":5,"ticksBetween":35},{"percDuration":0.05045999999999981,"kind":0,"driftX":-0.5921000000000034,"percXMin":0.85,"percXMax":0.9,"speed":1,"wave":5,"ticksBetween":35}]
-  [{"groundData":[{"groundKind":3,"x":50,"y":2900},{"groundKind":3,"x":43,"y":2579}]},{"percDuration":0.05,"kind":5,"driftX":0.5,"percXMin":0,"percXMax":0.3,"speed":1,"wave":5,"ticksBetween":10},{"percDuration":0.05,"kind":0,"driftX":-0.8,"percXMin":0.85,"percXMax":0.9,"speed":1,"wave":5,"ticksBetween":10}]
+  [{"groundData":[{"groundKind":3,"x":50,"y":2900},{"groundKind":3,"x":43,"y":2579}]},{"percDuration":0.05,"kind":4,"driftX":0.5,"percXMin":0,"percXMax":0.3,"speed":1,"wave":5,"ticksBetween":10},{"percDuration":0.05,"kind":0,"driftX":-0.8,"percXMin":0.85,"percXMax":0.9,"speed":1,"wave":5,"ticksBetween":10}]
 	;
 
 var moonSpawnSeq = 
