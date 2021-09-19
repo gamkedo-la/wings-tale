@@ -75,6 +75,11 @@ function LevelSelectScreen() {
         TEXT_HEIGHT
       );
     }
+
+    if(noSoundDueToSafari) {
+      micro_pixel_font("Safari browser detected (audio not supported)", 12, GAME_H-15);
+      console.log("spam");
+    }
   };
 }
 

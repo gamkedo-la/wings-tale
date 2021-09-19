@@ -22,6 +22,16 @@ function initSounds() {
     loadSounds();
 }
 
+var is_chrome = navigator.userAgent.indexOf('Chrome') > -1;
+var is_safari = navigator.userAgent.indexOf("Safari") > -1;
+var noSoundDueToSafari = false;
+if ((is_chrome)&&(is_safari)) { is_safari = false; } // Chrome also has "Safari" on Mac
+noSoundDueToSafari = is_safari;
+if(noSoundDueToSafari) {
+    console.log("Safari detected, skipping webAudio initialization to avoid crash");
+    initSounds = function (){};
+}
+
 function playSound(buffer, playbackRate = 1, pan = 0, volume = .5, loop = false) {
 
     if (!buffer || !audioCtx) return;
