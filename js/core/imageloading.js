@@ -21,7 +21,7 @@ function loadImages() {
     { imgName: "fire snake", theFile: "enemyfireSnakev1.png" },
     { imgName: "fire bird", theFile: "enemyfirebird.png" },
     { imgName: "shockball", theFile: "enemyenergyspark.png" },
-    { imgName: "megafrog", theFile: "megafrog.png" },
+    { imgName: "megafrog", theFile: "megafrog-emptyback.png" },
     { imgName: "octopus", theFile: "GiantOctopus.png" },
     { imgName: "octopus_damaged", theFile: "GiantOctopus-damaged.png" },
     { imgName: "tentacle", theFile: "tentacle.png" },
