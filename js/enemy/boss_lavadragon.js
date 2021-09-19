@@ -35,12 +35,15 @@ function bossLavaDragonClass() {
       this.neckList[i].reset();
       this.neckList[i].reloadTime =
         DRAGON_SHOT_RELOAD * ((i + 1) / this.neckList.length);
-      
+
       // same number of elements as neck
-      this.collList[i] = 
-          {useHealhOfObj:this.neckList[i], // used to check health or mark removal
-            x:this.neckList[i].x,x:this.neckList[i].y,
-            collW:this.neckList[i].collW,collH:this.neckList[i].collH};
+      this.collList[i] = {
+        useHealhOfObj: this.neckList[i], // used to check health or mark removal
+        x: this.neckList[i].x,
+        y: this.neckList[i].y,
+        collW: this.neckList[i].collW,
+        collH: this.neckList[i].collH,
+      };
     }
   };
 
@@ -53,9 +56,9 @@ function bossLavaDragonClass() {
       this.yv = -this.yv;
     }
 
-    moveList(this.neckList,this.collList);
+    moveList(this.neckList, this.collList);
 
-    if(this.collList.length == 0) {
+    if (this.collList.length == 0) {
       this.health = -1;
       console.log("last head of fire dragon defeated!");
     }
@@ -68,15 +71,15 @@ function bossLavaDragonClass() {
       this.neckList[i].y = this.y;
 
       this.neckList[i].draw();
-      
+
       // note: next line counts on 1:1 list size and order for neckList and collList
       this.collList[i].x = this.neckList[i].collX;
       this.collList[i].y = this.neckList[i].collY;
     }
 
-    if(debugDraw_colliders) {
+    if (debugDraw_colliders) {
       for (var i = 0; i < this.collList.length; i++) {
-        drawColl(this.collList[i],"white");
+        drawColl(this.collList[i], "white");
       }
     }
   };
@@ -141,13 +144,12 @@ function bossLavaDragon_Neck_Class(baseAngOffset, jointOffset) {
 
     drawAnimFrame("firedragon_head", offsetX, offsetY, 0, 28, 35); // no animations hooked up yet, tie to firing
     if (this.hitFlashFrames) {
-        this.hitFlashFrames--;
-        context.globalCompositeOperation = "lighter"; // brighten stuff up
-        drawAnimFrame("firedragon_head", offsetX, offsetY, 0, 28, 35); // no animations hooked up yet, tie to firing
-        drawAnimFrame("firedragon_head", offsetX, offsetY, 0, 28, 35); // no animations hooked up yet, tie to firing
-        context.globalCompositeOperation = "source-over"; // restore to default
-      }
-
+      this.hitFlashFrames--;
+      context.globalCompositeOperation = "lighter"; // brighten stuff up
+      drawAnimFrame("firedragon_head", offsetX, offsetY, 0, 28, 35); // no animations hooked up yet, tie to firing
+      drawAnimFrame("firedragon_head", offsetX, offsetY, 0, 28, 35); // no animations hooked up yet, tie to firing
+      context.globalCompositeOperation = "source-over"; // restore to default
+    }
 
     if (this.reloadTime-- < 0) {
       this.reloadTime = DRAGON_SHOT_RELOAD;
