@@ -36,19 +36,24 @@ function SetupPowerupDropOdds() {
   powerupDropOdds[powerupDropOdds.length] = 1.0; // extra element for remaining probability
 }
 
-function spawnNewPowerup(atX, atY) {
-  powerupList.push(new powerupClass(atX, atY));
+function spawnNewPowerup(atX, atY, excludeList = []) {
+  powerupList.push(new powerupClass(atX, atY, excludeList));
 }
 
 powerupClass.prototype = new moveDrawClass();
 
 // note: not yet generalized for more than one kind of powerup
-function powerupClass(atX, atY) {
+function powerupClass(atX, atY, excludeList = []) {
   this.x = atX;
   this.y = atY;
   this.frame = Math.floor(Math.random() * POWERUP_FRAMES);
   var typeDiceRoll = Math.random();
+
   for (var i = 0; i < powerupDropOdds.length; i++) {
+    if (excludeList.includes(i)) {
+      continue;
+    }
+
     if (typeDiceRoll < powerupDropOdds[i + 1]) {
       // safe to use +1, has a 1.0 dummy end case
       this.kind = i;

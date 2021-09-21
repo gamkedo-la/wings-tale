@@ -433,7 +433,7 @@ function update() {
         to.hitFlashFrames = HIT_FLASH_FRAMECOUNT;
 
         if (Math.random() < SKY_POWERUP_DROP_PERCENT) {
-          spawnNewPowerup(at.x, to.y);
+          spawnNewPowerup(at.x, to.y, [2, 3]);
         }
       });
 
@@ -459,9 +459,13 @@ function update() {
         }
       );
 
-      listCollideExplode_Sublist(shotList, bossList, function (elementA, elementB) {
-        elementB.takeDamage();
-      });
+      listCollideExplode_Sublist(
+        shotList,
+        bossList,
+        function (elementA, elementB) {
+          elementB.takeDamage();
+        }
+      );
 
       drawBackground();
       drawRippleEffect();
