@@ -1,6 +1,9 @@
 const ALIENSHIP_FRAMES = 0;
 const ALIENSHIP_IMAGE_NAME = "alien ship_noturrets";
 const ALIENSHIP_TURRET_RELOAD = 120;
+const ALIENSHIP_SHOT_BURST = 9;
+const ALIENSHIP_SHOT_SPEED = 2;
+const ALIENSHIP_SHOT_Y_OFFSET = -90;
 const ALIENSHIP_TURRET_DIM = 20;
 const ALIENSHIP_TURRET_FRAME = 1;
 
@@ -54,6 +57,21 @@ function bossAlienshipClass() {
       this.yv = -this.yv;
     }
     moveList(this.turretList,this.collList);
+
+
+        // Burst Shots
+    
+        if (this.reloadTime-- < 0) {
+          this.reloadTime = ALIENSHIP_TURRET_RELOAD;
+          for (var i = 0; i < ALIENSHIP_SHOT_BURST; i++) {
+            new enemyShotClass(
+              this.x,
+              this.y + ALIENSHIP_SHOT_Y_OFFSET,
+              ALIENSHIP_SHOT_SPEED,
+              i * ((Math.PI * 2) / ALIENSHIP_SHOT_BURST)
+            );
+          }
+        }
   };
 
   
@@ -83,15 +101,6 @@ function bossAlienshipClass() {
       for (var i = 0; i < this.collList.length; i++) {
         drawColl(this.collList[i],"white");
       }
-    }
-    
-    // Current active turret projectiles
-    if (50 * Math.random() < 2) {
-      new enemyShotClass(this.x , this.y + 10);
-      new enemyShotClass(this.x - 60, this.y - 10);
-      new enemyShotClass(this.x - 90, this.y - 55);
-      new enemyShotClass(this.x + 60, this.y - 10);
-      new enemyShotClass(this.x + 90, this.y - 55);
     }
   };
 
@@ -143,19 +152,27 @@ function bossAlienship_Turret_Class(offsetX, offsetY) {
 
   this.move = function () {
 
-    // Disabled Burst Shots
-    
-    /*if (this.reloadTime-- < 0) {
+    // turret projectiles
+      if (200 * Math.random() < 2) {
+        new enemyShotClass(this.x , this.y + 10);
+        new enemyShotClass(this.x - 60, this.y - 10);
+        new enemyShotClass(this.x - 90, this.y - 55);
+        new enemyShotClass(this.x + 60, this.y - 10);
+        new enemyShotClass(this.x + 90, this.y - 55);
+      }
+
+    // Alienship Center Burst Shots
+    if (this.reloadTime-- < 0) {
       this.reloadTime = ALIENSHIP_TURRET_RELOAD;
-      for (var i = 0; i < DRAGON_SHOT_BURST; i++) {
+      for (var i = 0; i < ALIENSHIP_SHOT_BURST; i++) {
         new enemyShotClass(
-          this.x + this.offsetX,
-          this.y + this.offsetY + DRAGON_SHOT_Y_OFFSET,
-          DRAGON_SHOT_SPEED,
-          i * ((Math.PI * 2) / DRAGON_SHOT_BURST)
+          this.x,
+          this.y + ALIENSHIP_SHOT_Y_OFFSET,
+          ALIENSHIP_SHOT_SPEED,
+          i * ((Math.PI * 2) / ALIENSHIP_SHOT_BURST)
         );
       }
-    }*/
+    }
   };
 
   this.draw = function () {
