@@ -1,4 +1,7 @@
-					var width       = GAME_W;
+					const DARKEN_RIPPLIES = true; // experimental effect to make it more visible
+                    const DARKEN_STRENGTH = 16; // how much darker (0-255) ripples are
+
+                    var width       = GAME_W;
 					var height      = GAME_H;
 					var halfWidth   = width  >> 1;
 					var halfHeight  = height >> 1;
@@ -143,6 +146,18 @@
 									ripple.data[curPixel]     = texture.data[newPixel];
 									ripple.data[curPixel + 1] = texture.data[newPixel + 1];
 									ripple.data[curPixel + 2] = texture.data[newPixel + 2];
+
+                        // experiment to make it more visible
+                                    if (DARKEN_RIPPLIES) {
+                                        // note: we don't need to avoid negative numbers
+                                        // because ripple data is a Uint8ClampedArray()
+                                        // so we get clamping "for free"
+                                        if (rippleMap[newIdx + i]>1) {
+                                            ripple.data[curPixel] -= DARKEN_STRENGTH;
+                                            ripple.data[curPixel + 1] -= DARKEN_STRENGTH;
+                                            ripple.data[curPixel + 2] -= DARKEN_STRENGTH;
+                                        }
+                                    }
 								}
 								mapIdx++;
 								i++;
