@@ -207,7 +207,7 @@ function reset() {
     } else if (levNow == LEVEL_MOON) {
       gameMusic = playSound(sounds.Moon_Song, 1, 0, 0.5, true);
     } else if (levNow == LEVEL_LAVA) {
-      gameMusic = playSound(sounds.Moon_Song, 1, 0, 0.5, true); // no separate song yet, reusing moon
+      gameMusic = playSound(sounds.Lava_Song, 1, 0, 0.5, true); 
     }
   } catch (e) {
     console.log(`${e}`);

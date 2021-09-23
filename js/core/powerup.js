@@ -92,7 +92,7 @@ function powerupClass(atX, atY, excludeList = []) {
         playerScore += 1000;
         break;
       case POWER_UP_KIND_MOVEMENT:
-        onPlayer.speed = 3;
+        onPlayer.speed = 4;
         playerScore += 1000;
         break;
       case POWERUP_KIND_LASER:

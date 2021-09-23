@@ -24,9 +24,9 @@ function bossAlienshipClass() {
     this.turretList = [];
     this.turretList.push(new bossAlienship_Turret_Class(0,-15));
     this.turretList.push(new bossAlienship_Turret_Class(-60,-38));
-    this.turretList.push(new bossAlienship_Turret_Class(-89,-83));
+    this.turretList.push(new bossAlienship_Turret_Class(-85,-83));
     this.turretList.push(new bossAlienship_Turret_Class(60,-38));
-    this.turretList.push(new bossAlienship_Turret_Class(89,-83));
+    this.turretList.push(new bossAlienship_Turret_Class(85,-83));
     for (var i = 0; i < this.turretList.length; i++) {
       this.turretList[i].reset();
       this.turretList[i].reloadTime =
