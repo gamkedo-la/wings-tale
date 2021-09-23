@@ -5,13 +5,18 @@ const MEGAFROG_BACK_Y = -180;
 const MEGAFROG_FRONT_Y = 175;
 const MEGAFROG_MOVE_SPEED = 4;
 
+const MEGAFROG_SPAWN_PHASE = "MEGAFROG_SPAWN_PHASE";
+const MEGAFROG_ATTACK_PHASE = "MEGAFROG_ATTACK_PHASE";
+
 bossMegaFrogClass.prototype = new moveDrawClass();
 
 function bossMegaFrogClass() {
   this.frogList = [new spaceFrogClass(GAME_W / 2, GAME_H / 2)];
   this.yv = MEGAFROG_MOVE_SPEED;
-  this.frogSpawnTimerDefault = 90;
+  this.frogSpawnTimerDefault = 20;
   this.frogSpawnTimer = this.frogSpawnTimerDefault;
+  this.maxFrogSpawnCount = 10;
+  this.remainingFrogsToSpawn = this.maxFrogSpawnCount;
   this.frogLocations = [
     // Center
     { x: GAME_W / 2, y: GAME_H / 2 },
@@ -28,44 +33,83 @@ function bossMegaFrogClass() {
   ];
   this.health = 3;
   this.collList = [];
+  this.phase = MEGAFROG_SPAWN_PHASE;
+  this.attackPhaseTime = 1000;
+  this.attackTimer = this.attackPhaseTime;
 
   this.reset = function () {
     this.x = GAME_W / 2;
     this.frogSpawnTimer = this.frogSpawnTimerDefault;
+    this.remainingFrogsToSpawn = this.maxFrogSpawnCount;
     this.y = MEGAFROG_BACK_Y;
     this.frogList = [];
+    this.phase = MEGAFROG_SPAWN_PHASE;
+    this.attackTimer = this.attackPhaseTime;
   };
 
   this.move = function () {
-    this.y += this.yv;
-    if (this.y > MEGAFROG_FRONT_Y) {
-      this.yv = 0.0;
-      this.frogSpawnTimer -= 1;
-      console.log(this.frogSpawnTimer);
-      this.spawnFrogs();
+    console.log(this.phase);
+    switch (this.phase) {
+      case MEGAFROG_SPAWN_PHASE:
+        this.y += this.yv;
+        if (this.y > MEGAFROG_FRONT_Y) {
+          this.yv = 0.0;
+          this.frogSpawnTimer -= 1;
+          this.spawnFrogs();
+        }
+
+        if (this.y < MEGAFROG_BACK_Y) {
+          this.yv = -this.yv;
+        }
+
+        moveList(this.frogList, this.collList);
+
+        if (this.remainingFrogsToSpawn <= 0 && this.collList.length === 0) {
+          // this.remainingFrogsToSpawn = this.maxFrogSpawnCount;
+          // this.maxFrogSpawnCount += 1;
+          this.phase = MEGAFROG_ATTACK_PHASE;
+          this.yv = MEGAFROG_MOVE_SPEED;
+          console.log("Defeated last small frog!");
+        }
+        break;
+
+      case MEGAFROG_ATTACK_PHASE:
+        this.attackTimer -= 1;
+        if (this.attackTimer <= 0) {
+          this.phase = MEGAFROG_SPAWN_PHASE;
+          this.attackTimer = this.attackPhaseTime;
+        }
+
+        this.y -= this.yv;
+        if (this.y < MEGAFROG_BACK_Y) {
+          this.yv = 0.0;
+        }
+
+        if (this.y > MEGAFROG_FRONT_Y) {
+          this.yv = -this.yv;
+        }
+        break;
+
+      default:
+        break;
     }
-
-    if (this.y < MEGAFROG_BACK_Y) {
-      this.yv = -this.yv;
-    }
-
-    moveList(this.frogList, this.collList);
-
-    // if (this.collList.length == 0) {
-    //   this.health = -1;
-    //   console.log("Defeated last small frog!");
-    // }
   };
 
   this.spawnFrogs = function () {
-    if (this.frogSpawnTimer <= 0 && this.frogList.length <= 7) {
-      var spawnIndex = this.frogList.length > 0 ? this.frogList.length - 1 : 0;
-      this.frogList.push(
-        new spaceFrogClass(
-          this.frogLocations[spawnIndex].x,
-          this.frogLocations[spawnIndex].y
-        )
-      );
+    if (
+      this.frogSpawnTimer <= 0 &&
+      this.frogList.length <= 7 &&
+      this.remainingFrogsToSpawn > 0
+    ) {
+      var spawnLocation = this.getSpawnLocation();
+
+      if (spawnLocation) {
+        this.frogList.push(
+          new spaceFrogClass(spawnLocation.x, spawnLocation.y)
+        );
+        this.frogSpawnTimer = this.frogSpawnTimerDefault;
+        this.remainingFrogsToSpawn -= 1;
+      }
 
       for (var i = 0; i < this.frogList.length; i++) {
         this.collList[i] = {
@@ -76,9 +120,32 @@ function bossMegaFrogClass() {
           collH: this.frogList[i].collH,
         };
       }
-
-      this.frogSpawnTimer = this.frogSpawnTimerDefault;
     }
+  };
+
+  this.getSpawnLocation = function () {
+    var spawnIndex = getRandomInt(0, this.frogLocations.length - 1);
+    let location = {
+      x: this.frogLocations[spawnIndex].x,
+      y: this.frogLocations[spawnIndex].y,
+    };
+
+    for (var i = 0; i < this.frogList.length; i++) {
+      if (
+        this.frogLocations[spawnIndex].x === this.frogList[i].x &&
+        this.frogLocations[spawnIndex].y === this.frogList[i].y
+      ) {
+        location = undefined;
+        continue;
+      }
+
+      location = {
+        x: this.frogLocations[i].x,
+        y: this.frogLocations[i].y,
+      };
+    }
+
+    return location;
   };
 
   this.draw = function () {
