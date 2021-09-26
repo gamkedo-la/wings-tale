@@ -12,6 +12,8 @@ const KEY_ENTER = 13;
 const KEY_SPACE = 32;
 const KEY_MINUS = 189;
 
+const KEY_ESC = 27;
+
 const KEY_A = 65;
 const KEY_C = 67;
 const KEY_D = 68;
@@ -166,7 +168,28 @@ function keyHoldUpdate(evt, setTo) {
       validGameKey = editorKeyboard(evt.keyCode);
     }
 
+
+    if (validGameKey) {
+      evt.preventDefault();
+    }
+
     return validGameKey; // skip the game keys below
+  }
+
+  if(evt.keyCode == KEY_ENTER && !setTo) { // used to enter gameplay from menus
+    if (gameState != GAME_STATE_TITLE) {
+      return;
+    } else {
+      gameState = GAME_STATE_PLAY;
+    }
+  }
+
+  if(gameState != GAME_STATE_PLAY) { // keys below here are for gameplay only
+    return false;
+  }
+
+  if(evt.keyCode == KEY_ESC && !setTo) {
+    gameState = GAME_STATE_LEVEL_SELECT;
   }
 
   validGameKey = playerKeyHold(evt, 0, 0, setTo);
@@ -229,14 +252,6 @@ function keyHoldUpdate(evt, setTo) {
       default:
         validGameKey = false;
         break;
-      case KEY_ENTER:
-        if (!setTo) {
-          if (gameState != GAME_STATE_TITLE) {
-            return;
-          } else {
-            gameState = GAME_STATE_PLAY;
-          }
-        }
     }
   }
 
