@@ -184,7 +184,8 @@ function keyHoldUpdate(evt, setTo) {
     }
   }
 
-  if(gameState != GAME_STATE_PLAY && gameState != GAME_STATE_CONTROLS) { // keys below here are for gameplay only
+  if((gameState != GAME_STATE_PLAY && gameState != GAME_STATE_CONTROLS) || 
+     (gameState == GAME_STATE_CONTROLS && evt.keyCode != KEY_H)) { // keys below here are for gameplay only
     return false;
   }
 
