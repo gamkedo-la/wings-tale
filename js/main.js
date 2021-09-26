@@ -30,6 +30,7 @@ const GAME_STATE_LEVEL_SELECT = 3;
 const GAME_STATE_LOADING_SPLASH = 4;
 const GAME_STATE_LEVEL_DEBUG = 5;
 const GAME_STATE_LEVEL_TRANSITION = 6;
+const GAME_STATE_ENDING = 7;
 
 const HIT_FLASH_FRAMECOUNT = 2; // enemy/boss flash after takeDamage
 
@@ -56,6 +57,7 @@ window.onload = function () {
   SetupPowerupDropOdds();
   setupCanvas();
   initializeLevelSelectScreen();
+  initializeEndScreen();
 
   if (cheatKeepPowerupsOnDeath) {
     console.log("The cheat/debug feature KeepPowerupsOnDeath is on!");
@@ -365,6 +367,7 @@ function update() {
   }
 
   context.clearRect(0, 0, canvas.width, canvas.height);
+  
   switch (gameState) {
     case GAME_STATE_TITLE:
       titleScreen.draw();
@@ -480,10 +483,13 @@ function update() {
         levNow++;
         currentLevelImageName = levNames[levNow];
         playerScore += 1000;
-        if (levNow == LEVEL_LAVA) {
+        
+        if (levNow == LEVEL_LAVA+1) {
           playerScore += 1000;
+          gameState = GAME_STATE_ENDING;
+        } else {
+          gameState = GAME_STATE_LEVEL_TRANSITION;
         }
-        gameState = GAME_STATE_LEVEL_TRANSITION;
       }
 
       break;
@@ -513,7 +519,9 @@ function update() {
           goingToNextLevel = false;
         }, LEVEL_TRANSITION_IN_MILLISECONDS);
       }
-
+      break;
+    case GAME_STATE_ENDING:
+      endScreen.draw();
       break;
   }
 

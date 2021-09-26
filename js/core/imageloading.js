@@ -3,6 +3,11 @@ var images = [];
 function loadImages() {
   startedLoading = true;
   const imageList = [
+    { imgName: "moon-tl", theFile: "moon-tl.png" },
+    { imgName: "moon-tr", theFile: "moon-tr.png" },
+    { imgName: "moon-br", theFile: "moon-br.png" },
+    { imgName: "moon-bl", theFile: "moon-bl.png" },
+
     { imgName: "player", theFile: "player01.png" },
     { imgName: "player_ghost_1", theFile: "player02.png" },
     { imgName: "player_ghost_2", theFile: "player03.png" },
