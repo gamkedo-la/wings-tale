@@ -33,6 +33,9 @@ function volcanoEnemyClass(startX,startY) {
 				}
 			}
 		}
+		if(this.y > GAME_H + PIXEL_MARGIN_FOR_REMOVING) {
+			this.readyToRemove = true;
+		}
 	}
 
 	this.animate = function() {

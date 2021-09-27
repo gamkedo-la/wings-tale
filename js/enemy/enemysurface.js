@@ -112,11 +112,13 @@ function surfaceEnemyClass(startX,startY) {
 				} // loop waypoint
 			} // advance waypoint
 		} // has waypoints?
-
 		if(this.y < GAME_H) {
 			if (120 * Math.random() < 1) {
 				new enemyShotClass(this.x, this.y);
 			}
+		}
+		if(this.y > GAME_H + PIXEL_MARGIN_FOR_REMOVING) {
+			this.readyToRemove = true;
 		}
 	}
 

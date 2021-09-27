@@ -1,3 +1,4 @@
+const PIXEL_MARGIN_FOR_REMOVING = 100;
 
 function drawList(whichList) {
 	for(var i=0;i<whichList.length;i++) {

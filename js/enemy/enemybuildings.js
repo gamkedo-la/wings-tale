@@ -36,6 +36,9 @@ function buildingsClass(startX,startY,whichKind) {
 	}
 
 	this.move = function() {
+        if(this.y > GAME_H + PIXEL_MARGIN_FOR_REMOVING) {
+			this.readyToRemove = true;
+		}
 	}
 
 	this.animate = function() {

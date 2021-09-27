@@ -34,6 +34,9 @@ function tentacleClass(atX, atY) {
 			drawY = lerp(this.y, this.y+this.ytip, i / this.splatCount);
             drawAnimFrame("tentacle",drawX, drawY, i, this.frameDim, this.frameDim);
         }
+		if(this.y > GAME_H + PIXEL_MARGIN_FOR_REMOVING) {
+			this.readyToRemove = true;
+		}
 	}
 	this.animate = function() {
 		if(++this.frame>=ENEMY_FRAMES) {
