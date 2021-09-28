@@ -33,6 +33,13 @@ function bossOctopusClass() {
   this.x_start = this.pos_x;
   this.y_start = this.pos_y;
   this.image = OCTOPUS_IMAGE_NAME;
+  this.waterTentaclesTimerDefault = 90;
+  this.waterTentaclesTimer = this.waterTentaclesTimerDefault;
+  this.maxWaterTentacles = 5;
+  this.waterTentacleMax_X = 200;
+  this.waterTentacleMin_X = 10;
+  this.waterTentacleMax_Y = 150;
+  this.waterTentacleMin_Y = 75;
 
   this.reset = function () {};
 
@@ -46,6 +53,7 @@ function bossOctopusClass() {
 
     this.mainShotTimer -= 1;
     this.tentacleShotTimer -= 1;
+    this.waterTentaclesTimer -= 1;
 
     this.updateShootingPositions();
 
@@ -57,6 +65,42 @@ function bossOctopusClass() {
     if (this.mainShotTimer <= 0) {
       this.mainShotTimer = this.defaultMainShotTImer;
       this.shootFromFace();
+    }
+
+    if (
+      this.waterTentaclesTimer <= 0 &&
+      surfaceList.length < this.maxWaterTentacles
+    ) {
+      this.waterTentaclesTimer = this.waterTentaclesTimerDefault;
+      this.spawnWaterTentacles();
+    }
+  };
+
+  this.spawnWaterTentacles = function () {
+    foundLocation = true;
+
+    var newTentacleX = getRandomInt(
+      this.waterTentacleMin_X,
+      this.waterTentacleMax_X
+    );
+
+    var newTentacleY = getRandomInt(
+      this.waterTentacleMin_Y,
+      this.waterTentacleMax_Y
+    );
+
+    for (var i = 0; i < surfaceList.length; i++) {
+      if (
+        Math.abs(newTentacleX - surfaceList[i].x) <= 20 ||
+        Math.abs(newTentacleY - surfaceList[i].y) <= 20
+      ) {
+        foundLocation = false;
+      }
+    }
+
+    if (foundLocation) {
+      let newTentacle = new tentacleClass(newTentacleX, newTentacleY);
+      surfaceList.push(newTentacle);
     }
   };
 
