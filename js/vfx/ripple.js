@@ -47,7 +47,7 @@
 					// -------------------------------------------------------
 				// Create distortion at location: dx, dy
 					// -------------------------------------------------------
-					function dropRippleAt(dx, dy, rad=rippleRad)
+					function dropRippleAt(dx, dy, rad=rippleRad, power=700)
 					{
 						// Make certain dx and dy are integers
 						// Shifting left 0 is slightly faster than parseInt and math.* (or used to be)
@@ -59,7 +59,7 @@
 						{
 							for (var k = dx - rad; k < dx + rad; k++)
 							{
-								rippleMap[oldIdx + (j * width) + k] += 700; ///this number right here controls how big the wave is
+								rippleMap[oldIdx + (j * width) + k] += power; ///this number right here controls how big the wave is
 							}
 						}
 					}
