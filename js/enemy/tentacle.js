@@ -18,7 +18,8 @@ function tentacleClass(atX, atY) {
 
 	this.move = function() {
 		this.y = this.origY - bgDrawY;
-		this.xtip = Math.cos(this.y/3)*10;
+		this.phaseOffset += 0.2;
+		this.xtip = Math.cos(this.phaseOffset/3)*10;
 		// if(this.y>GAME_H) {
 		// 	this.readyToRemove = true;
 		// }
@@ -29,7 +30,7 @@ function tentacleClass(atX, atY) {
 			this.move(); // updates draw info for this object
 		}
         for(let i = 0; i < this.splatCount; i++){
-			this.xtip = this.xtip + Math.cos(i+this.y)*5;
+			this.xtip = this.xtip + Math.cos(i+this.phaseOffset)*3;
             drawX = lerp(this.x, this.x+this.xtip, i / this.splatCount);
 			drawY = lerp(this.y, this.y+this.ytip, i / this.splatCount);
             drawAnimFrame("tentacle",drawX, drawY, i, this.frameDim, this.frameDim);
