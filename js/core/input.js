@@ -329,7 +329,7 @@ function playerKeyHold(evt, keyFrom, whichPlayer, setTo) {
   } else if (evt.keyCode == inputList[keyFrom].cheatKeyMovement) {
     if (setTo == false) {
       // key relase only
-      playerList[whichPlayer].speed = 6;
+      playerList[whichPlayer].speed = MOVEMENT_POWERUP_SPEED;
       console.log(
         "cheatKeyMovement: Player " +
           (whichPlayer + 1) +

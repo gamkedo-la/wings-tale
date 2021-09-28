@@ -9,6 +9,12 @@ const EDGE_MARGIN = PLAYER_DIM;
 const INVULNERABLE_DURATION = 5;
 const INVULNERABLE_DURATION_DECREMENT = 0.1;
 
+// press P or obtain speed powerup to test
+const MIN_SPEED_FOR_SPEEDTRAILS = 3; // 3 is normal speed
+const SPEEDTRAIL_PARTICLE_SIZE = 4; // size of starting puff
+const SPEEDTRAIL_PARTICLE_POWER = 10; // 700 is like our explosions
+
+
 const FRAMES_BETWEEN_PLAYER_SHOTS = 3;
 
 const GROUND_POWERUP_DROP_PERCENT = 0.5;
@@ -88,6 +94,7 @@ function playerClass() {
         this.ghostColors = [];
         this.homingBombFramesLeft = HOMING_POWERUP_FRAMES;
         this.hasLaserPowerUp = false;
+        this.speedTrailsOn = false;
         this.speed = 3;
       }
 
@@ -95,8 +102,16 @@ function playerClass() {
     }
   };
 
+  this.drawSpeedTrails = function () {
+    if (this.speed <= MIN_SPEED_FOR_SPEEDTRAILS) return;
+    // distort the terrain below like a heatwave
+    dropRippleAt(this.x,this.y,SPEEDTRAIL_PARTICLE_SIZE);
+  }
+
   this.draw = function () {
+    
     this.combo.draw();
+    this.drawSpeedTrails();
 
     // FIXME:
     // playerScore is a global but the game can have two players

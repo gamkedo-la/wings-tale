@@ -3,7 +3,9 @@ const POWERUP_W = 10;
 const POWERUP_H = 12;
 const POWERUP_FRAMES = 2;
 const POWER_UP_FRAME_DRAG = 4; // slow down animation framerate
-const POWERUP_SPEED = 0.3;
+const POWERUP_SPEED = 0.3; // speed of the powerup's movement
+
+const MOVEMENT_POWERUP_SPEED = 4; // the player speed when boosted (3 is normal speed)
 
 const POWER_UP_KIND_SHOTS = 0;
 const POWER_UP_KIND_BOMB = 1;
@@ -92,7 +94,8 @@ function powerupClass(atX, atY, excludeList = []) {
         playerScore += 1000;
         break;
       case POWER_UP_KIND_MOVEMENT:
-        onPlayer.speed = 4;
+        onPlayer.speed = MOVEMENT_POWERUP_SPEED;
+        onPlayer.speedTrailsOn = true;
         playerScore += 1000;
         break;
       case POWERUP_KIND_LASER:
