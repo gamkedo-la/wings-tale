@@ -12,6 +12,7 @@ bossMegaFrogClass.prototype = new moveDrawClass();
 
 function bossMegaFrogClass() {
   this.yv = MEGAFROG_MOVE_SPEED;
+  this.xv = 0;
   this.frogSpawnTimerDefault = 20;
   this.frogSpawnTimer = this.frogSpawnTimerDefault;
   this.maxFrogSpawnCount = 10;
@@ -37,6 +38,9 @@ function bossMegaFrogClass() {
   this.attackTimer = this.attackPhaseTime;
   this.frogsDefeated = 0;
   this.prevSurfaceListLength = surfaceList.length;
+  this.shotTimerDefault = 50;
+  this.shotTimer = 50;
+  this.shotCount = 50;
 
   this.reset = function () {
     this.x = GAME_W / 2;
@@ -79,19 +83,37 @@ function bossMegaFrogClass() {
 
       case MEGAFROG_ATTACK_PHASE:
         this.attackTimer -= 1;
+        this.shotTimer -= 1;
+
+        
+
         if (this.attackTimer <= 0) {
           this.phase = MEGAFROG_SPAWN_PHASE;
+          this.yv = MEGAFROG_MOVE_SPEED;
           this.attackTimer = this.attackPhaseTime;
         }
 
-        this.y -= this.yv;
-        if (this.y < MEGAFROG_BACK_Y) {
-          this.yv = 0.0;
+        if (this.shotTimer <= 0) {
+          this.attack();
         }
 
-        if (this.y > MEGAFROG_FRONT_Y) {
-          this.yv = -this.yv;
+        if (this.shotCount <= 0) {
+          this.shotCount = 50;
+          this.shotTimer = this.shotTimerDefault;
         }
+
+        this.y += this.yv;
+        this.x += this.xv;
+
+        if (this.attackTimer === 960) {
+          this.yv = 0.0;
+          this.xv = 2;
+        }
+
+        if (this.x > 300 || this.x < 10) {
+          this.xv = -this.xv;
+        }
+
         break;
 
       default:
@@ -104,6 +126,24 @@ function bossMegaFrogClass() {
       this.frogsDefeated += 1;
     }
     this.prevSurfaceList = surfaceList.length;
+  };
+
+  this.attack = function () {
+    new enemyShotClass(
+      this.x + 50 + Math.sin(this.shotCount + 90 * (Math.PI / 2)) * 6,
+      this.y + 37,
+      8,
+      90
+    );
+    new enemyShotClass(
+      this.x - 50 - Math.sin(this.shotCount + 90 * (Math.PI / 2)) * 6,
+      this.y + 37,
+      8,
+      90
+    );
+    spawnSpecificEnemyAtRandomPosition(ENEMY_SHOCK);
+
+    this.shotCount -= 1;
   };
 
   this.spawnFrogs = function () {
