@@ -34,7 +34,9 @@ function loadImages() {
     { imgName: "alien ship", theFile: "AlienShip.png" },
     { imgName: "alien ship_damaged", theFile: "AlienShip-damaged.png" },
     { imgName: "alien ship_noturrets", theFile: "AlienShip-noturrets.png" },
+    { imgName: "alien ship_noturrets2", theFile: "AlienShip-noturrets2.png" },
     { imgName: "alien ship_turret", theFile: "AlienShip-turret.png" },
+    { imgName: "alien ship_weakpoint", theFile: "AlienShip-weakpoint.png" },
     { imgName: "firedragon", theFile: "firedragon-neckball.png" },
     { imgName: "firedragon_head", theFile: "firedragon-head.png" },
 

@@ -1,6 +1,6 @@
 const ALIENSHIP_FRAMES = 0;
-const ALIENSHIP_IMAGE_NAME = "alien ship_noturrets";
-const ALIENSHIP_TURRET_RELOAD = 120;
+const ALIENSHIP_IMAGE_NAME = "alien ship_noturrets2";
+const ALIENSHIP_TURRET_RELOAD = 60;
 const ALIENSHIP_SHOT_BURST = 9;
 const ALIENSHIP_SHOT_SPEED = 2;
 const ALIENSHIP_SHOT_Y_OFFSET = -90;
@@ -152,7 +152,7 @@ bossAlienship_Turret_Class.prototype = new moveDrawClass();
 
 function bossAlienship_Turret_Class(offsetX, offsetY) {
   this.reloadTime = ALIENSHIP_TURRET_RELOAD;
-  this.health = 1;
+  this.health = 15;
   this.offsetX = offsetX;
   this.offsetY = offsetY;
   // updated to the coord at the end of each frame
@@ -169,7 +169,7 @@ function bossAlienship_Turret_Class(offsetX, offsetY) {
   this.move = function () {
 
     // turret projectiles
-      if (100 * Math.random() < 2) {
+      if (50 * Math.random() < 2) {
         new enemyShotClass(this.x + this.offsetX, this.y + 10 + this.offsetY);
       }
   };
@@ -210,14 +210,14 @@ bossAlienship_bossAlien_WeakPoint_Class.prototype = new moveDrawClass();
 
 function bossAlienship_bossAlien_WeakPoint_Class(offsetX, offsetY) {
   this.reloadTime = ALIENSHIP_TURRET_RELOAD;
-  this.health = 1;
+  this.health = 50;
   this.offsetX = offsetX;
-  this.offsetY = offsetY;
+  this.offsetY = offsetY - 42;
   // updated to the coord at the end of each frame
   this.collX = -100;
   this.collY = -100;
-  this.collW = ALIENSHIP_TURRET_DIM;
-  this.collH = ALIENSHIP_TURRET_DIM;
+  this.collW = 70;
+  this.collH = 58;
 
   this.reset = function () {
     this.x = GAME_W / 2;
@@ -249,12 +249,12 @@ function bossAlienship_bossAlien_WeakPoint_Class(offsetX, offsetY) {
     this.collX = offsetX;
     this.collY = offsetY;
 
-    drawAnimFrame("firedragon_head", offsetX, offsetY, 0, 20, 50); // no animations hooked up yet, tie to firing
+    drawAnimFrame("alien ship_weakpoint", offsetX, offsetY, 0, 70, 58); // no animations hooked up yet, tie to firing
     if (this.hitFlashFrames) {
         this.hitFlashFrames--;
         context.globalCompositeOperation = "lighter"; // brighten stuff up
-        drawAnimFrame("firedragon_head", offsetX, offsetY, 0, 20, 50); // no animations hooked up yet, tie to firing
-        drawAnimFrame("firedragon_head", offsetX, offsetY, 0, 20, 50); // no animations hooked up yet, tie to firing
+        drawAnimFrame("alien ship_weakpoint", offsetX, offsetY, 0, 70, 58); // no animations hooked up yet, tie to firing
+        drawAnimFrame("alien ship_weakpoint", offsetX, offsetY, 0, 70, 58); // no animations hooked up yet, tie to firing
         context.globalCompositeOperation = "source-over"; // restore to default
       }
   };
