@@ -61,7 +61,7 @@ function bossAlienshipClass() {
 
         // Burst Shots
     
-        if (this.reloadTime-- < 0) {
+       /* if (this.reloadTime-- < 0) {
           this.reloadTime = ALIENSHIP_TURRET_RELOAD;
           for (var i = 0; i < ALIENSHIP_SHOT_BURST; i++) {
             new enemyShotClass(
@@ -71,7 +71,7 @@ function bossAlienshipClass() {
               i * ((Math.PI * 2) / ALIENSHIP_SHOT_BURST)
             );
           }
-        }
+        }*/
   };
 
   
@@ -153,16 +153,12 @@ function bossAlienship_Turret_Class(offsetX, offsetY) {
   this.move = function () {
 
     // turret projectiles
-      if (200 * Math.random() < 2) {
-        new enemyShotClass(this.x , this.y + 10);
-        new enemyShotClass(this.x - 60, this.y - 10);
-        new enemyShotClass(this.x - 90, this.y - 55);
-        new enemyShotClass(this.x + 60, this.y - 10);
-        new enemyShotClass(this.x + 90, this.y - 55);
+      if (100 * Math.random() < 2) {
+        new enemyShotClass(this.x + this.offsetX, this.y + 10 + this.offsetY);
       }
 
     // Alienship Center Burst Shots
-    if (this.reloadTime-- < 0) {
+    /*if (this.reloadTime-- < 0) {
       this.reloadTime = ALIENSHIP_TURRET_RELOAD;
       for (var i = 0; i < ALIENSHIP_SHOT_BURST; i++) {
         new enemyShotClass(
@@ -172,7 +168,7 @@ function bossAlienship_Turret_Class(offsetX, offsetY) {
           i * ((Math.PI * 2) / ALIENSHIP_SHOT_BURST)
         );
       }
-    }
+    }*/
   };
 
   this.draw = function () {
