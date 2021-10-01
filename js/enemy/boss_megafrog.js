@@ -34,7 +34,7 @@ function bossMegaFrogClass() {
   this.health = 3;
   this.collList = [];
   this.phase = MEGAFROG_SPAWN_PHASE;
-  this.attackPhaseTime = 1000;
+  this.attackPhaseTime = 400;
   this.attackTimer = this.attackPhaseTime;
   this.frogsDefeated = 0;
   this.prevSurfaceListLength = surfaceList.length;
@@ -55,7 +55,7 @@ function bossMegaFrogClass() {
     console.log(this.phase);
     switch (this.phase) {
       case MEGAFROG_SPAWN_PHASE:
-        this.y += this.yv;
+        this.updatePosition();
 
         this.countFrogsDefeated();
 
@@ -69,55 +69,85 @@ function bossMegaFrogClass() {
           this.yv = -this.yv;
         }
 
-        if (
-          this.remainingFrogsToSpawn <= 0 &&
-          this.frogsDefeated >= this.maxFrogSpawnCount
-        ) {
-          this.remainingFrogsToSpawn = this.maxFrogSpawnCount;
-          this.maxFrogSpawnCount += 1;
-          this.frogsDefeated = 0;
-          this.phase = MEGAFROG_ATTACK_PHASE;
-          this.yv = MEGAFROG_MOVE_SPEED;
-        }
+        this.checkIfSpawnPhaseHasEnded();
+
         break;
 
       case MEGAFROG_ATTACK_PHASE:
         this.attackTimer -= 1;
         this.shotTimer -= 1;
 
-        
+        this.moveVertical();
 
-        if (this.attackTimer <= 0) {
-          this.phase = MEGAFROG_SPAWN_PHASE;
-          this.yv = MEGAFROG_MOVE_SPEED;
-          this.attackTimer = this.attackPhaseTime;
-        }
+        this.checkIfAttackPhaseHasEnded();
 
-        if (this.shotTimer <= 0) {
-          this.attack();
-        }
+        this.attackAndSpawnEnemies();
 
-        if (this.shotCount <= 0) {
-          this.shotCount = 50;
-          this.shotTimer = this.shotTimerDefault;
-        }
+        this.moveHorizontal();
 
-        this.y += this.yv;
-        this.x += this.xv;
-
-        if (this.attackTimer === 960) {
-          this.yv = 0.0;
-          this.xv = 2;
-        }
-
-        if (this.x > 300 || this.x < 10) {
-          this.xv = -this.xv;
-        }
-
+        this.updatePosition();
         break;
 
       default:
         break;
+    }
+  };
+
+  this.updatePosition = function () {
+    this.y += this.yv;
+    this.x += this.xv;
+  };
+
+  this.attackAndSpawnEnemies = function () {
+    if (this.shotTimer <= 0) {
+      this.attack();
+    }
+
+    if (this.shotCount <= 0) {
+      this.shotCount = 50;
+      this.shotTimer = this.shotTimerDefault;
+    }
+  };
+
+  this.moveVertical = function () {
+    if (this.y > MEGAFROG_FRONT_Y) {
+      this.yv = -this.yv;
+    }
+
+    if (this.y < 0) {
+      this.yv = 0;
+    }
+  };
+
+  this.moveHorizontal = function () {
+    if (this.attackPhaseTime - this.attackTimer === 40) {
+      this.xv = 2;
+    }
+
+    if (this.x > 300 || this.x < 10) {
+      this.xv = -this.xv;
+    }
+  };
+
+  this.checkIfSpawnPhaseHasEnded = function () {
+    if (
+      this.remainingFrogsToSpawn <= 0 &&
+      this.frogsDefeated >= this.maxFrogSpawnCount
+    ) {
+      this.remainingFrogsToSpawn = this.maxFrogSpawnCount;
+      this.maxFrogSpawnCount += 1;
+      this.frogsDefeated = 0;
+      this.phase = MEGAFROG_ATTACK_PHASE;
+      this.yv = MEGAFROG_MOVE_SPEED;
+    }
+  };
+
+  this.checkIfAttackPhaseHasEnded = function () {
+    if (this.attackTimer <= 0 && this.x === GAME_W / 2) {
+      this.phase = MEGAFROG_SPAWN_PHASE;
+      this.yv = MEGAFROG_MOVE_SPEED;
+      this.xv = 0;
+      this.attackTimer = this.attackPhaseTime;
     }
   };
 
