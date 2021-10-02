@@ -13,6 +13,8 @@ bossMegaFrogClass.prototype = new moveDrawClass();
 function bossMegaFrogClass() {
   this.yv = MEGAFROG_MOVE_SPEED;
   this.xv = 0;
+  this.x = GAME_W / 2;
+  this.y = MEGAFROG_BACK_Y;
   this.frogSpawnTimerDefault = 20;
   this.frogSpawnTimer = this.frogSpawnTimerDefault;
   this.maxFrogSpawnCount = 10;
@@ -31,10 +33,10 @@ function bossMegaFrogClass() {
     { x: GAME_W / 2 - 50, y: GAME_H / 2 - 18 },
     { x: GAME_W / 2 - 50, y: GAME_H / 2 - 58 },
   ];
-  this.health = 1;
-  this.collList = [];
+  this.health = 1000;
   this.collW = 256;
   this.collH = 64;
+  this.readyToRemove = false;
   this.phase = MEGAFROG_SPAWN_PHASE;
   this.attackPhaseTime = 400;
   this.attackTimer = this.attackPhaseTime;
@@ -43,6 +45,7 @@ function bossMegaFrogClass() {
   this.shotTimerDefault = 50;
   this.shotTimer = 50;
   this.shotCount = 50;
+  this.collList = [];
 
   this.reset = function () {
     this.x = GAME_W / 2;
@@ -139,6 +142,7 @@ function bossMegaFrogClass() {
       this.frogsDefeated = 0;
       this.phase = MEGAFROG_ATTACK_PHASE;
       this.yv = MEGAFROG_MOVE_SPEED;
+      this.collList = undefined;
     }
   };
 
@@ -148,6 +152,7 @@ function bossMegaFrogClass() {
       this.yv = MEGAFROG_MOVE_SPEED;
       this.xv = 0;
       this.attackTimer = this.attackPhaseTime;
+      this.collList = [];
     }
   };
 
@@ -262,7 +267,9 @@ function bossMegaFrogClass() {
   };
 
   this.takeDamage = function () {
-    this.health -= 1;
-    this.hitFlashFrames = HIT_FLASH_FRAMECOUNT;
+    if (this.phase === MEGAFROG_ATTACK_PHASE) {
+      this.health -= 1;
+      this.hitFlashFrames = HIT_FLASH_FRAMECOUNT;
+    }
   };
 }
