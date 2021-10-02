@@ -242,10 +242,10 @@ function reset() {
   // repacking this list since reset above emplied
   drawMoveList = [
     surfaceList,
+    bossList,
     powerupList,
     shotGroundList,
     enemyList,
-    bossList,
     shotList,
     enemyShotList,
     splodeList,
