@@ -176,23 +176,20 @@ function bossOctopusClass() {
   };
 
   this.takeDamage = function () {
-    //console.log("flashing octopus boss on hit!");
-    //this.hitFlashFrames = HIT_FLASH_FRAMECOUNT; // unused as we replace images on this boss below
+    this.hitFlashFrames = HIT_FLASH_FRAMECOUNT;
 
     this.health -= 1;
-    this.image = OCTOPUS_IMAGE_NAME + "_damaged";
-
-    setTimeout(
-      function (boss) {
-        boss.image = OCTOPUS_IMAGE_NAME;
-      },
-      30,
-      this
-    );
   };
 
   this.draw = function () {
     drawAnimFrame(this.image, this.pos_x, this.pos_y, this.frame, 256, 240);
+    if (this.hitFlashFrames) {
+      this.hitFlashFrames--;
+      context.globalCompositeOperation = "lighter"; // brighten stuff up
+      drawAnimFrame(this.image, this.pos_x, this.pos_y, this.frame, 256, 240);
+      drawAnimFrame(this.image, this.pos_x, this.pos_y, this.frame, 256, 240);
+      context.globalCompositeOperation = "source-over"; // restore to default
+    }
   };
 
   this.animate = function () {

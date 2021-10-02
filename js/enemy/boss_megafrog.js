@@ -31,8 +31,10 @@ function bossMegaFrogClass() {
     { x: GAME_W / 2 - 50, y: GAME_H / 2 - 18 },
     { x: GAME_W / 2 - 50, y: GAME_H / 2 - 58 },
   ];
-  this.health = 3;
+  this.health = 1;
   this.collList = [];
+  this.collW = 256;
+  this.collH = 64;
   this.phase = MEGAFROG_SPAWN_PHASE;
   this.attackPhaseTime = 400;
   this.attackTimer = this.attackPhaseTime;
@@ -225,6 +227,29 @@ function bossMegaFrogClass() {
       MEGAFROG_FRAME_W,
       MEGAFROG_FRAME_H
     );
+
+    if (this.hitFlashFrames) {
+      this.hitFlashFrames--;
+      context.globalCompositeOperation = "lighter"; // brighten stuff up
+      drawAnimFrame(
+        "megafrog",
+        this.x,
+        this.y,
+        this.frame,
+        MEGAFROG_FRAME_W,
+        MEGAFROG_FRAME_H
+      );
+      drawAnimFrame(
+        "megafrog",
+        this.x,
+        this.y,
+        this.frame,
+        MEGAFROG_FRAME_W,
+        MEGAFROG_FRAME_H
+      );
+      context.globalCompositeOperation = "source-over"; // restore to default
+    }
+
     surfaceList.forEach(function (frog) {
       frog.draw();
     });
@@ -234,5 +259,10 @@ function bossMegaFrogClass() {
     for (var i = 0; i < surfaceList.length; i++) {
       surfaceList[i].animate();
     }
+  };
+
+  this.takeDamage = function () {
+    this.health -= 1;
+    this.hitFlashFrames = HIT_FLASH_FRAMECOUNT;
   };
 }
