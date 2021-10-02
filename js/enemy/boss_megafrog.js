@@ -49,10 +49,11 @@ function bossMegaFrogClass() {
     this.y = MEGAFROG_BACK_Y;
     this.phase = MEGAFROG_SPAWN_PHASE;
     this.attackTimer = this.attackPhaseTime;
+    surfaceList.length = 0;
+    enemyList.length = 0;
   };
 
   this.move = function () {
-    console.log(this.phase);
     switch (this.phase) {
       case MEGAFROG_SPAWN_PHASE:
         this.updatePosition();
@@ -130,10 +131,7 @@ function bossMegaFrogClass() {
   };
 
   this.checkIfSpawnPhaseHasEnded = function () {
-    if (
-      this.remainingFrogsToSpawn <= 0 &&
-      this.frogsDefeated >= this.maxFrogSpawnCount
-    ) {
+    if (this.remainingFrogsToSpawn <= 0 && surfaceList.length <= 0) {
       this.remainingFrogsToSpawn = this.maxFrogSpawnCount;
       this.maxFrogSpawnCount += 1;
       this.frogsDefeated = 0;

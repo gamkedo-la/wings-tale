@@ -15,33 +15,37 @@ function bossAlienshipClass() {
   this.collW = 100;
   this.collH = 15;
 
-  
   this.xv = 2;
-  this.yv = .5;
+  this.yv = 0.5;
   this.image = ALIENSHIP_IMAGE_NAME;
   this.health = 50;
-  
+
   this.bossStage = 0;
 
   this.reset = function () {
     this.x = 50;
     this.y = 120;
+    surfaceList.length = 0;
+    enemyList.length = 0;
     this.turretList = [];
-    this.turretList.push(new bossAlienship_Turret_Class(0,-15));
-    this.turretList.push(new bossAlienship_Turret_Class(-60,-38));
-    this.turretList.push(new bossAlienship_Turret_Class(-85,-83));
-    this.turretList.push(new bossAlienship_Turret_Class(60,-38));
-    this.turretList.push(new bossAlienship_Turret_Class(85,-83));
+    this.turretList.push(new bossAlienship_Turret_Class(0, -15));
+    this.turretList.push(new bossAlienship_Turret_Class(-60, -38));
+    this.turretList.push(new bossAlienship_Turret_Class(-85, -83));
+    this.turretList.push(new bossAlienship_Turret_Class(60, -38));
+    this.turretList.push(new bossAlienship_Turret_Class(85, -83));
     for (var i = 0; i < this.turretList.length; i++) {
       this.turretList[i].reset();
       this.turretList[i].reloadTime =
-      ALIENSHIP_TURRET_RELOAD * ((i + 1) / this.turretList.length);
-      
+        ALIENSHIP_TURRET_RELOAD * ((i + 1) / this.turretList.length);
+
       // same number of elements as neck
-      this.collList[i] = 
-          {useHealhOfObj:this.turretList[i], // used to check health or mark removal
-            x:this.turretList[i].x,x:this.turretList[i].y,
-            collW:this.turretList[i].collW,collH:this.turretList[i].collH};
+      this.collList[i] = {
+        useHealhOfObj: this.turretList[i], // used to check health or mark removal
+        x: this.turretList[i].x,
+        x: this.turretList[i].y,
+        collW: this.turretList[i].collW,
+        collH: this.turretList[i].collH,
+      };
     }
   };
 
@@ -53,7 +57,7 @@ function bossAlienshipClass() {
     if (this.x < 50 / 1.2) {
       this.xv = -this.xv;
     }
-  
+
     this.y += this.yv;
     if (this.y > 120) {
       this.yv = -this.yv;
@@ -62,22 +66,27 @@ function bossAlienshipClass() {
       this.yv = -this.yv;
     }
 
-   if (this.collList != undefined){
-      moveList(this.turretList,this.collList);
+    if (this.collList != undefined) {
+      moveList(this.turretList, this.collList);
       if (this.collList.length == 0) {
-        if (this.bossStage == 0){
+        if (this.bossStage == 0) {
           this.turretList = [];
-          this.turretList.push(new bossAlienship_bossAlien_WeakPoint_Class(0,-50));
+          this.turretList.push(
+            new bossAlienship_bossAlien_WeakPoint_Class(0, -50)
+          );
           for (var i = 0; i < this.turretList.length; i++) {
             this.turretList[i].reset();
             this.turretList[i].reloadTime =
-            ALIENSHIP_TURRET_RELOAD * ((i + 1) / this.turretList.length);
-            
+              ALIENSHIP_TURRET_RELOAD * ((i + 1) / this.turretList.length);
+
             // same number of elements as neck
-            this.collList[i] = 
-                {useHealhOfObj:this.turretList[i], // used to check health or mark removal
-                  x:this.turretList[i].x,x:this.turretList[i].y,
-                  collW:this.turretList[i].collW,collH:this.turretList[i].collH};
+            this.collList[i] = {
+              useHealhOfObj: this.turretList[i], // used to check health or mark removal
+              x: this.turretList[i].x,
+              x: this.turretList[i].y,
+              collW: this.turretList[i].collW,
+              collH: this.turretList[i].collH,
+            };
           }
         } else {
           this.health = -1;
@@ -88,15 +97,14 @@ function bossAlienshipClass() {
     }
   };
 
-  
   this.draw = function () {
     drawAnimFrame(ALIENSHIP_IMAGE_NAME, this.x, this.y, this.frame, 256, 240);
     if (this.hitFlashFrames) {
-        this.hitFlashFrames--;
-        context.globalCompositeOperation = "lighter"; // brighten stuff up
-        drawAnimFrame(ALIENSHIP_IMAGE_NAME, this.x, this.y, this.frame, 256, 240);
-        drawAnimFrame(ALIENSHIP_IMAGE_NAME, this.x, this.y, this.frame, 256, 240);
-        context.globalCompositeOperation = "source-over"; // restore to default
+      this.hitFlashFrames--;
+      context.globalCompositeOperation = "lighter"; // brighten stuff up
+      drawAnimFrame(ALIENSHIP_IMAGE_NAME, this.x, this.y, this.frame, 256, 240);
+      drawAnimFrame(ALIENSHIP_IMAGE_NAME, this.x, this.y, this.frame, 256, 240);
+      context.globalCompositeOperation = "source-over"; // restore to default
     }
 
     for (var i = 0; i < this.turretList.length; i++) {
@@ -105,17 +113,17 @@ function bossAlienshipClass() {
       this.turretList[i].y = this.y;
 
       this.turretList[i].draw();
-      
+
       // note: next line counts on 1:1 list size and order for turretList and collList
       this.collList[i].x = this.turretList[i].collX;
       this.collList[i].y = this.turretList[i].collY;
     }
 
-    if(debugDraw_colliders) {
-      if (this.collList != undefined){
+    if (debugDraw_colliders) {
+      if (this.collList != undefined) {
         for (var i = 0; i < this.collList.length; i++) {
-          drawColl(this.collList[i],"white");
-       }
+          drawColl(this.collList[i], "white");
+        }
       }
     }
   };
@@ -135,7 +143,6 @@ function bossAlienshipClass() {
     //this.hitFlashFrames = HIT_FLASH_FRAMECOUNT;
     this.health -= 1;
     this.image = ALIENSHIP_IMAGE_NAME + "_damaged";
-    
 
     setTimeout(
       function (boss) {
@@ -146,7 +153,6 @@ function bossAlienshipClass() {
     );
   };
 }
-
 
 bossAlienship_Turret_Class.prototype = new moveDrawClass();
 
@@ -167,17 +173,15 @@ function bossAlienship_Turret_Class(offsetX, offsetY) {
   };
 
   this.move = function () {
-
     // turret projectiles
-      if (50 * Math.random() < 2) {
-        new enemyShotClass(this.x + this.offsetX, this.y + 10 + this.offsetY);
-      }
+    if (50 * Math.random() < 2) {
+      new enemyShotClass(this.x + this.offsetX, this.y + 10 + this.offsetY);
+    }
   };
 
   this.draw = function () {
-
-      var offsetX = this.x + this.offsetX;
-      var offsetY = this.y + this.offsetY;
+    var offsetX = this.x + this.offsetX;
+    var offsetY = this.y + this.offsetY;
 
     // put colliders at the head
     this.collX = offsetX;
@@ -185,12 +189,12 @@ function bossAlienship_Turret_Class(offsetX, offsetY) {
 
     drawAnimFrame("alien ship_turret", offsetX, offsetY, 0, 20, 50); // no animations hooked up yet, tie to firing
     if (this.hitFlashFrames) {
-        this.hitFlashFrames--;
-        context.globalCompositeOperation = "lighter"; // brighten stuff up
-        drawAnimFrame("alien ship_turret", offsetX, offsetY, 0, 20, 50); // no animations hooked up yet, tie to firing
-        drawAnimFrame("alien ship_turret", offsetX, offsetY, 0, 20, 50); // no animations hooked up yet, tie to firing
-        context.globalCompositeOperation = "source-over"; // restore to default
-      }
+      this.hitFlashFrames--;
+      context.globalCompositeOperation = "lighter"; // brighten stuff up
+      drawAnimFrame("alien ship_turret", offsetX, offsetY, 0, 20, 50); // no animations hooked up yet, tie to firing
+      drawAnimFrame("alien ship_turret", offsetX, offsetY, 0, 20, 50); // no animations hooked up yet, tie to firing
+      context.globalCompositeOperation = "source-over"; // restore to default
+    }
   };
 
   this.animate = function () {
@@ -225,7 +229,6 @@ function bossAlienship_bossAlien_WeakPoint_Class(offsetX, offsetY) {
   };
 
   this.move = function () {
-
     // Weakpoint projectiles
     if (this.reloadTime-- < 0) {
       this.reloadTime = ALIENSHIP_TURRET_RELOAD;
@@ -241,9 +244,8 @@ function bossAlienship_bossAlien_WeakPoint_Class(offsetX, offsetY) {
   };
 
   this.draw = function () {
-
-      var offsetX = this.x + this.offsetX;
-      var offsetY = this.y + this.offsetY;
+    var offsetX = this.x + this.offsetX;
+    var offsetY = this.y + this.offsetY;
 
     // put colliders at the head
     this.collX = offsetX;
@@ -251,12 +253,12 @@ function bossAlienship_bossAlien_WeakPoint_Class(offsetX, offsetY) {
 
     drawAnimFrame("alien ship_weakpoint", offsetX, offsetY, 0, 70, 58); // no animations hooked up yet, tie to firing
     if (this.hitFlashFrames) {
-        this.hitFlashFrames--;
-        context.globalCompositeOperation = "lighter"; // brighten stuff up
-        drawAnimFrame("alien ship_weakpoint", offsetX, offsetY, 0, 70, 58); // no animations hooked up yet, tie to firing
-        drawAnimFrame("alien ship_weakpoint", offsetX, offsetY, 0, 70, 58); // no animations hooked up yet, tie to firing
-        context.globalCompositeOperation = "source-over"; // restore to default
-      }
+      this.hitFlashFrames--;
+      context.globalCompositeOperation = "lighter"; // brighten stuff up
+      drawAnimFrame("alien ship_weakpoint", offsetX, offsetY, 0, 70, 58); // no animations hooked up yet, tie to firing
+      drawAnimFrame("alien ship_weakpoint", offsetX, offsetY, 0, 70, 58); // no animations hooked up yet, tie to firing
+      context.globalCompositeOperation = "source-over"; // restore to default
+    }
   };
 
   this.animate = function () {

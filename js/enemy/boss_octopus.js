@@ -41,7 +41,9 @@ function bossOctopusClass() {
   this.waterTentacleMax_Y = 150;
   this.waterTentacleMin_Y = 75;
 
-  this.reset = function () {};
+  this.reset = function () {
+    surfaceList.length = 0;
+  };
 
   this.move = function () {
     this.pos_x = this.x_start + this.xrad * Math.sin(this.theta + Math.PI / 2);

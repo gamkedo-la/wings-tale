@@ -27,6 +27,8 @@ function bossLavaDragonClass() {
   this.reset = function () {
     this.x = GAME_W / 2;
     this.y = DRAGON_BACK_Y;
+    surfaceList.length = 0;
+    enemyList.length = 0;
     this.neckList = [];
     this.neckList.push(new bossLavaDragon_Neck_Class(0.0, Math.PI * 0.25));
     this.neckList.push(new bossLavaDragon_Neck_Class(0.1, Math.PI * -0.25));
