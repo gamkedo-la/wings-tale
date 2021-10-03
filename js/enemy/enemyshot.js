@@ -51,56 +51,66 @@ function enemyShotClass(
   this.draw = function () {
     switch (levNow) {
       case LEVEL_ISLAND:
-        drawAnimFrame(
-          "enemy shot island",
-          this.x,
-          this.y,
-          enemyShotCommonFrame,
-          ENEMY_SHOT_DIM,
-          ENEMY_SHOT_DIM
-        );
+        this.drawLargerShots("enemy shot island");
         break;
       case LEVEL_SPACE:
-        drawAnimFrame(
-          "enemy shot space",
-          this.x,
-          this.y,
-          enemyShotCommonFrame,
-          ENEMY_SHOT_DIM,
-          ENEMY_SHOT_DIM
-        );
+        this.drawLargerShots("enemy shot space");
         break;
       case LEVEL_MOON:
-        drawAnimFrame(
-          "enemy shot moon",
-          this.x,
-          this.y,
-          enemyShotCommonFrame,
-          ENEMY_SHOT_DIM,
-          ENEMY_SHOT_DIM
-        );
+        this.drawLargerShots("enemy shot moon");
         break;
       case LEVEL_LAVA:
-        drawAnimFrame(
-          "enemy shot lava",
-          this.x,
-          this.y,
-          enemyShotCommonFrame,
-          ENEMY_SHOT_DIM,
-          ENEMY_SHOT_DIM
-        );
+        this.drawLargerShots("enemy shot lava");
         break;
       default:
-        drawAnimFrame(
-          "enemy shot",
-          this.x,
-          this.y,
-          enemyShotCommonFrame,
-          ENEMY_SHOT_DIM,
-          ENEMY_SHOT_DIM
-        );
+        this.drawLargerShots("enemy shot");
         break;
     }
+  };
+
+  this.drawLargerShots = function (shot) {
+    drawAnimFrame(
+      shot,
+      this.x,
+      this.y,
+      enemyShotCommonFrame,
+      ENEMY_SHOT_DIM,
+      ENEMY_SHOT_DIM
+    );
+    context.globalCompositeOperation = "lighter"; // brighten stuff up
+    drawAnimFrame(
+      shot,
+      this.x + 1,
+      this.y + 1,
+      enemyShotCommonFrame,
+      ENEMY_SHOT_DIM,
+      ENEMY_SHOT_DIM
+    );
+    drawAnimFrame(
+      shot,
+      this.x + 1,
+      this.y - 1,
+      enemyShotCommonFrame,
+      ENEMY_SHOT_DIM,
+      ENEMY_SHOT_DIM
+    );
+    drawAnimFrame(
+      shot,
+      this.x - 1,
+      this.y + 1,
+      enemyShotCommonFrame,
+      ENEMY_SHOT_DIM,
+      ENEMY_SHOT_DIM
+    );
+    drawAnimFrame(
+      shot,
+      this.x - 1,
+      this.y - 1,
+      enemyShotCommonFrame,
+      ENEMY_SHOT_DIM,
+      ENEMY_SHOT_DIM
+    );
+    context.globalCompositeOperation = "source-over"; // restore to default
   };
 
   enemyShotList.push(this);
