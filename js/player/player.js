@@ -171,7 +171,7 @@ function playerClass() {
   this.checkTimer = function (timer, effect) {
     if (this[timer] <= 0) {
       effect(this);
-      this[timer] = 300;
+      this[timer] = 225;
     }
   };
 

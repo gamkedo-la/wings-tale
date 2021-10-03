@@ -1,6 +1,6 @@
 const ENEMY_SWOOP_DIM = 15;
 const ENEMY_SWOOP_FRAMES = 1;
-const ENEMY_SWOOP_SPEED = 0.4;
+const ENEMY_SWOOP_SPEED = 0.2;
 const ENEMY_SWOOP_SPEED_DECAY = 0.99;
 
 enemySwoopAtClass.prototype = new moveDrawClass();
