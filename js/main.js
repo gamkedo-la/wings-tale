@@ -17,7 +17,9 @@ var bossList = [];
 var gamepads = new GamepadManager();
 
 var playerScore = 0; // Player Score, Getting powerups adds to it.
-var deathCount = -2; // number of times player has "died" during a level
+
+// Starts at - 2 due to the increment function running twice at the start of a level.
+var deathCount = -2; // Number of times player has "died" during a level.
 
 var drawMoveList = []; // list of lists - note, drawn in this order, so should be filled closest to ground up towards sky last
 var animateEachLists = []; // subset of draw/move lists for which each object has its own separate animation frame to update
