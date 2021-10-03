@@ -36,6 +36,12 @@ function playerClass() {
 
   this.angle = 0;
 
+  this.shotPowerTimer = 300;
+  this.bombPowerTimer = 300;
+  this.ghostPowerTimer = 300;
+  this.laserPowerTimer = 300;
+  this.speedPowerTimer = 300;
+
   this.shotsNumber = 1;
   this.bombCount = 1;
   this.ghostCount = 0;
@@ -87,6 +93,13 @@ function playerClass() {
       this.y = GAME_H - PLAYER_DIM * 2;
       this.xv = this.yv = 0;
 
+      // Reset timers
+      this.shotPowerTimer = 300;
+      this.bombPowerTimer = 300;
+      this.ghostPowerTimer = 300;
+      this.laserPowerTimer = 300;
+      this.speedPowerTimer = 300;
+
       if (cheatKeepPowerupsOnDeath) {
         console.log("The cheat/debug feature KeepPowerupsOnDeath is on!");
       } else {
@@ -108,6 +121,58 @@ function playerClass() {
     if (this.speed <= MIN_SPEED_FOR_SPEEDTRAILS) return;
     // distort the terrain below like a heatwave
     dropRippleAt(this.x, this.y, SPEEDTRAIL_PARTICLE_SIZE);
+  };
+
+  this.decrementPowerupTimers = function () {
+    if (this.shotsNumber > 1) {
+      console.log("SHOT: ", this.shotPowerTimer);
+      this.shotPowerTimer -= 1;
+      this.checkTimer("shotPowerTimer", () => {
+        this.shotsNumber -= 1;
+        if (this.shotsNumber < 1) {
+          this.shotsNumber = 1;
+        }
+      });
+    }
+
+    if (this.hasLaserPowerUp) {
+      console.log("LASER: ", this.laserPowerTimer);
+      this.laserPowerTimer -= 1;
+      this.checkTimer("laserPowerTimer", () => {
+        this.hasLaserPowerUp = false;
+      });
+    }
+
+    if (this.speed > 3) {
+      console.log("SPEED: ", this.speedPowerTimer);
+      this.speedPowerTimer -= 1;
+      this.checkTimer("speedPowerTimer", () => {
+        this.speed -= 1;
+      });
+    }
+
+    if (this.bombCount > 1) {
+      console.log("BOMB: ", this.bombPowerTimer);
+      this.bombPowerTimer -= 1;
+      this.checkTimer("bombPowerTimer", () => {
+        this.bombCount -= 1;
+      });
+    }
+
+    if (this.ghostCount > 0) {
+      console.log("GHOST: ", this.ghostPowerTimer);
+      this.ghostPowerTimer -= 1;
+      this.checkTimer("ghostPowerTimer", () => {
+        this.ghostCount -= 1;
+      });
+    }
+  };
+
+  this.checkTimer = function (timer, effect) {
+    if (this[timer] <= 0) {
+      effect(this);
+      this[timer] = 300;
+    }
   };
 
   this.draw = function () {
@@ -323,6 +388,8 @@ function playerClass() {
       this.invulnerableTimeLeft -= INVULNERABLE_DURATION_DECREMENT;
       return;
     }
+
+    this.decrementPowerupTimers();
 
     moveList(this.defenseRingUnitList);
   };
