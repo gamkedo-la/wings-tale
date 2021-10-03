@@ -18,6 +18,10 @@ function loadImages() {
     { imgName: "player shot 2", theFile: "playershot2.png" }, // start,end,flashing middle frames for line
     { imgName: "player shot ground", theFile: "playershotground.png" },
     { imgName: "enemy shot", theFile: "enemyshot.png" },
+    { imgName: "enemy shot island", theFile: "enemyshot_island.png" },
+    { imgName: "enemy shot space", theFile: "enemyshot_space.png" },
+    { imgName: "enemy shot moon", theFile: "enemyshot_moon.png" },
+    { imgName: "enemy shot lava", theFile: "enemyshot_lava.png" },
     { imgName: "bomb sight", theFile: "bombsight.png" },
     { imgName: "splode", theFile: "splode.png" },
     { imgName: "bug", theFile: "enemybug.png" },
