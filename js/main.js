@@ -17,6 +17,7 @@ var bossList = [];
 var gamepads = new GamepadManager();
 
 var playerScore = 0; // Player Score, Getting powerups adds to it.
+var deathCount = -2; // number of times player has "died" during a level
 
 var drawMoveList = []; // list of lists - note, drawn in this order, so should be filled closest to ground up towards sky last
 var animateEachLists = []; // subset of draw/move lists for which each object has its own separate animation frame to update
@@ -209,7 +210,7 @@ function reset() {
     } else if (levNow == LEVEL_MOON) {
       gameMusic = playSound(sounds.Moon_Song, 1, 0, 0.5, true);
     } else if (levNow == LEVEL_LAVA) {
-      gameMusic = playSound(sounds.Lava_Song, 1, 0, 0.5, true); 
+      gameMusic = playSound(sounds.Lava_Song, 1, 0, 0.5, true);
     }
   } catch (e) {
     console.log(`${e}`);
@@ -367,7 +368,7 @@ function update() {
   }
 
   context.clearRect(0, 0, canvas.width, canvas.height);
-  
+
   switch (gameState) {
     case GAME_STATE_TITLE:
       titleScreen.draw();
@@ -483,8 +484,8 @@ function update() {
         levNow++;
         currentLevelImageName = levNames[levNow];
         playerScore += 1000;
-        
-        if (levNow == LEVEL_LAVA+1) {
+
+        if (levNow == LEVEL_LAVA + 1) {
           playerScore += 1000;
           gameState = GAME_STATE_ENDING;
         } else {

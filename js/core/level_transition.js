@@ -18,6 +18,13 @@ function drawLevelCompleteScreen(level) {
     canvas.width / 2,
     canvas.height / 2 + 48
   );
+
+  // Deaths
+  context.fillText(
+    "Deaths: " + deathCount,
+    canvas.width / 2,
+    canvas.height / 2 + 64
+  );
 }
 
 function drawLevelTransitionScreen(level) {
