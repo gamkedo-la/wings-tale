@@ -241,6 +241,9 @@ function reset() {
     spawnSurfaceEnemies();
   }*/
   rippleReset();
+  enemySpawnTickCount = 0;
+  sameTimeSpawnSteps.length = 0;
+  sameTimeSpawnTicks.length = 0;
 
   // repacking this list since reset above emplied
   drawMoveList = [
