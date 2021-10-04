@@ -72,6 +72,7 @@ function loadImages() {
     { imgName: "depth lava", theFile: "lavaLevelDepth.png" },
 
     { imgName: "level menu", theFile: "level-select-bg.png" },
+    { imgName: "titlescreen", theFile: "titlescreen.png" },
 
     {
       imgName: "level menu island",
