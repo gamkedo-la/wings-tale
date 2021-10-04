@@ -5,10 +5,10 @@ function TitleScreen()
     this.draw = function()
     {
         //console.log("title screen! "+canvas.width+'x'+canvas.height);
+        //context.fillStyle = 'black';
+		//context.fillRect(0,0, canvas.width,canvas.height);
 
-        context.fillStyle = 'black';
-		context.fillRect(0,0, canvas.width,canvas.height);
-
+        context.drawImage(images["level island"],0,-150+Math.sin(performance.now()/2500)*100);
         context.drawImage(images["titlescreen"],0,0);
 
         context.fillStyle = 'white';
