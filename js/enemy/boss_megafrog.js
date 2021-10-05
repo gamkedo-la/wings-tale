@@ -109,9 +109,14 @@ function bossMegaFrogClass() {
       this.attack();
     }
 
+    if (this.shotCount <= 10) {
+      spawnSpecificEnemyAtRandomPosition(ENEMY_SHOCK);
+    }
+
     if (this.shotCount <= 0) {
       this.shotCount = 50;
       this.shotTimer = this.shotTimerDefault;
+      
     }
   };
 
@@ -176,7 +181,7 @@ function bossMegaFrogClass() {
       8,
       90
     );
-    spawnSpecificEnemyAtRandomPosition(ENEMY_SHOCK);
+    
 
     this.shotCount -= 1;
   };
