@@ -3,7 +3,7 @@ const POWERUP_W = 10;
 const POWERUP_H = 12;
 const POWERUP_FRAMES = 2;
 const POWER_UP_FRAME_DRAG = 4; // slow down animation framerate
-const POWERUP_SPEED = 0.3; // speed of the powerup's movement
+const POWERUP_SPEED = 0.6; // speed of the powerup's movement
 
 const MOVEMENT_POWERUP_SPEED = 4; // the player speed when boosted (3 is normal speed)
 
@@ -72,7 +72,7 @@ function powerupClass(atX, atY, excludeList = []) {
 
   this.move = function () {
     this.x += this.xv;
-    this.y -= this.yv;
+    this.y += 1;
     if (this.y < 0 || this.x < 0 || this.x > GAME_W || this.y > GAME_H) {
       this.readyToRemove = true;
     }
