@@ -535,9 +535,9 @@ function update() {
   stretchLowResCanvasToVisibleCanvas();
 
   // debug text after stretch, mainly for sharpness, proportion, readability
-  if (gameState == GAME_STATE_PLAY && debuggingDisplay) {
-    gameDebugSharpText();
-  }
+  // if (gameState == GAME_STATE_PLAY && debuggingDisplay) {
+  //   gameDebugSharpText();
+  // }
   if (gameState == GAME_STATE_LEVEL_DEBUG) {
     editorText();
   }
