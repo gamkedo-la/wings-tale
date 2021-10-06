@@ -72,7 +72,7 @@ function powerupClass(atX, atY, excludeList = []) {
 
   this.move = function () {
     this.x += this.xv;
-    this.y += this.yv;
+    this.y -= this.yv;
     if (this.y < 0 || this.x < 0 || this.x > GAME_W || this.y > GAME_H) {
       this.readyToRemove = true;
     }
