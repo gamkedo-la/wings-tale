@@ -1,6 +1,6 @@
 const ALIENSHIP_FRAMES = 0;
 const ALIENSHIP_IMAGE_NAME = "alien ship_noturrets2";
-const ALIENSHIP_TURRET_RELOAD = 60;
+const ALIENSHIP_TURRET_RELOAD = 30;
 const ALIENSHIP_SHOT_BURST = 9;
 const ALIENSHIP_SHOT_SPEED = 2;
 const ALIENSHIP_SHOT_Y_OFFSET = -90;
@@ -244,6 +244,9 @@ function bossAlienship_bossAlien_WeakPoint_Class(offsetX, offsetY) {
           i * ((Math.PI * 2) / ALIENSHIP_SHOT_BURST)
         );
       }
+    }
+    if (50 * Math.random() < 2) {
+      new enemyShotClass(this.x + this.offsetX, this.y + 10 + this.offsetY);
     }
   };
 

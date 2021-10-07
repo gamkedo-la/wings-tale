@@ -18,14 +18,6 @@ function TitleScreen()
         context.drawImage(images["level island"],0,-150+Math.sin(performance.now()/2500)*100);
         context.drawImage(images["titlescreen"],0,0);
 
-        context.fillStyle = 'white';
-		context.textAlign = 'center';
-        context.font = "10px Georgia";
-		
-        var lineY = 100;
-        var lineSkip = 20;
-        context.fillText("Click or press enter to start", canvas.width/2, lineY+=lineSkip*4);
-
         // particles near the logo
         titleframes++;
         if (titleframes % 4 == 0) // slow down the anim
@@ -38,6 +30,22 @@ function TitleScreen()
             }
         }
         drawAnimFrame("splode",title_boom_x,title_boom_y,title_boom_n,SPLODE_DIM,SPLODE_DIM);
+
+		context.textAlign = 'center';
+        context.font = "10px Georgia";
+        var lineY = 160;
+        var lineSkip = 40;
+        
+        if (titleframes%20<10) { // flash
+            context.fillStyle = 'black';
+            context.fillText("Click or press enter to start", canvas.width/2+1, lineY+1);
+            context.fillStyle = 'white';
+            context.fillText("Click or press enter to start", canvas.width/2, lineY);
+        }
+        
+        // todo
+        context.fillText("[CREDITS]", canvas.width/2, lineY+=lineSkip);
+
 
     }
 }
