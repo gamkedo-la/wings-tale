@@ -20,7 +20,7 @@ function bossOctopusClass() {
   this.currentTentacle = 0;
   this.x = GAME_W / 2;
   this.y = 64;
-  this.health = 500;
+  this.health = 250;
   this.collW = 64;
   this.collH = 256;
   this.readyToRemove = false;
@@ -194,7 +194,7 @@ function bossOctopusClass() {
       40,
       10,
       this.health,
-      500,
+      250,
       this.x - 20,
       this.y + 125,
       "green"

@@ -18,7 +18,7 @@ function bossAlienshipClass() {
   this.xv = 2;
   this.yv = 0.5;
   this.image = ALIENSHIP_IMAGE_NAME;
-  this.health = 50;
+  this.health = 100;
 
   this.bossStage = 0;
 
@@ -151,7 +151,7 @@ bossAlienship_Turret_Class.prototype = new moveDrawClass();
 
 function bossAlienship_Turret_Class(offsetX, offsetY) {
   this.reloadTime = ALIENSHIP_TURRET_RELOAD;
-  this.health = 15;
+  this.health = 30;
   this.offsetX = offsetX;
   this.offsetY = offsetY;
   // updated to the coord at the end of each frame
@@ -194,7 +194,7 @@ function bossAlienship_Turret_Class(offsetX, offsetY) {
       20,
       5,
       this.health,
-      15,
+      30,
       offsetX + 10,
       offsetY + 2,
       "green"
@@ -268,7 +268,7 @@ function bossAlienship_bossAlien_WeakPoint_Class(offsetX, offsetY) {
       50,
       5,
       this.health,
-      50,
+      100,
       offsetX - 25,
       offsetY + 80,
       "green"
