@@ -45,6 +45,7 @@ function bossAlienshipClass() {
         x: this.turretList[i].y,
         collW: this.turretList[i].collW,
         collH: this.turretList[i].collH,
+        instance: this.turretList[i],
       };
     }
   };
@@ -86,6 +87,7 @@ function bossAlienshipClass() {
               x: this.turretList[i].y,
               collW: this.turretList[i].collW,
               collH: this.turretList[i].collH,
+              instance: this.turretList[i],
             };
           }
         } else {
@@ -140,17 +142,8 @@ function bossAlienshipClass() {
 
   this.takeDamage = function () {
     //console.log("flashing alien ship boss on hit!");
-    //this.hitFlashFrames = HIT_FLASH_FRAMECOUNT;
+    this.hitFlashFrames = HIT_FLASH_FRAMECOUNT;
     this.health -= 1;
-    this.image = ALIENSHIP_IMAGE_NAME + "_damaged";
-
-    setTimeout(
-      function (boss) {
-        boss.image = ALIENSHIP_IMAGE_NAME;
-      },
-      3,
-      this
-    );
   };
 }
 
@@ -158,7 +151,7 @@ bossAlienship_Turret_Class.prototype = new moveDrawClass();
 
 function bossAlienship_Turret_Class(offsetX, offsetY) {
   this.reloadTime = ALIENSHIP_TURRET_RELOAD;
-  this.health = 15;
+  this.health = 1;
   this.offsetX = offsetX;
   this.offsetY = offsetY;
   // updated to the coord at the end of each frame

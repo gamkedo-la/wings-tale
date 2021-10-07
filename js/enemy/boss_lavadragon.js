@@ -45,6 +45,7 @@ function bossLavaDragonClass() {
         y: this.neckList[i].y,
         collW: this.neckList[i].collW,
         collH: this.neckList[i].collH,
+        instance: this.neckList[i],
       };
     }
   };
@@ -127,7 +128,7 @@ function bossLavaDragon_Neck_Class(baseAngOffset, jointOffset) {
     for (var i = 0; i < this.neckAngles.length; i++) {
       drawAnimFrame("firedragon", offsetX, offsetY, this.frame, 28, 35);
       if (this.hitFlashFrames) {
-        this.hitFlashFrames--;
+        // this.hitFlashFrames--;
         context.globalCompositeOperation = "lighter"; // brighten stuff up
         drawAnimFrame("firedragon", offsetX, offsetY, this.frame, 28, 35);
         drawAnimFrame("firedragon", offsetX, offsetY, this.frame, 28, 35);
@@ -145,6 +146,7 @@ function bossLavaDragon_Neck_Class(baseAngOffset, jointOffset) {
     this.collY = offsetY;
 
     drawAnimFrame("firedragon_head", offsetX, offsetY, 0, 28, 35); // no animations hooked up yet, tie to firing
+    console.log(this.hitFlashFrames);
     if (this.hitFlashFrames) {
       this.hitFlashFrames--;
       context.globalCompositeOperation = "lighter"; // brighten stuff up
@@ -189,7 +191,6 @@ function bossLavaDragon_Neck_Class(baseAngOffset, jointOffset) {
   };
 
   this.takeDamage = function () {
-    //console.log("flashing lava dragon boss on hit!");
     this.hitFlashFrames = HIT_FLASH_FRAMECOUNT;
   };
 }

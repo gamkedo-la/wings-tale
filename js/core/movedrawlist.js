@@ -99,6 +99,7 @@ function listCollideRangeOfPoint(listA, atX, atY, pointRadius, optionalResultFun
 
 function checkForHealthToRemove(listObject) {
 	if(typeof listObject.useHealhOfObj !== 'undefined') { // collider for something separate?
+		listObject.instance.hitFlashFrames = HIT_FLASH_FRAMECOUNT;
 		if (--listObject.useHealhOfObj.health <= 0) {
 			listObject.useHealhOfObj.readyToRemove = true;
 		}
@@ -111,7 +112,6 @@ function checkForHealthToRemove(listObject) {
 
 function moveDrawClass(startX,startY) {
     this.frame=0;
-    
 	this.x = startX;
 	this.y = startY;
 	this.collW = this.collH = 20;
