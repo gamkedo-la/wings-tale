@@ -158,7 +158,7 @@ bossAlienship_Turret_Class.prototype = new moveDrawClass();
 
 function bossAlienship_Turret_Class(offsetX, offsetY) {
   this.reloadTime = ALIENSHIP_TURRET_RELOAD;
-  this.health = 1;
+  this.health = 15;
   this.offsetX = offsetX;
   this.offsetY = offsetY;
   // updated to the coord at the end of each frame
