@@ -94,11 +94,11 @@ function playerClass() {
       this.xv = this.yv = 0;
 
       // Reset timers
-      this.shotPowerTimer = 300;
-      this.bombPowerTimer = 300;
-      this.ghostPowerTimer = 300;
-      this.laserPowerTimer = 300;
-      this.speedPowerTimer = 300;
+      this.shotPowerTimer = 225;
+      this.bombPowerTimer = 225;
+      this.ghostPowerTimer = 225;
+      this.laserPowerTimer = 225;
+      this.speedPowerTimer = 225;
 
       if (cheatKeepPowerupsOnDeath) {
         console.log("The cheat/debug feature KeepPowerupsOnDeath is on!");
@@ -175,6 +175,28 @@ function playerClass() {
     }
   };
 
+  this.drawTimers = function () {
+    if (this.speed > 3) {
+      drawBarAsPercentage(30, 5, this.speedPowerTimer, 225, 8, 24, "red");
+    }
+
+    if (this.shotsNumber > 1) {
+      drawBarAsPercentage(30, 5, this.shotPowerTimer, 225, 8, 36, "pink");
+    }
+
+    if (this.hasLaserPowerUp) {
+      drawBarAsPercentage(30, 5, this.laserPowerTimer, 225, 8, 44, "purple");
+    }
+
+    if (this.bombCount > 1) {
+      drawBarAsPercentage(30, 5, this.bombPowerTimer, 225, 8, 52, "orange");
+    }
+
+    if (this.ghostCount > 0) {
+      drawBarAsPercentage(30, 5, this.ghostPowerTimer, 225, 8, 60, "blue");
+    }
+  };
+
   this.draw = function () {
     this.combo.draw();
     this.drawSpeedTrails();
@@ -183,6 +205,7 @@ function playerClass() {
     // playerScore is a global but the game can have two players
     // therefore perhaps score should become a property of the player class
     this.scoreUI.draw(playerScore, 8, 8);
+    this.drawTimers();
 
     if (this.invulnerableTimeLeft > 0) {
       if (Math.round(this.invulnerableTimeLeft * 10) % 4 == 0) {

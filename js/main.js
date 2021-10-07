@@ -1,4 +1,4 @@
-var gameDevelopmentMode = false; //skip intro stuff
+var gameDevelopmentMode = true; //skip intro stuff
 
 var debugDraw_colliders = false;
 
