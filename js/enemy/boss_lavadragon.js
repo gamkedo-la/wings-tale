@@ -168,6 +168,17 @@ function bossLavaDragon_Neck_Class(baseAngOffset, jointOffset) {
       this.neckAngles[i] += 0.005 * Math.cos(this.neckAnglesOsc[i]);
       this.neckAnglesOsc[i] += 0.04 + Math.random() * 0.01;
     }
+
+    // Health bar
+    drawBarAsPercentage(
+      25,
+      5,
+      this.health,
+      25,
+      offsetX - 12,
+      offsetY + 20,
+      "#51ff11"
+    );
   };
 
   this.animate = function () {

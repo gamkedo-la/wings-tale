@@ -116,7 +116,6 @@ function bossMegaFrogClass() {
     if (this.shotCount <= 0) {
       this.shotCount = 50;
       this.shotTimer = this.shotTimerDefault;
-      
     }
   };
 
@@ -181,7 +180,6 @@ function bossMegaFrogClass() {
       8,
       90
     );
-    
 
     this.shotCount -= 1;
   };
@@ -263,6 +261,19 @@ function bossMegaFrogClass() {
     surfaceList.forEach(function (frog) {
       frog.draw();
     });
+
+    if (this.phase === MEGAFROG_ATTACK_PHASE) {
+      // Health bar
+      drawBarAsPercentage(
+        90,
+        10,
+        this.health,
+        500,
+        this.x - 45,
+        this.y + 175,
+        "red"
+      );
+    }
   };
 
   this.animate = function () {

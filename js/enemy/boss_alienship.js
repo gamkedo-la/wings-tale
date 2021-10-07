@@ -158,7 +158,7 @@ bossAlienship_Turret_Class.prototype = new moveDrawClass();
 
 function bossAlienship_Turret_Class(offsetX, offsetY) {
   this.reloadTime = ALIENSHIP_TURRET_RELOAD;
-  this.health = 15;
+  this.health = 1;
   this.offsetX = offsetX;
   this.offsetY = offsetY;
   // updated to the coord at the end of each frame
@@ -195,6 +195,17 @@ function bossAlienship_Turret_Class(offsetX, offsetY) {
       drawAnimFrame("alien ship_turret", offsetX, offsetY, 0, 20, 50); // no animations hooked up yet, tie to firing
       context.globalCompositeOperation = "source-over"; // restore to default
     }
+
+    // Health bar
+    drawBarAsPercentage(
+      20,
+      5,
+      this.health,
+      15,
+      offsetX + 10,
+      offsetY + 2,
+      "green"
+    );
   };
 
   this.animate = function () {
@@ -259,6 +270,16 @@ function bossAlienship_bossAlien_WeakPoint_Class(offsetX, offsetY) {
       drawAnimFrame("alien ship_weakpoint", offsetX, offsetY, 0, 70, 58); // no animations hooked up yet, tie to firing
       context.globalCompositeOperation = "source-over"; // restore to default
     }
+    // Health bar
+    drawBarAsPercentage(
+      50,
+      5,
+      this.health,
+      50,
+      offsetX - 25,
+      offsetY + 80,
+      "green"
+    );
   };
 
   this.animate = function () {
