@@ -34,6 +34,9 @@ function playerClass() {
   this.trailX = [];
   this.trailY = [];
 
+  this.x = GAME_W / 2;
+  this.y = GAME_H - PLAYER_DIM * 2;
+
   this.angle = 0;
 
   this.shotPowerTimer = 300;
@@ -84,14 +87,11 @@ function playerClass() {
       this.invulnerableTimeLeft = INVULNERABLE_DURATION;
 
       deathCount += 1;
-      console.log("DIED!", deathCount);
 
       this.neverRemove = true; // respawn only
 
-      this.readyToRemove = false;
-      this.x = GAME_W / 2;
-      this.y = GAME_H - PLAYER_DIM * 2;
       this.xv = this.yv = 0;
+      this.readyToRemove = false;
 
       // Reset timers
       this.shotPowerTimer = 225;
@@ -180,23 +180,63 @@ function playerClass() {
     var barWidth = 30;
 
     if (this.speed > 3) {
-      drawBarWithText(barWidth, barHeight, this.speedPowerTimer, 225, 8, 24, "#ff0000");
+      drawBarWithText(
+        barWidth,
+        barHeight,
+        this.speedPowerTimer,
+        225,
+        8,
+        24,
+        "#ff0000"
+      );
     }
 
     if (this.shotsNumber > 1) {
-      drawBarWithText(barWidth, barHeight, this.shotPowerTimer, 225, 8, 36, "#ff3ac2");
+      drawBarWithText(
+        barWidth,
+        barHeight,
+        this.shotPowerTimer,
+        225,
+        8,
+        36,
+        "#ff3ac2"
+      );
     }
 
     if (this.hasLaserPowerUp) {
-      drawBarWithText(barWidth, barHeight, this.laserPowerTimer, 225, 8, 44, "#6110a2");
+      drawBarWithText(
+        barWidth,
+        barHeight,
+        this.laserPowerTimer,
+        225,
+        8,
+        44,
+        "#6110a2"
+      );
     }
 
     if (this.bombCount > 1) {
-      drawBarWithText(barWidth, barHeight, this.bombPowerTimer, 225, 8, 52, "#f5a200");
+      drawBarWithText(
+        barWidth,
+        barHeight,
+        this.bombPowerTimer,
+        225,
+        8,
+        52,
+        "#f5a200"
+      );
     }
 
     if (this.ghostCount > 0) {
-      drawBarWithText(barWidth, barHeight, this.ghostPowerTimer, 225, 8, 60, "#60fffb");
+      drawBarWithText(
+        barWidth,
+        barHeight,
+        this.ghostPowerTimer,
+        225,
+        8,
+        60,
+        "#60fffb"
+      );
     }
   };
 
