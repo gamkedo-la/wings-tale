@@ -264,7 +264,7 @@ function bossMegaFrogClass() {
 
     if (this.phase === MEGAFROG_ATTACK_PHASE) {
       // Health bar
-      drawBarAsPercentage(
+      drawBarWithText(
         90,
         10,
         this.health,

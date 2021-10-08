@@ -190,7 +190,7 @@ function bossOctopusClass() {
       drawAnimFrame(this.image, this.pos_x, this.pos_y, this.frame, 256, 240);
       context.globalCompositeOperation = "source-over"; // restore to default
     }
-    drawBarAsPercentage(
+    drawBarWithText(
       40,
       10,
       this.health,

@@ -172,14 +172,14 @@ function bossLavaDragon_Neck_Class(baseAngOffset, jointOffset) {
     }
 
     // Health bar
-    drawBarAsPercentage(
-      25,
-      5,
+    drawBarWithText(
+      50,
+      10,
       this.health,
       100,
       offsetX - 12,
       offsetY + 20,
-      "#51ff11"
+      "blue"
     );
   };
 

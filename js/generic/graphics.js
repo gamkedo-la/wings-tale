@@ -141,8 +141,20 @@ function setupCanvas() {
   scaledCtx.msImageSmoothingEnabled = false;
 }
 
-function drawBarAsPercentage(totalWidth, height, part, whole, x, y, color) {
-  var barWidth = totalWidth * (part / whole);
+function drawBarAsPercentage(width, height, part, whole, x, y, color) {
+  var barWidth = width * (part / whole);
   context.fillStyle = color;
   context.fillRect(x, y, barWidth, height);
+}
+
+function drawBarWithText(width, height, part, whole, x, y, color) {
+  drawBarAsPercentage(width, height, part, whole, x, y, color);
+
+  var healthCount = part + "/" + whole;
+  var stringWidth = healthCount.length * pixelfontw + 4;
+  var stringHeight = pixelfonth - 1;
+  var horizontalPlacement = x + width / 2 - stringWidth / 2;
+  var verticalPlacement = y + height / 2 - stringHeight / 2;
+
+  micro_pixel_font(healthCount, horizontalPlacement, verticalPlacement);
 }

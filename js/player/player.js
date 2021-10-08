@@ -176,24 +176,27 @@ function playerClass() {
   };
 
   this.drawTimers = function () {
+    var barHeight = 10;
+    var barWidth = 30;
+
     if (this.speed > 3) {
-      drawBarAsPercentage(30, 5, this.speedPowerTimer, 225, 8, 24, "#ff0000");
+      drawBarWithText(barWidth, barHeight, this.speedPowerTimer, 225, 8, 24, "#ff0000");
     }
 
     if (this.shotsNumber > 1) {
-      drawBarAsPercentage(30, 5, this.shotPowerTimer, 225, 8, 36, "#ff3ac2");
+      drawBarWithText(barWidth, barHeight, this.shotPowerTimer, 225, 8, 36, "#ff3ac2");
     }
 
     if (this.hasLaserPowerUp) {
-      drawBarAsPercentage(30, 5, this.laserPowerTimer, 225, 8, 44, "#6110a2");
+      drawBarWithText(barWidth, barHeight, this.laserPowerTimer, 225, 8, 44, "#6110a2");
     }
 
     if (this.bombCount > 1) {
-      drawBarAsPercentage(30, 5, this.bombPowerTimer, 225, 8, 52, "#f5a200");
+      drawBarWithText(barWidth, barHeight, this.bombPowerTimer, 225, 8, 52, "#f5a200");
     }
 
     if (this.ghostCount > 0) {
-      drawBarAsPercentage(30, 5, this.ghostPowerTimer, 225, 8, 60, "#60fffb");
+      drawBarWithText(barWidth, barHeight, this.ghostPowerTimer, 225, 8, 60, "#60fffb");
     }
   };
 

@@ -190,9 +190,9 @@ function bossAlienship_Turret_Class(offsetX, offsetY) {
     }
 
     // Health bar
-    drawBarAsPercentage(
-      20,
-      5,
+    drawBarWithText(
+      40,
+      10,
       this.health,
       30,
       offsetX + 10,
@@ -218,7 +218,7 @@ bossAlienship_bossAlien_WeakPoint_Class.prototype = new moveDrawClass();
 
 function bossAlienship_bossAlien_WeakPoint_Class(offsetX, offsetY) {
   this.reloadTime = ALIENSHIP_TURRET_RELOAD;
-  this.health = 50;
+  this.health = 100;
   this.offsetX = offsetX;
   this.offsetY = offsetY - 42;
   // updated to the coord at the end of each frame
@@ -267,9 +267,9 @@ function bossAlienship_bossAlien_WeakPoint_Class(offsetX, offsetY) {
       context.globalCompositeOperation = "source-over"; // restore to default
     }
     // Health bar
-    drawBarAsPercentage(
+    drawBarWithText(
       50,
-      5,
+      10,
       this.health,
       100,
       offsetX - 25,
