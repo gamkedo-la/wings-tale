@@ -187,10 +187,19 @@ function playerClass() {
         this.speedPowerTimer,
         this.powerTimerDefault,
         barX,
-        24,
+        20,
         "#ff0000"
       );
-      drawAnimFrame("powerup",icoX,24+icoYofs,1,POWERUP_W,POWERUP_H,0,POWER_UP_KIND_MOVEMENT);
+      drawAnimFrame(
+        "powerup",
+        icoX,
+        20 + icoYofs,
+        1,
+        POWERUP_W,
+        POWERUP_H,
+        0,
+        POWER_UP_KIND_MOVEMENT
+      );
     }
 
     if (this.shotsNumber > 1) {
@@ -203,20 +212,16 @@ function playerClass() {
         36,
         "#ff3ac2"
       );
-      drawAnimFrame("powerup",icoX,36+icoYofs,1,POWERUP_W,POWERUP_H,0,POWER_UP_KIND_SHOTS);
-    }
-
-    if (this.hasLaserPowerUp) {
-      drawBarWithText(
-        barWidth,
-        barHeight,
-        this.laserPowerTimer,
-        this.powerTimerDefault,
-        barX,
-        44,
-        "#6110a2"
+      drawAnimFrame(
+        "powerup",
+        icoX,
+        36 + icoYofs,
+        1,
+        POWERUP_W,
+        POWERUP_H,
+        0,
+        POWER_UP_KIND_SHOTS
       );
-      drawAnimFrame("powerup",icoX,44+icoYofs,1,POWERUP_W,POWERUP_H,0,POWERUP_KIND_LASER);
     }
 
     if (this.bombCount > 1) {
@@ -229,7 +234,16 @@ function playerClass() {
         52,
         "#f5a200"
       );
-      drawAnimFrame("powerup",icoX,52+icoYofs,1,POWERUP_W,POWERUP_H,0,POWER_UP_KIND_BOMB);
+      drawAnimFrame(
+        "powerup",
+        icoX,
+        52 + icoYofs,
+        1,
+        POWERUP_W,
+        POWERUP_H,
+        0,
+        POWER_UP_KIND_BOMB
+      );
     }
 
     if (this.ghostCount > 0) {
@@ -239,10 +253,41 @@ function playerClass() {
         this.ghostPowerTimer,
         this.powerTimerDefault,
         barX,
-        60,
+        68,
         "#60fffb"
       );
-      drawAnimFrame("powerup",icoX,60+icoYofs,1,POWERUP_W,POWERUP_H,0,POWER_UP_KIND_GHOST);
+      drawAnimFrame(
+        "powerup",
+        icoX,
+        68 + icoYofs,
+        1,
+        POWERUP_W,
+        POWERUP_H,
+        0,
+        POWER_UP_KIND_GHOST
+      );
+    }
+
+    if (this.hasLaserPowerUp) {
+      drawBarWithText(
+        barWidth,
+        barHeight,
+        this.laserPowerTimer,
+        this.powerTimerDefault,
+        barX,
+        72,
+        "#6110a2"
+      );
+      drawAnimFrame(
+        "powerup",
+        icoX,
+        72 + icoYofs,
+        1,
+        POWERUP_W,
+        POWERUP_H,
+        0,
+        POWERUP_KIND_LASER
+      );
     }
   };
 
