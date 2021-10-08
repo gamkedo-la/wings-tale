@@ -6,7 +6,7 @@ const PLAYER_FRAMES = 3;
 const PLAYER_ANGLE_MAX = 10;
 const PLAYER_ANGLE_STEP = 2;
 const EDGE_MARGIN = PLAYER_DIM;
-const INVULNERABLE_DURATION = 10;
+const INVULNERABLE_DURATION = 15;
 const INVULNERABLE_DURATION_DECREMENT = 0.1;
 
 // press P or obtain speed powerup to test
