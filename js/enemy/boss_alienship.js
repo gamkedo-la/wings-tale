@@ -218,7 +218,7 @@ bossAlienship_bossAlien_WeakPoint_Class.prototype = new moveDrawClass();
 
 function bossAlienship_bossAlien_WeakPoint_Class(offsetX, offsetY) {
   this.reloadTime = ALIENSHIP_TURRET_RELOAD;
-  this.health = 100;
+  this.health = 300;
   this.offsetX = offsetX;
   this.offsetY = offsetY - 42;
   // updated to the coord at the end of each frame
@@ -271,7 +271,7 @@ function bossAlienship_bossAlien_WeakPoint_Class(offsetX, offsetY) {
       50,
       10,
       this.health,
-      100,
+      300,
       offsetX - 25,
       offsetY + 80,
       "green"
