@@ -129,10 +129,7 @@ function playerClass() {
       console.log("SHOT: ", this.shotPowerTimer);
       this.shotPowerTimer -= 1;
       this.checkTimer("shotPowerTimer", () => {
-        this.shotsNumber -= 1;
-        if (this.shotsNumber < 1) {
-          this.shotsNumber = 1;
-        }
+        this.shotsNumber = 1;
       });
     }
 
@@ -302,16 +299,16 @@ function playerClass() {
       drawList(this.defenseRingUnitList);
     }
 
-    if (this.homingBombFramesLeft > 0) {
-      drawFilledBar(
-        this.x - 10,
-        this.y + 10,
-        20,
-        5,
-        this.homingBombFramesLeft / HOMING_POWERUP_FRAMES,
-        "lime"
-      );
-    }
+    // if (this.homingBombFramesLeft > 0) {
+    //   drawFilledBar(
+    //     this.x - 10,
+    //     this.y + 10,
+    //     20,
+    //     5,
+    //     this.homingBombFramesLeft / HOMING_POWERUP_FRAMES,
+    //     "lime"
+    //   );
+    // }
   };
 
   this.move = function () {
