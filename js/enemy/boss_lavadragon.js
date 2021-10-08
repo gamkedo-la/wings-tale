@@ -10,10 +10,13 @@ const DRAGON_BACK_Y = -120;
 const DRAGON_FRONT_Y = -35;
 const DRAGON_MOVE_SPEED = 0.3;
 
-const DRAGON_SHOT_SPEED = 0.5;
-const DRAGON_SHOT_BURST = 7;
-const DRAGON_SHOT_RELOAD = 120;
 const DRAGON_SHOT_Y_OFFSET = 11; // where mouth is from center of head
+
+// Changed from const to var so that they can be easily updated when heads are defeated
+// Bad practice, I know
+var DRAGON_SHOT_BURST = 7;
+var DRAGON_SHOT_RELOAD = 120;
+var DRAGON_SHOT_SPEED = 0.5;
 
 bossLavaDragonClass.prototype = new moveDrawClass();
 
@@ -60,6 +63,12 @@ function bossLavaDragonClass() {
     }
 
     moveList(this.neckList, this.collList);
+
+    // Dragon boss gets stronger and faster as more heads are defeated
+    DRAGON_SHOT_RELOAD =
+      (120 * (this.neckList.length / 3)) / (3 - this.neckList.length + 1);
+    DRAGON_SHOT_BURST = 7 + (3 - this.neckList.length);
+    DRAGON_SHOT_SPEED = 0.5 + (3 - this.neckList.length) * 0.25;
 
     if (this.collList.length == 0) {
       this.health = -1;
@@ -146,7 +155,7 @@ function bossLavaDragon_Neck_Class(baseAngOffset, jointOffset) {
     this.collY = offsetY;
 
     drawAnimFrame("firedragon_head", offsetX, offsetY, 0, 28, 35); // no animations hooked up yet, tie to firing
-    console.log(this.hitFlashFrames);
+
     if (this.hitFlashFrames) {
       this.hitFlashFrames--;
       context.globalCompositeOperation = "lighter"; // brighten stuff up
