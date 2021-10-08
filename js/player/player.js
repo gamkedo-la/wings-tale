@@ -39,11 +39,12 @@ function playerClass() {
 
   this.angle = 0;
 
-  this.shotPowerTimer = 300;
-  this.bombPowerTimer = 300;
-  this.ghostPowerTimer = 300;
-  this.laserPowerTimer = 300;
-  this.speedPowerTimer = 300;
+  this.powerTimerDefault = 225;
+  this.shotPowerTimer = this.powerTimerDefault;
+  this.bombPowerTimer = this.powerTimerDefault;
+  this.ghostPowerTimer = this.powerTimerDefault;
+  this.laserPowerTimer = this.powerTimerDefault;
+  this.speedPowerTimer = this.powerTimerDefault;
 
   this.shotsNumber = 1;
   this.bombCount = 1;
@@ -94,11 +95,11 @@ function playerClass() {
       this.readyToRemove = false;
 
       // Reset timers
-      this.shotPowerTimer = 225;
-      this.bombPowerTimer = 225;
-      this.ghostPowerTimer = 225;
-      this.laserPowerTimer = 225;
-      this.speedPowerTimer = 225;
+      this.shotPowerTimer = this.powerTimerDefault;
+      this.bombPowerTimer = this.powerTimerDefault;
+      this.ghostPowerTimer = this.powerTimerDefault;
+      this.laserPowerTimer = this.powerTimerDefault;
+      this.speedPowerTimer = this.powerTimerDefault;
 
       if (cheatKeepPowerupsOnDeath) {
         console.log("The cheat/debug feature KeepPowerupsOnDeath is on!");
@@ -171,7 +172,7 @@ function playerClass() {
   this.checkTimer = function (timer, effect) {
     if (this[timer] <= 0) {
       effect(this);
-      this[timer] = 225;
+      this[timer] = this.powerTimerDefault;
     }
   };
 
@@ -184,7 +185,7 @@ function playerClass() {
         barWidth,
         barHeight,
         this.speedPowerTimer,
-        225,
+        this.powerTimerDefault,
         8,
         24,
         "#ff0000"
@@ -196,7 +197,7 @@ function playerClass() {
         barWidth,
         barHeight,
         this.shotPowerTimer,
-        225,
+        this.powerTimerDefault,
         8,
         36,
         "#ff3ac2"
@@ -208,7 +209,7 @@ function playerClass() {
         barWidth,
         barHeight,
         this.laserPowerTimer,
-        225,
+        this.powerTimerDefault,
         8,
         44,
         "#6110a2"
@@ -220,7 +221,7 @@ function playerClass() {
         barWidth,
         barHeight,
         this.bombPowerTimer,
-        225,
+        this.powerTimerDefault,
         8,
         52,
         "#f5a200"
@@ -232,7 +233,7 @@ function playerClass() {
         barWidth,
         barHeight,
         this.ghostPowerTimer,
-        225,
+        this.powerTimerDefault,
         8,
         60,
         "#60fffb"

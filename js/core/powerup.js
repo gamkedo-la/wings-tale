@@ -82,24 +82,29 @@ function powerupClass(atX, atY, excludeList = []) {
     switch (this.kind) {
       case POWER_UP_KIND_SHOTS:
         onPlayer.shotsNumber++;
+        onPlayer.shotPowerTimer = onPlayer.powerTimerDefault;
         playerScore += 125;
         break;
       case POWER_UP_KIND_BOMB:
         onPlayer.bombCount += 1;
+        onPlayer.bombPowerTimer = onPlayer.powerTimerDefault;
         playerScore += 500;
         break;
       case POWER_UP_KIND_GHOST:
         onPlayer.ghostCount += 1;
         onPlayer.ghostColors.push(getRandomInt(1, GHOST_COLOR_MAX));
+        onPlayer.ghostPowerTimer = onPlayer.powerTimerDefault;
         playerScore += 1000;
         break;
       case POWER_UP_KIND_MOVEMENT:
         onPlayer.speed = MOVEMENT_POWERUP_SPEED;
         onPlayer.speedTrailsOn = true;
+        onPlayer.speedPowerTimer = onPlayer.powerTimerDefault;
         playerScore += 1000;
         break;
       case POWERUP_KIND_LASER:
         onPlayer.hasLaserPowerUp = true;
+        onPlayer.laserPowerTimer = onPlayer.powerTimerDefault;
         playerScore += 1000;
         break;
       default:
