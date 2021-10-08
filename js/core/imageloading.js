@@ -25,6 +25,7 @@ function loadImages() {
     { imgName: "bomb sight", theFile: "bombsight.png" },
     { imgName: "splode", theFile: "splode.png" },
     { imgName: "bug", theFile: "enemybug.png" },
+    { imgName: "green bug", theFile: "enemybug_green.png" },
     { imgName: "swoop", theFile: "space-pineapple.png" },
     { imgName: "stallchase", theFile: "enemyaliendrone.png" },
     { imgName: "fire snake", theFile: "enemyfireSnakev1.png" },
@@ -51,7 +52,7 @@ function loadImages() {
     { imgName: "turret", theFile: "enemyturret.png" },
     { imgName: "frog tank", theFile: "enemyspacefrog.png" },
     { imgName: "space frog", theFile: "space-frog.png" },
-    
+
     { imgName: "depot", theFile: "depot.png" },
     { imgName: "office", theFile: "office.png" },
     { imgName: "factory", theFile: "factory.png" },
