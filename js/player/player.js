@@ -176,6 +176,9 @@ function playerClass() {
   this.drawTimers = function () {
     var barHeight = 10;
     var barWidth = 30;
+    var icoYofs = 5;
+    var barX = 16;
+    var icoX = 8;
 
     if (this.speed > 3) {
       drawBarWithText(
@@ -183,10 +186,11 @@ function playerClass() {
         barHeight,
         this.speedPowerTimer,
         this.powerTimerDefault,
-        8,
+        barX,
         24,
         "#ff0000"
       );
+      drawAnimFrame("powerup",icoX,24+icoYofs,1,POWERUP_W,POWERUP_H,0,POWER_UP_KIND_MOVEMENT);
     }
 
     if (this.shotsNumber > 1) {
@@ -195,10 +199,11 @@ function playerClass() {
         barHeight,
         this.shotPowerTimer,
         this.powerTimerDefault,
-        8,
+        barX,
         36,
         "#ff3ac2"
       );
+      drawAnimFrame("powerup",icoX,36+icoYofs,1,POWERUP_W,POWERUP_H,0,POWER_UP_KIND_SHOTS);
     }
 
     if (this.hasLaserPowerUp) {
@@ -207,10 +212,11 @@ function playerClass() {
         barHeight,
         this.laserPowerTimer,
         this.powerTimerDefault,
-        8,
+        barX,
         44,
         "#6110a2"
       );
+      drawAnimFrame("powerup",icoX,44+icoYofs,1,POWERUP_W,POWERUP_H,0,POWERUP_KIND_LASER);
     }
 
     if (this.bombCount > 1) {
@@ -219,10 +225,11 @@ function playerClass() {
         barHeight,
         this.bombPowerTimer,
         this.powerTimerDefault,
-        8,
+        barX,
         52,
         "#f5a200"
       );
+      drawAnimFrame("powerup",icoX,52+icoYofs,1,POWERUP_W,POWERUP_H,0,POWER_UP_KIND_BOMB);
     }
 
     if (this.ghostCount > 0) {
@@ -231,10 +238,11 @@ function playerClass() {
         barHeight,
         this.ghostPowerTimer,
         this.powerTimerDefault,
-        8,
+        barX,
         60,
         "#60fffb"
       );
+      drawAnimFrame("powerup",icoX,60+icoYofs,1,POWERUP_W,POWERUP_H,0,POWER_UP_KIND_GHOST);
     }
   };
 
