@@ -425,6 +425,9 @@ function handleMouseRelease(evt) {
 
 function handleMouseClick(evt) {
   if (!gameFirstClickedToStart) {
+    if(storyInterval != null) {
+      clearInterval(storyInterval);
+    }
     initSounds();
   }
   if (gameState == GAME_STATE_LEVEL_DEBUG) {

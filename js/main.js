@@ -75,22 +75,42 @@ window.onload = function () {
   inputSetup();
 
   if (!gameDevelopmentMode) {
-    context.fillStyle = "black";
-    context.fillRect(0, 0, canvas.width, canvas.height);
-
-    context.fillStyle = "white";
-    context.textAlign = "center";
-    context.font = "15px Georgia";
-    context.fillText(
-      "Loaded. Click to Start",
-      canvas.width / 2,
-      canvas.height / 2
-    );
-    stretchLowResCanvasToVisibleCanvas();
+    storyInterval = setInterval(introStory,1000/24);
   }
   // scaledCtx.fillStyle = "black";
   // scaledCtx.fillRect(0,0,scaledCanvas.width,scaledCanvas.height);
 };
+
+var storyInterval = null;
+var storyDisplayFrameDelay = 0;
+var storyLine = 0;
+var storyText = ["hey why r u an angel","iunno ur a moon","moooooon moon moon moon","placeholder should be bad so it doesn't stay :)","THE END",
+" ", // to skip a line + pause
+"Click anywhere to continue..."];
+
+function introStory() {
+  context.fillStyle = "black";
+  context.fillRect(0, 0, canvas.width, canvas.height);
+
+  context.fillStyle = "white";
+  context.textAlign = "center";
+  var storyTextSize = 12;
+  context.font = storyTextSize+"px Georgia";
+  var storyY = 60; // first line height
+  var lineSkip = storyTextSize+10;
+  storyDisplayFrameDelay--;
+  if(storyDisplayFrameDelay<0) {
+    storyDisplayFrameDelay = 20; // frames between next story line
+    if(storyLine<storyText.length) {
+      storyLine++;
+    }
+  }
+  for(var i=0;i<storyLine;i++) {
+    context.fillText(storyText[i],canvas.width / 2, storyY);
+    storyY += lineSkip;
+  }
+  stretchLowResCanvasToVisibleCanvas();
+}
 
 function loadingDoneSoStartGame() {
   imagesLoaded = true;
