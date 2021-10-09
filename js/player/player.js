@@ -254,7 +254,7 @@ function playerClass() {
         this.powerTimerDefault,
         barX,
         68,
-        "#60fffb"
+        "blue"
       );
       drawAnimFrame(
         "powerup",
