@@ -33,18 +33,23 @@ function TitleScreen()
 
 		context.textAlign = 'center';
         context.font = "10px Georgia";
-        var lineY = 160;
+        var lineY = 150;
         var lineSkip = 40;
         
         if (titleframes%20<10) { // flash
             context.fillStyle = 'black';
-            context.fillText("Click or press enter to start", canvas.width/2+1, lineY+1);
+            context.fillText("Choose how many players to start", canvas.width/2+1, lineY+1);
             context.fillStyle = 'white';
-            context.fillText("Click or press enter to start", canvas.width/2, lineY);
+            context.fillText("Choose how many players to start", canvas.width/2, lineY);
         }
         
         // todo
-        context.fillText("[CREDITS]", canvas.width/2, lineY+=lineSkip);
+        lineSkip /= 3;
+        lineY+=lineSkip;
+        context.fillText("1-Player", canvas.width*1/5, lineY+=lineSkip);
+        context.fillText("2-Players", canvas.width*2/5, lineY+=lineSkip);
+        context.fillText("Human+AI", canvas.width*3/5, lineY+=lineSkip);
+        context.fillText("CREDITS", canvas.width*4/5, lineY+=lineSkip);
 
 
     }
