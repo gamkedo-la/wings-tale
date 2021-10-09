@@ -1,4 +1,4 @@
-var gameDevelopmentMode = true; //skip intro stuff
+var gameDevelopmentMode = false; //skip intro stuff
 
 var debugDraw_colliders = false;
 
@@ -545,6 +545,9 @@ function update() {
   // }
   if (gameState == GAME_STATE_LEVEL_DEBUG) {
     editorText();
+  }  
+  if (gameState == GAME_STATE_TITLE) {
+    titleScreen.drawCreditsIfOnCreditScreen();
   }
 }
 
