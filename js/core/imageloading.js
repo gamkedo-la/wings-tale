@@ -23,6 +23,10 @@ function loadImages() {
     { imgName: "enemy shot moon", theFile: "enemyshot_moon.png" },
     { imgName: "enemy shot lava", theFile: "enemyshot_lava.png" },
     { imgName: "bomb sight", theFile: "bombsight.png" },
+    {
+      imgName: "bomb sight found target",
+      theFile: "bombsight_found_target.png",
+    },
     { imgName: "splode", theFile: "splode.png" },
     { imgName: "bug", theFile: "enemybug.png" },
     { imgName: "green bug", theFile: "enemybug_green.png" },

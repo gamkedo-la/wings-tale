@@ -254,7 +254,7 @@ function playerClass() {
         this.powerTimerDefault,
         barX,
         68,
-        "#60fffb"
+        "blue"
       );
       drawAnimFrame(
         "powerup",
@@ -336,14 +336,7 @@ function playerClass() {
         (this.angle * Math.PI) / 180
       );
 
-      drawAnimFrame(
-        "bomb sight",
-        this.x - this.angle * 4,
-        this.y - APPROX_BOMB_RANGE,
-        this.frame % 2,
-        BOMB_FRAME_W,
-        BOMB_FRAME_H
-      );
+      this.drawBombSight();
 
       if (this.invulnerableTimeLeft > 0) {
         return;
@@ -351,17 +344,37 @@ function playerClass() {
 
       drawList(this.defenseRingUnitList);
     }
+  };
 
-    // if (this.homingBombFramesLeft > 0) {
-    //   drawFilledBar(
-    //     this.x - 10,
-    //     this.y + 10,
-    //     20,
-    //     5,
-    //     this.homingBombFramesLeft / HOMING_POWERUP_FRAMES,
-    //     "lime"
-    //   );
-    // }
+  this.drawBombSight = function () {
+    if (this.checkForGroundUnitTarget()) {
+      return drawAnimFrame(
+        "bomb sight found target",
+        this.x - this.angle * 4,
+        this.y - APPROX_BOMB_RANGE,
+        this.frame % 2,
+        BOMB_FRAME_W,
+        BOMB_FRAME_H
+      );
+    }
+    return drawAnimFrame(
+      "bomb sight",
+      this.x - this.angle * 4,
+      this.y - APPROX_BOMB_RANGE,
+      this.frame % 2,
+      BOMB_FRAME_W,
+      BOMB_FRAME_H
+    );
+  };
+
+  this.checkForGroundUnitTarget = function () {
+    var reticle = {
+      x: this.x - this.angle * 4,
+      y: this.y - APPROX_BOMB_RANGE,
+      collW: BOMB_FRAME_W,
+      collH: BOMB_FRAME_H,
+    };
+    return surfaceList.find((unit) => boxOverLap(unit, reticle));
   };
 
   this.move = function () {
