@@ -336,24 +336,7 @@ function playerClass() {
         (this.angle * Math.PI) / 180
       );
 
-      if (this.checkForGroundUnitTarget()) {
-        drawAnimFrame(
-          "bomb sight found target",
-          this.x - this.angle * 4,
-          this.y - APPROX_BOMB_RANGE,
-          this.frame % 2,
-          BOMB_FRAME_W,
-          BOMB_FRAME_H
-        );
-      }
-      drawAnimFrame(
-        "bomb sight",
-        this.x - this.angle * 4,
-        this.y - APPROX_BOMB_RANGE,
-        this.frame % 2,
-        BOMB_FRAME_W,
-        BOMB_FRAME_H
-      );
+      this.drawBombSight();
 
       if (this.invulnerableTimeLeft > 0) {
         return;
@@ -361,6 +344,27 @@ function playerClass() {
 
       drawList(this.defenseRingUnitList);
     }
+  };
+
+  this.drawBombSight = function () {
+    if (this.checkForGroundUnitTarget()) {
+      return drawAnimFrame(
+        "bomb sight found target",
+        this.x - this.angle * 4,
+        this.y - APPROX_BOMB_RANGE,
+        this.frame % 2,
+        BOMB_FRAME_W,
+        BOMB_FRAME_H
+      );
+    }
+    return drawAnimFrame(
+      "bomb sight",
+      this.x - this.angle * 4,
+      this.y - APPROX_BOMB_RANGE,
+      this.frame % 2,
+      BOMB_FRAME_W,
+      BOMB_FRAME_H
+    );
   };
 
   this.checkForGroundUnitTarget = function () {
