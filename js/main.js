@@ -218,8 +218,6 @@ function reset() {
     console.log(`${e}`);
   }
 
-  startLevel(levSeq[levNow]);
-
   if (twoPlayerGame) {
     playerList = [new playerClass(), new playerClass()];
   } else {
@@ -235,6 +233,8 @@ function reset() {
   for (var i = 0; i < drawMoveList.length; i++) {
     drawMoveList[i].length = 0;
   }
+
+  startLevel(levSeq[levNow]);
 
   rippleReset();
   enemySpawnTickCount = 0;
