@@ -275,13 +275,13 @@ function playerClass() {
         this.laserPowerTimer,
         this.powerTimerDefault,
         barX,
-        72,
+        84,
         "#6110a2"
       );
       drawAnimFrame(
         "powerup",
         icoX,
-        72 + icoYofs,
+        84 + icoYofs,
         1,
         POWERUP_W,
         POWERUP_H,
