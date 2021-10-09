@@ -432,13 +432,9 @@ function handleMouseRelease(evt) {
   cumulativeDrag = 0;
 }
 
+var extraFirstClickCheckHack = false; // prevent stacking setTimeout flipping gameFirstClickedToStart
+
 function handleMouseClick(evt) {
-  if (!gameFirstClickedToStart) {
-    if(storyInterval != null) {
-      clearInterval(storyInterval);
-    }
-    initSounds();
-  }
   if (gameState == GAME_STATE_LEVEL_DEBUG) {
     editorHandleClick();
     mouseDragging = true;
@@ -447,9 +443,16 @@ function handleMouseClick(evt) {
   }
 
   if (!gameFirstClickedToStart) {
-    setTimeout(function () {
-        loadedAndClicked(evt);
-    }, 750);
+    if(extraFirstClickCheckHack == false) {
+      if(storyInterval != null) {
+        clearInterval(storyInterval);
+      }
+      initSounds();
+      setTimeout(function () {
+          loadedAndClicked(evt);
+      }, 750);
+    }
+    extraFirstClickCheckHack = true;
   } else switch (gameState) {
     case GAME_STATE_TITLE:
       titleScreen.titleMenuHandleClick();

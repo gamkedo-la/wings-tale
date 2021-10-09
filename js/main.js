@@ -125,12 +125,12 @@ function loadingDoneSoStartGame() {
 function loadedAndClicked(evt) {
   mousemoved(evt); // catch coordinate of even first click, for level select menu
 
-  if (
+  /*if (
     mouseX > 0 &&
     mouseX < images[levNames[0]].width * levNames.length &&
     mouseY > 0 &&
     mouseY < scaledCanvas.height
-  ) {
+  ) {*/
     if (imagesLoaded == false) {
       // invalid unless loading finished
       return;
@@ -160,7 +160,7 @@ function loadedAndClicked(evt) {
     }
 
     reset();
-  }
+  //}
 }
 
 function createDepthSpawnReference() {
