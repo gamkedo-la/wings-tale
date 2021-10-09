@@ -139,7 +139,7 @@ var creditsList = [
 "H Trayford: Player 2 controls, ground enemy fire, level debug skip functionality",
 "Rodrigo Bonzerr Lopez: Fire snake sprite",
 "Gabriel Cornish: Fire dragon head contrast improved",
-"Jonathan Peterson: Alternate player 2 sprite",
+"Jonathan Peterson: Alternative player 2 sprite",
 "Michael \"Misha\" Fewkes: Initial sound functionality",
 "Guillermo De Leon & Tim Chase: Practice commit",
 " ",
