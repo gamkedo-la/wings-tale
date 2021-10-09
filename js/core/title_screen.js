@@ -9,6 +9,22 @@ function TitleScreen()
     var title_boom_y = 0;
     var title_boom_n = 0;
 
+    var menuItems = 
+        [{label:"1 Player", action: function() {twoPlayerGame = false; p2AI = false; gameState = GAME_STATE_LEVEL_SELECT;}},
+         {label:"2 Players", action: function() {twoPlayerGame = true; p2AI = false; gameState = GAME_STATE_LEVEL_SELECT;}},
+         {label:"Human+AI", action: function() {twoPlayerGame = true; p2AI = true; gameState = GAME_STATE_LEVEL_SELECT;}},
+         {label:"Controls", action: function() {console.log("clicked Controls");}},
+         {label:"Credits", action: function() {console.log("clicked Credits");}}];
+
+    var titleMenuMouseOver = -1;
+
+    this.titleMenuHandleClick = function() {
+        if(titleMenuMouseOver != -1) {
+            playSound(sounds.playerShot);
+            menuItems[titleMenuMouseOver].action();
+        }
+    }
+
     this.draw = function()
     {
         //console.log("title screen! "+canvas.width+'x'+canvas.height);
@@ -43,9 +59,12 @@ function TitleScreen()
         // todo
         lineSkip /= 3;
         lineY+=lineSkip/2;
-        var menuItems = ["1 Player","2 Players","Human+AI","Controls","Credits"];
+        
+        titleMenuMouseOver = -1;
         for(var i=0;i<menuItems.length;i++) {
-            titleButtonHighlightIfMouseNear(menuItems[i], canvas.width*(i+1)/(menuItems.length+1), lineY+=lineSkip);
+            if(titleButtonHighlightIfMouseNear(menuItems[i].label, canvas.width*(i+1)/(menuItems.length+1), lineY+=lineSkip)) {
+                titleMenuMouseOver = i;
+            }
         }
     }
 }
@@ -56,6 +75,7 @@ function titleButtonHighlightIfMouseNear(buttonText, centerX, centerY) {
     var mouseDist = Math.sqrt(dx*dx+dy*dy);
     var isMouseNear = mouseDist < 20;
     shadowText(buttonText, centerX, centerY, (isMouseNear ? "cyan" : "gray"));
+    return isMouseNear;
 }
 
 function shadowText(showText, atX, atY, fgColor) {

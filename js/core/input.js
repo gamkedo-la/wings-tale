@@ -426,13 +426,13 @@ function handleMouseClick(evt) {
     mouseNewDragStarted = true;
     return;
   }
-  setTimeout(function () {
-    if (!gameFirstClickedToStart) {
-      loadedAndClicked(evt);
-    } else if (gameState == GAME_STATE_TITLE) {
-      gameState = GAME_STATE_LEVEL_SELECT;
-    } else if (gameState == GAME_STATE_LEVEL_SELECT) {
-      levelSelectScreen.startHightlightedLevel();
-    }
-  }, 750);
+  if (!gameFirstClickedToStart) {
+    setTimeout(function () {
+        loadedAndClicked(evt);
+    }, 750);
+  } else if (gameState == GAME_STATE_TITLE) {
+    titleScreen.titleMenuHandleClick();
+  } else if (gameState == GAME_STATE_LEVEL_SELECT) {
+    levelSelectScreen.startHightlightedLevel();
+  }
 }
