@@ -13,9 +13,9 @@ function TitleScreen()
     var showCredits = false;
 
     var menuItems = 
-        [{label:"1 Player", action: function() {twoPlayerGame = false; p2AI = false; gameState = GAME_STATE_LEVEL_SELECT;}},
-         {label:"2 Players", action: function() {twoPlayerGame = true; p2AI = false; gameState = GAME_STATE_LEVEL_SELECT;}},
-         {label:"Human+AI", action: function() {twoPlayerGame = true; p2AI = true; gameState = GAME_STATE_LEVEL_SELECT;}},
+        [{label:"Solo Play", action: function() {twoPlayerGame = false; p2AI = false; gameState = GAME_STATE_LEVEL_SELECT;}},
+         {label:"Co-Op Play", action: function() {twoPlayerGame = true; p2AI = false; gameState = GAME_STATE_LEVEL_SELECT;}},
+         {label:"Co-Op with AI", action: function() {twoPlayerGame = true; p2AI = true; gameState = GAME_STATE_LEVEL_SELECT;}},
          {label:"Controls", action: function() {gameState = GAME_STATE_CONTROLS;}},
          {label:"Credits", action: function() {showCredits = true;}}];
 

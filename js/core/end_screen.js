@@ -21,23 +21,36 @@ function EndScreen()
 		var lineY = 140;
 
         context.font = "10px Georgia";
-		context.fillText("At last! We've destroyed the Moon. Take that, Moon.", canvas.width/2, lineY+=lineSkip*4);
 
 		moonSplit += splitRate;
 		splitRate += 0.004;
 		var moonApartPlusShake = moonSplit + (Math.random()*0.7);
-		drawList(splodeList);
-		drawAnimFrame("moon-tl", moonX-moonApartPlusShake,moonY-moonApartPlusShake, 0, 40,50, 0);
-		drawAnimFrame("moon-tr", moonX+moonApartPlusShake,moonY-moonApartPlusShake, 0, 40,50, 0);
-		drawAnimFrame("moon-br", moonX+moonApartPlusShake,moonY+moonApartPlusShake, 0, 40,50, 0);
-		drawAnimFrame("moon-bl", moonX-moonApartPlusShake,moonY+moonApartPlusShake, 0, 40,50, 0);
-		var randAng = Math.PI * 2.0 * Math.random();
-		var randDist = 0.0+(20.0+moonApartPlusShake) * Math.random();
-		spawnSplode(moonX+Math.cos(randAng)*randDist,moonY+Math.sin(randAng)*randDist);
-		moveList(splodeList);
-		animateSplodes();
+		if(twoPlayerGame) {		
+			context.fillText("At last! We've destroyed the Moon. Take that, Moon.", canvas.width/2, lineY+=lineSkip*4);
+			drawList(splodeList);
+			drawAnimFrame("moon-tl", moonX-moonApartPlusShake,moonY-moonApartPlusShake, 0, 40,50, 0);
+			drawAnimFrame("moon-tr", moonX+moonApartPlusShake,moonY-moonApartPlusShake, 0, 40,50, 0);
+			drawAnimFrame("moon-br", moonX+moonApartPlusShake,moonY+moonApartPlusShake, 0, 40,50, 0);
+			drawAnimFrame("moon-bl", moonX-moonApartPlusShake,moonY+moonApartPlusShake, 0, 40,50, 0);
+			var randAng = Math.PI * 2.0 * Math.random();
+			var randDist = 0.0+(20.0+moonApartPlusShake) * Math.random();
+			spawnSplode(moonX+Math.cos(randAng)*randDist,moonY+Math.sin(randAng)*randDist);
+			moveList(splodeList);
+			animateSplodes();
+		} else {
+			context.fillText("You defeated Moon Dragon! The moon will cool down.", canvas.width/2, lineY);
+			lineY+=lineSkip;
+			context.fillText("Come back with a friend for the true ending.", canvas.width/2, lineY);
+			drawAnimFrame("moon-tl", moonX,moonY, 0, 40,50, 0);
+			drawAnimFrame("moon-tr", moonX,moonY, 0, 40,50, 0);
+			drawAnimFrame("moon-br", moonX,moonY, 0, 40,50, 0);
+			drawAnimFrame("moon-bl", moonX,moonY, 0, 40,50, 0);
+		}
 		if(moonSplit > MOON_LAST_SPLIT_DIST) {
-			gameState = GAME_STATE_LEVEL_SELECT;
+			// gotta reset these for next win
+			moonSplit = 0;
+			splitRate = 0.01;
+			gameState = GAME_STATE_TITLE;
 		}
     }
 }

@@ -100,7 +100,7 @@ function introStory() {
   var lineSkip = storyTextSize+10;
   storyDisplayFrameDelay--;
   if(storyDisplayFrameDelay<0) {
-    storyDisplayFrameDelay = 20; // frames between next story line
+    storyDisplayFrameDelay = 18; // frames between next story line
     if(storyLine<storyText.length) {
       storyLine++;
     }
