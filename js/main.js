@@ -1,4 +1,4 @@
-var gameDevelopmentMode = false; //skip intro stuff
+var gameDevelopmentMode = true; //skip intro stuff
 
 var debugDraw_colliders = false;
 
@@ -391,7 +391,11 @@ function update() {
       if (levelProgressPerc > 1.0) {
         levelProgressPerc = 1.0;
 
-        if (bossList.length == 0 && surfaceList.length === 0 && enemyList.length === 0) {
+        if (
+          bossList.length == 0 &&
+          surfaceList.length === 0 &&
+          enemyList.length === 0
+        ) {
           var stageBoss;
           switch (levNow) {
             case LEVEL_ISLAND:
@@ -489,6 +493,7 @@ function update() {
         levNow++;
         currentLevelImageName = levNames[levNow];
         playerScore += 1000;
+        reset();
 
         if (levNow == LEVEL_LAVA + 1) {
           playerScore += 1000;
