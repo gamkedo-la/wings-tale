@@ -281,8 +281,8 @@ function drawBackground() {
     bgDrawY = 0;
   }
 
-  // currently only used by Lava stage, could also use for waves, star twinkle, moon... dust sparkle?
-  if (levNow == LEVEL_LAVA) {
+  // currently only used by Lava and space stage, could also use for waves,moon... dust sparkle?
+  if (levNow == LEVEL_LAVA || levNow == LEVEL_SPACE) {
     ticksPerBGFrame--;
     if (ticksPerBGFrame < 0) {
       bgFrame += bgFrameDir;
