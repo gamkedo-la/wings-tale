@@ -36,7 +36,7 @@ function TitleScreen()
             return;
         }
         var lineX = 13;
-        var lineY = 3;
+        var lineY = 1;
         var lineSkip = creditsSize+1;
         scaledCtx.font = creditsSize+"px Helvetica";
         for(var i=0;i<creditsList.length;i++) {
@@ -140,11 +140,11 @@ var creditsList = [
 "Rodrigo Bonzerr Lopez: Fire snake sprite",
 "Gabriel Cornish: Fire dragon head contrast improved",
 "Jonathan Peterson: Alternative player 2 sprite",
+"Abhishek: Intro story text",
 "Michael \"Misha\" Fewkes: Initial sound functionality",
 "Guillermo De Leon & Tim Chase: Practice commit",
 " ",
 "                                    Game developed by members in HomeTeamGameDev.com - come make games with us!",
-" ",
 "                                                                         Click anywhere to return to the title screen"
 ];
 

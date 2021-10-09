@@ -17,15 +17,16 @@ function ControlsMenu()
 
 		context.font = "10px Georgia";
 		var lineSkip = 20;
-		var lineY = 50;
+		var lineY = 40;
 		context.fillText("WASD: Move Player 1", canvas.width/2, lineY+=lineSkip);
 		context.fillText("Arrow Keys: Move Player 2", canvas.width/2, lineY+=lineSkip);
 		context.fillText("Space = Shoot Gun (Z for Player 1 in 2P)", canvas.width/2, lineY+=lineSkip);
-		/*context.fillText("X = Throw Bomb (M for Player 1 if 2P)", canvas.width/2, lineY+=lineSkip);*/
+
 		//lineY+=lineSkip
 		//context.fillText("T = Two Player toggle", canvas.width/2, lineY+=lineSkip);
 		context.fillText("L key = Level editor (WARNING: no way to save/export)", canvas.width/2, lineY+=lineSkip);
 		context.fillText("Number Row Keys to use cheats. 4 resets cheats.", canvas.width/2, lineY+=lineSkip);
+		context.fillText("B = Skip to boss cheat", canvas.width/2, lineY+=lineSkip);
 		context.fillText("Click to return to the main menu.", canvas.width/2,canvas.height - 5);
 	}
 }

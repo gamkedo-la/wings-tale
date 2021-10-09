@@ -212,8 +212,8 @@ function keyHoldUpdate(evt, setTo) {
         levelProgressInPixels = images[currentLevelImageName].height-10;
         enemyList.length = 0;
         surfaceList.length = 0;
-        playerList[0].cheatInvulnerable = true;
-        playerList[0].shotsNumber = 15;
+        /*playerList[0].cheatInvulnerable = true;
+        playerList[0].shotsNumber = 15;*/
         break;
       case KEY_5:
         if (!setTo) {
