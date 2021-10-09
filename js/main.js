@@ -391,7 +391,7 @@ function update() {
       if (levelProgressPerc > 1.0) {
         levelProgressPerc = 1.0;
 
-        if (bossList.length == 0) {
+        if (bossList.length == 0 && surfaceList.length === 0 && enemyList.length === 0) {
           var stageBoss;
           switch (levNow) {
             case LEVEL_ISLAND:
