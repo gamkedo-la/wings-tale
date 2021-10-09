@@ -236,10 +236,6 @@ function reset() {
     drawMoveList[i].length = 0;
   }
 
-  /*surfaceList = []; // now part of startLevel function since part of map data
-  if (levNow == LEVEL_ISLAND) {
-    spawnSurfaceEnemies();
-  }*/
   rippleReset();
   enemySpawnTickCount = 0;
   sameTimeSpawnSteps.length = 0;
