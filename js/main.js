@@ -84,9 +84,9 @@ window.onload = function () {
 var storyInterval = null;
 var storyDisplayFrameDelay = 0;
 var storyLine = 0;
-var storyText = ["hey why r u an angel","iunno ur a moon","moooooon moon moon moon","placeholder should be bad so it doesn't stay :)","THE END",
+var storyText = ["The moon is angry","it picks a fight with you","Why?","it thinks you've been acting all smug lately ","",
 " ", // to skip a line + pause
-"Click anywhere to continue..."];
+"Click to wage war"];
 
 function introStory() {
   context.fillStyle = "black";
