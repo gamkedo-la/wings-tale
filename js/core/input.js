@@ -15,6 +15,7 @@ const KEY_MINUS = 189;
 const KEY_ESC = 27;
 
 const KEY_A = 65;
+const KEY_B = 66; // temporary cheat test key
 const KEY_C = 67;
 const KEY_D = 68;
 const KEY_E = 69;
@@ -207,6 +208,13 @@ function keyHoldUpdate(evt, setTo) {
     // not a player 1 or player 2 key? universal key checks here
     validGameKey = true; // assume true until we rule out otherwise
     switch (evt.keyCode) {
+      case KEY_B:
+        levelProgressInPixels = images[currentLevelImageName].height-10;
+        enemyList.length = 0;
+        surfaceList.length = 0;
+        playerList[0].cheatInvulnerable = true;
+        playerList[0].shotsNumber = 15;
+        break;
       case KEY_5:
         if (!setTo) {
           cheatKeepPowerupsOnDeath = !cheatKeepPowerupsOnDeath;
