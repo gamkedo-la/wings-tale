@@ -184,8 +184,7 @@ function keyHoldUpdate(evt, setTo) {
     }
   }
 
-  if((gameState != GAME_STATE_PLAY && gameState != GAME_STATE_CONTROLS) || 
-     (gameState == GAME_STATE_CONTROLS && evt.keyCode != KEY_H)) { // keys below here are for gameplay only
+  if((gameState != GAME_STATE_PLAY && gameState != GAME_STATE_CONTROLS)) { // keys below here are for gameplay only
     return false;
   }
 
@@ -214,19 +213,19 @@ function keyHoldUpdate(evt, setTo) {
           console.log("cheatKeepPowerupsOnDeath: " + cheatKeepPowerupsOnDeath);
         }
         break;
-      case KEY_T:
+      /*case KEY_T: // set from main menu
         if (!setTo) {
           twoPlayerGame = !twoPlayerGame;
           readyToReset = true;
         }
-        break;
+        break;*/
       case KEY_L:
         if (!setTo) {
           gameState = GAME_STATE_LEVEL_DEBUG;
           readyToReset = true;
         }
         break;
-      case KEY_H:
+      /*case KEY_H: // only accessing now from main menu
         if (!setTo) {
           if (gameState == GAME_STATE_PLAY) {
             gameState = GAME_STATE_CONTROLS;
@@ -234,7 +233,7 @@ function keyHoldUpdate(evt, setTo) {
             gameState = GAME_STATE_PLAY;
           }
         }
-        break;
+        break;*/
       case KEY_PLUS: // skip to next level segment cheat
       case KEY_PLUS_FIREFOX: // skip to next level segment firefox plus key
         if (!setTo) {
@@ -426,13 +425,21 @@ function handleMouseClick(evt) {
     mouseNewDragStarted = true;
     return;
   }
+
   if (!gameFirstClickedToStart) {
     setTimeout(function () {
         loadedAndClicked(evt);
     }, 750);
-  } else if (gameState == GAME_STATE_TITLE) {
-    titleScreen.titleMenuHandleClick();
-  } else if (gameState == GAME_STATE_LEVEL_SELECT) {
-    levelSelectScreen.startHightlightedLevel();
+  } else switch (gameState) {
+    case GAME_STATE_TITLE:
+      titleScreen.titleMenuHandleClick();
+      break;
+    case GAME_STATE_LEVEL_SELECT:
+      levelSelectScreen.startHightlightedLevel();
+      break;
+    case GAME_STATE_CONTROLS:
+      gameState = GAME_STATE_TITLE;
+      playSound(sounds.playerShot);
+      break;
   }
 }

@@ -13,7 +13,7 @@ function TitleScreen()
         [{label:"1 Player", action: function() {twoPlayerGame = false; p2AI = false; gameState = GAME_STATE_LEVEL_SELECT;}},
          {label:"2 Players", action: function() {twoPlayerGame = true; p2AI = false; gameState = GAME_STATE_LEVEL_SELECT;}},
          {label:"Human+AI", action: function() {twoPlayerGame = true; p2AI = true; gameState = GAME_STATE_LEVEL_SELECT;}},
-         {label:"Controls", action: function() {console.log("clicked Controls");}},
+         {label:"Controls", action: function() {gameState = GAME_STATE_CONTROLS;}},
          {label:"Credits", action: function() {console.log("clicked Credits");}}];
 
     var titleMenuMouseOver = -1;
