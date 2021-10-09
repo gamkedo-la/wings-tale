@@ -16,12 +16,16 @@ function spawnSplode(atX, atY, delay=false) {
 	// SOUNDS.splode.play();
 	if(delay){
 		setTimeout(function(){
-			playSound(sounds.splode);
+			if(gameState != GAME_STATE_ENDING || Math.random()<0.1) {
+				playSound(sounds.splode);
+			}
 			splodeList.push(newSplode);
 			dropRippleAt(atX, atY)
 		}, Math.random()*250)
 	} else {
-		playSound(sounds.splode);
+		if(gameState != GAME_STATE_ENDING || Math.random()<0.1) {
+			playSound(sounds.splode);
+		}
 		splodeList.push(newSplode);
 		dropRippleAt(atX, atY)
 	}

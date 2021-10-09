@@ -48,8 +48,7 @@ function enemyWaveBugClass(usingStep) {
         ENEMY_DIM
       );
     } else {
-      //drawAnimFrame("bug", this.x, this.y, this.frame, ENEMY_DIM, ENEMY_DIM);
-      drawAnimFrame("green bug", this.x, this.y, this.frame, ENEMY_DIM, ENEMY_DIM);
+      drawAnimFrame("bug", this.x, this.y, this.frame, ENEMY_DIM, ENEMY_DIM);
       // micro_pixel_font(Math.floor(this.x)+","+Math.floor(this.y),this.x+10,this.y+10);
     }
   };
