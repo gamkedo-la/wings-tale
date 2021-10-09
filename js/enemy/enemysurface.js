@@ -46,7 +46,7 @@ function surfaceEnemyClass(startX,startY) {
 	this.x = startX;
 	this.origY = startY;
 	this.y = 0;
-	this.frame = Math.floor(Math.random()*SURFACE_ENEMY_FRAMES);
+	this.frame = Math.floor(Math.random()*SURFACE_TURRET_FRAMES);
 	this.bombLockedOn = false; // used to keep upgraded split bombs from homing on same ground target
 	this.patrolWaypoints = [{x:startX+0,y:startY+0},
 							{x:startX-50,y:startY-50},

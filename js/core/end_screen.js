@@ -38,9 +38,10 @@ function EndScreen()
 			moveList(splodeList);
 			animateSplodes();
 		} else {
+			lineY+=lineSkip*4-10;
 			context.fillText("You defeated Moon Dragon! The moon will cool down.", canvas.width/2, lineY);
 			lineY+=lineSkip;
-			context.fillText("Come back with a friend for the true ending.", canvas.width/2, lineY);
+			context.fillText("But you can't destroy a moon alone. Return with a friend.", canvas.width/2, lineY);
 			drawAnimFrame("moon-tl", moonX,moonY, 0, 40,50, 0);
 			drawAnimFrame("moon-tr", moonX,moonY, 0, 40,50, 0);
 			drawAnimFrame("moon-br", moonX,moonY, 0, 40,50, 0);
