@@ -25,6 +25,7 @@ var drawMoveList = []; // list of lists - note, drawn in this order, so should b
 var animateEachLists = []; // subset of draw/move lists for which each object has its own separate animation frame to update
 
 var cheatKeepPowerupsOnDeath = false;
+var levelSelectRendered = false;
 
 const GAME_STATE_PLAY = 0;
 const GAME_STATE_CONTROLS = 1;
@@ -37,7 +38,7 @@ const GAME_STATE_ENDING = 7;
 
 const HIT_FLASH_FRAMECOUNT = 2; // enemy/boss flash after takeDamage
 
-const LEVEL_RECTS = [{ x: 0, y: 0, width: 0, height: 0 }]; // Array of rectangles representing the levels in the level select menu
+const LEVEL_RECTS = []; // Array of rectangles representing the levels in the level select menu
 
 const LEVEL_TRANSITION_IN_MILLISECONDS = 5000;
 
@@ -75,18 +76,22 @@ window.onload = function () {
   inputSetup();
 
   if (!gameDevelopmentMode) {
-    storyInterval = setInterval(introStory,1000/24);
+    storyInterval = setInterval(introStory, 1000 / 24);
   }
-  // scaledCtx.fillStyle = "black";
-  // scaledCtx.fillRect(0,0,scaledCanvas.width,scaledCanvas.height);
 };
 
 var storyInterval = null;
 var storyDisplayFrameDelay = 0;
 var storyLine = 0;
-var storyText = ["The moon is angry","it picks a fight with you","Why?","it thinks you've been acting all smug lately ","",
-" ", // to skip a line + pause
-"Click to wage war"];
+var storyText = [
+  "The moon is angry",
+  "it picks a fight with you",
+  "Why?",
+  "it thinks you've been acting all smug lately ",
+  "",
+  " ", // to skip a line + pause
+  "Click to wage war",
+];
 
 function introStory() {
   context.fillStyle = "black";
@@ -95,18 +100,18 @@ function introStory() {
   context.fillStyle = "white";
   context.textAlign = "center";
   var storyTextSize = 12;
-  context.font = storyTextSize+"px Georgia";
+  context.font = storyTextSize + "px Georgia";
   var storyY = 60; // first line height
-  var lineSkip = storyTextSize+10;
+  var lineSkip = storyTextSize + 10;
   storyDisplayFrameDelay--;
-  if(storyDisplayFrameDelay<0) {
+  if (storyDisplayFrameDelay < 0) {
     storyDisplayFrameDelay = 18; // frames between next story line
-    if(storyLine<storyText.length) {
+    if (storyLine < storyText.length) {
       storyLine++;
     }
   }
-  for(var i=0;i<storyLine;i++) {
-    context.fillText(storyText[i],canvas.width / 2, storyY);
+  for (var i = 0; i < storyLine; i++) {
+    context.fillText(storyText[i], canvas.width / 2, storyY);
     storyY += lineSkip;
   }
   stretchLowResCanvasToVisibleCanvas();
@@ -125,42 +130,35 @@ function loadingDoneSoStartGame() {
 function loadedAndClicked(evt) {
   mousemoved(evt); // catch coordinate of even first click, for level select menu
 
-  /*if (
-    mouseX > 0 &&
-    mouseX < images[levNames[0]].width * levNames.length &&
-    mouseY > 0 &&
-    mouseY < scaledCanvas.height
-  ) {*/
-    if (imagesLoaded == false) {
-      // invalid unless loading finished
-      return;
-    }
+  if (imagesLoaded == false) {
+    // invalid unless loading finished
+    return;
+  }
 
-    if (gameFirstClickedToStart) {
-      // lock it from happening multiple times
-      return;
-    }
+  if (gameFirstClickedToStart) {
+    // lock it from happening multiple times
+    return;
+  }
 
-    gameFirstClickedToStart = true;
+  gameFirstClickedToStart = true;
 
-    startDisplayIntervals();
-    initializeTitleScreen();
-    initializeControlsMenu();
+  startDisplayIntervals();
+  initializeTitleScreen();
+  initializeControlsMenu();
 
-    scaledCanvas.style.cursor = "initial";
+  scaledCanvas.style.cursor = "initial";
 
-    if (!gameDevelopmentMode) {
-      gameState = GAME_STATE_TITLE;
+  if (!gameDevelopmentMode) {
+    gameState = GAME_STATE_TITLE;
+  } else {
+    if (levelSelectScreen.mouseOverLevel != -1) {
+      levelSelectScreen.startHightlightedLevel();
     } else {
-      if (levelSelectScreen.mouseOverLevel != -1) {
-        levelSelectScreen.startHightlightedLevel();
-      } else {
-        return;
-      }
+      return;
     }
+  }
 
-    reset();
-  //}
+  reset();
 }
 
 function createDepthSpawnReference() {
@@ -282,6 +280,8 @@ function reset() {
     surfaceList,
     bossList,
   ];
+
+  levelSelectRendered = false;
 }
 
 const LEVEL_BG_FRAMES = 4;
@@ -392,7 +392,10 @@ function update() {
       break;
 
     case GAME_STATE_LEVEL_SELECT:
-      levelSelectScreen.draw();
+      if (!levelSelectRendered) {
+        levelSelectScreen.draw();
+      }
+      levelSelectRendered = true;
       break;
 
     case GAME_STATE_CONTROLS:
@@ -502,7 +505,7 @@ function update() {
         bossList.splice(0, 1);
         levelProgressInPixels = 0;
         levelProgressPerc = 0.0;
-        
+
         if (levNow == LEVEL_LAVA) {
           playerScore += 1000;
           gameState = GAME_STATE_ENDING;
@@ -557,7 +560,7 @@ function update() {
   // }
   if (gameState == GAME_STATE_LEVEL_DEBUG) {
     editorText();
-  }  
+  }
   if (gameState == GAME_STATE_TITLE) {
     titleScreen.drawCreditsIfOnCreditScreen();
   }

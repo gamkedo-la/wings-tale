@@ -94,7 +94,6 @@ function handleLevelHover() {
   }
 
   scaledCanvas.style.cursor = "initial";
-  mouseOverLevel = -1;
   for (var i = 0; i < LEVEL_RECTS.length; i++) {
     if (
       unscaledMouseX >= LEVEL_RECTS[i].x &&
