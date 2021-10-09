@@ -77,6 +77,15 @@ function surfaceEnemyClass(startX,startY) {
 		var heightHere = depthAt(this.x,this.origY);
 		var heightScale = 0.8+0.9*(heightHere/255.0);
 		if(debugDraw_surfacePaths && this.patrolWaypoints.length>0 &&  gameState == GAME_STATE_LEVEL_DEBUG) {
+			context.strokeStyle="black"; // shadow so it's visible on moon stage
+			context.beginPath();
+			context.moveTo(this.patrolWaypoints[0].x+1,this.patrolWaypoints[0].y-bgDrawY+1);
+			for(var i=1;i<this.patrolWaypoints.length;i++) {
+				context.lineTo(this.patrolWaypoints[i].x+1,this.patrolWaypoints[i].y-bgDrawY+1);
+			}
+			context.closePath();
+			context.stroke();
+
 			context.strokeStyle="gray";
 			context.beginPath();
 			context.moveTo(this.patrolWaypoints[0].x,this.patrolWaypoints[0].y-bgDrawY);
