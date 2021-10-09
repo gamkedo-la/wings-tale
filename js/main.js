@@ -506,15 +506,15 @@ function update() {
         bossList.splice(0, 1);
         levelProgressInPixels = 0;
         levelProgressPerc = 0.0;
-        levNow++;
-        currentLevelImageName = levNames[levNow];
-        playerScore += 1000;
-        reset();
-
-        if (levNow == LEVEL_LAVA + 1) {
+        
+        if (levNow == LEVEL_LAVA) {
           playerScore += 1000;
           gameState = GAME_STATE_ENDING;
         } else {
+          levNow++;
+          currentLevelImageName = levNames[levNow];
+          playerScore += 1000;
+          reset();
           gameState = GAME_STATE_LEVEL_TRANSITION;
         }
       }
