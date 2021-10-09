@@ -248,15 +248,20 @@ function keyHoldUpdate(evt, setTo) {
           enemyList.length = 0; // remove other enemies. note: can't use = [];, referenced elsewhere
           enemyShotList.length = 0;
           levelProgressInPixels += images[currentLevelImageName].height * 0.1;
+          if(levelProgressInPixels > images[currentLevelImageName].height-10) { // prevent going past spawn moment
+            surfaceList.length = 0;
+            levelProgressInPixels = images[currentLevelImageName].height-10;
+          }
         }
         break;
-      case KEY_MINUS: // skip to previous level segment
+      /*
+      case KEY_MINUS: // skipping to previous level segment isn't really compatible with how the spawn system is coded
         if (!setTo) {
           enemyList.length = 0; // remove other enemies. note: can't use = [];, referenced elsewhere
           enemyShotList.length = 0;
           levelProgressInPixels -= images[currentLevelImageName].height * 0.1;
         }
-        break;
+        break;*/
       default:
         validGameKey = false;
         break;

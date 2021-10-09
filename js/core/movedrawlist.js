@@ -13,6 +13,11 @@ function moveList(whichList,
 					optionalSyncList = undefined) { // for 1:1 list of collider data with bosses
 	for(var i=whichList.length-1;i>=0;i--) {
 		whichList[i].move();
+
+		if(whichList[i].y > GAME_H + PIXEL_MARGIN_FOR_REMOVING) { // general scroll offscreen culling, to avoid blocking boss spawn
+			whichList[i].readyToRemove = true;
+		}
+
 		if (whichList[i].readyToRemove) {
 			if(whichList[i].neverRemove) {
 				whichList[i].readyToRemove = false;
