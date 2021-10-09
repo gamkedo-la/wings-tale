@@ -59,6 +59,7 @@ function playerClass() {
 
   this.frame = 0;
 
+  this.bombReload = 0;
   this.reloadTime = 0;
 
   this.holdLeft = false;
@@ -67,7 +68,6 @@ function playerClass() {
   this.holdDown = false;
   this.holdFire = false;
   this.holdBomb = false;
-  this.wasHoldingBomb = false; // to tell when state toggles, since not repeat fire
 
   this.defenseRingUnitList = [];
 
@@ -453,11 +453,22 @@ function playerClass() {
     var fromX = this.x;
     var fromY = this.y;
     var readyToFire = this.reloadTime <= 0; // don't want ghosts to all affect reload
+
+    var allowBombsToDrop = false;
+
+    this.bombReload--;
+    if(this.holdBomb) {
+      if(this.bombReload<=0) {
+        allowBombsToDrop = true;
+        this.bombReload = 10;
+      }
+    }
+
     if (readyToFire == false) {
       this.reloadTime--;
     }
     do {
-      if (this.holdBomb && this.wasHoldingBomb != this.holdBomb) {
+      if (allowBombsToDrop) {
         var bombAngSpan = -(this.bombCount - 1) * (bombDegSpread * 0.5);
 
         for (var i = 0; i < this.bombCount; i++) {
@@ -514,8 +525,6 @@ function playerClass() {
       fromX = this.trailX[ghostIdx];
       fromY = this.trailY[ghostIdx];
     } while (ghostsLeft-- > 0);
-
-    this.wasHoldingBomb = this.holdBomb;
 
     if (this.invulnerableTimeLeft > 0) {
       this.invulnerableTimeLeft -= INVULNERABLE_DURATION_DECREMENT;
