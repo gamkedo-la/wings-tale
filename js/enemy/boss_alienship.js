@@ -19,8 +19,10 @@ function bossAlienshipClass() {
   this.yv = 0.5;
   this.image = ALIENSHIP_IMAGE_NAME;
   this.health = 100;
+  this.dying = false;
 
   this.bossStage = 0;
+  this.hitFlashFrames = 0;
 
   this.reset = function () {
     this.x = 50;
@@ -50,7 +52,25 @@ function bossAlienshipClass() {
     }
   };
 
+  this.deathAnimation = function () {
+    var splodeDistance = 50 + Math.random() * 0.7;
+    var randAng = Math.PI * 2.0 * Math.random();
+    var randDist = 0.0 + (20.0 + splodeDistance) * Math.random();
+    spawnSplode(
+      this.x + Math.cos(randAng) * randDist,
+      this.y + Math.sin(randAng) * randDist - 60
+    );
+    moveList(splodeList);
+    animateSplodes();
+  };
+
   this.move = function () {
+    if (this.health <= 0) {
+      this.health = 0;
+      this.deathAnimation();
+      return;
+    }
+
     this.x += this.xv;
     if (this.x > GAME_W / 1.2) {
       this.xv = -this.xv;
@@ -102,6 +122,7 @@ function bossAlienshipClass() {
   this.draw = function () {
     drawAnimFrame(ALIENSHIP_IMAGE_NAME, this.x, this.y, this.frame, 256, 240);
     if (this.hitFlashFrames) {
+      console.log("FLASH");
       this.hitFlashFrames--;
       context.globalCompositeOperation = "lighter"; // brighten stuff up
       drawAnimFrame(ALIENSHIP_IMAGE_NAME, this.x, this.y, this.frame, 256, 240);
@@ -141,7 +162,6 @@ function bossAlienshipClass() {
   };
 
   this.takeDamage = function () {
-    //console.log("flashing alien ship boss on hit!");
     this.hitFlashFrames = HIT_FLASH_FRAMECOUNT;
     this.health -= 1;
   };

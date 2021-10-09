@@ -407,7 +407,7 @@ function update() {
         levelProgressPerc = 1.0;
 
         if (
-          bossList.length == 0 &&
+          bossList.length === 0 &&
           surfaceList.length === 0 &&
           enemyList.length === 0
         ) {
@@ -502,20 +502,25 @@ function update() {
       }
 
       if (bossList[0]?.health <= 0) {
-        bossList.splice(0, 1);
-        levelProgressInPixels = 0;
-        levelProgressPerc = 0.0;
+        bossList[0].readyToRemove = false;
 
-        if (levNow == LEVEL_LAVA) {
-          playerScore += 1000;
-          gameState = GAME_STATE_ENDING;
-        } else {
-          levNow++;
-          currentLevelImageName = levNames[levNow];
-          playerScore += 1000;
-          reset();
-          gameState = GAME_STATE_LEVEL_TRANSITION;
-        }
+        setTimeout(function () {
+          bossList[0].readyToRemove = true;
+          bossList.splice(0, 1);
+          levelProgressInPixels = 0;
+          levelProgressPerc = 0.0;
+
+          if (levNow == LEVEL_LAVA) {
+            playerScore += 1000;
+            gameState = GAME_STATE_ENDING;
+          } else {
+            levNow++;
+            currentLevelImageName = levNames[levNow];
+            playerScore += 1000;
+            reset();
+            gameState = GAME_STATE_LEVEL_TRANSITION;
+          }
+        }, 5000);
       }
 
       break;
@@ -565,7 +570,6 @@ function update() {
     titleScreen.drawCreditsIfOnCreditScreen();
   }
 }
-
 function gameDebugSharpText() {
   var debugLineY = 56;
   var debugLineSkip = 10;

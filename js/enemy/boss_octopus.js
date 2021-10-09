@@ -46,6 +46,12 @@ function bossOctopusClass() {
   };
 
   this.move = function () {
+    if (this.health <= 0) {
+      this.health = 0;
+      this.deathAnimation();
+      return;
+    }
+
     this.pos_x = this.x_start + this.xrad * Math.sin(this.theta + Math.PI / 2);
     this.pos_y = this.y_start + this.yrad * Math.sin(2 * this.theta);
     this.theta += this.d_theta;
@@ -206,5 +212,17 @@ function bossOctopusClass() {
     if (this.frame >= OCTOPUS_FRAMES) {
       this.frame = 0;
     }
+  };
+
+  this.deathAnimation = function () {
+    var splodeDistance = 50 + Math.random() * 0.7;
+    var randAng = Math.PI * 2.0 * Math.random();
+    var randDist = 0.0 + (20.0 + splodeDistance) * Math.random();
+    spawnSplode(
+      this.pos_x + Math.cos(randAng) * randDist,
+      this.pos_y + Math.sin(randAng) * randDist
+    );
+    moveList(splodeList);
+    animateSplodes();
   };
 }

@@ -59,6 +59,12 @@ function bossMegaFrogClass() {
   };
 
   this.move = function () {
+    if (this.health <= 0) {
+      this.health = 0;
+      this.deathAnimation();
+      return;
+    }
+
     switch (this.phase) {
       case MEGAFROG_SPAWN_PHASE:
         this.updatePosition();
@@ -287,5 +293,17 @@ function bossMegaFrogClass() {
       this.health -= 1;
       this.hitFlashFrames = HIT_FLASH_FRAMECOUNT;
     }
+  };
+
+  this.deathAnimation = function () {
+    var splodeDistance = 50 + Math.random() * 0.7;
+    var randAng = Math.PI * 2.0 * Math.random();
+    var randDist = 0.0 + (20.0 + splodeDistance) * Math.random();
+    spawnSplode(
+      this.x + Math.cos(randAng) * randDist,
+      this.y + Math.sin(randAng) * randDist
+    );
+    moveList(splodeList);
+    animateSplodes();
   };
 }
