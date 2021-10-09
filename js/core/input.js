@@ -185,12 +185,16 @@ function keyHoldUpdate(evt, setTo) {
     }
   }
 
-  if((gameState != GAME_STATE_PLAY && gameState != GAME_STATE_CONTROLS)) { // keys below here are for gameplay only
-    return false;
+  if(evt.keyCode == KEY_ESC && !setTo) {
+    if(gameState != GAME_STATE_LEVEL_SELECT) {
+      gameState = GAME_STATE_LEVEL_SELECT;
+    } else {
+      gameState = GAME_STATE_TITLE;
+    }
   }
 
-  if(evt.keyCode == KEY_ESC && !setTo) {
-    gameState = GAME_STATE_LEVEL_SELECT;
+  if((gameState != GAME_STATE_PLAY && gameState != GAME_STATE_CONTROLS)) { // keys below here are for gameplay only
+    return false;
   }
 
   validGameKey = playerKeyHold(evt, 0, 0, setTo);
