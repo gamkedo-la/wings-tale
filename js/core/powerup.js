@@ -1,6 +1,7 @@
 var powerupList = [];
 const POWERUP_W = 10;
 const POWERUP_H = 12;
+const POWERUP_COLL_SIZE = 20;
 const POWERUP_FRAMES = 2;
 const POWER_UP_FRAME_DRAG = 4; // slow down animation framerate
 const POWERUP_SPEED = 0.6; // speed of the powerup's movement
@@ -64,7 +65,7 @@ function powerupClass(atX, atY, excludeList = []) {
   }
   this.readyToRemove = false;
 
-  this.collW = this.collH = POWERUP_H;
+  this.collW = this.collH = POWERUP_COLL_SIZE;
 
   var ang = randAng();
   this.xv = Math.cos(ang) * POWERUP_SPEED;

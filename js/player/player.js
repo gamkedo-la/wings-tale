@@ -559,11 +559,11 @@ function playerClass() {
       this.holdBomb = !this.holdBomb;
     }*/
     if (this.AI_powerup_chasing != null) {
-      this.holdDown = this.y < this.AI_powerup_chasing.y - this.speed;
-      this.holdUp = this.y > this.AI_powerup_chasing.y + this.speed;
+      this.holdDown = this.y < this.AI_powerup_chasing.y - this.speed*2;
+      this.holdUp = this.y > this.AI_powerup_chasing.y + this.speed*2;
 
-      this.holdLeft = this.x > this.AI_powerup_chasing.x + this.speed;
-      this.holdRight = this.x < this.AI_powerup_chasing.x - this.speed;
+      this.holdLeft = this.x > this.AI_powerup_chasing.x + this.speed*3;
+      this.holdRight = this.x < this.AI_powerup_chasing.x - this.speed*3;
 
       var dist = approxDist(
         this.x,
@@ -572,27 +572,27 @@ function playerClass() {
         this.AI_powerup_chasing.y
       );
       if (
-        dist > 0.5 * GAME_W ||
+        dist > 0.6 * GAME_W || // too far away, forget about it
         this.AI_powerup_chasing.readyToRemove ||
         powerupList.length == 0
       ) {
         this.AI_powerup_chasing = null;
       }
     } else if (this.AI_target != null) {
-      this.holdDown = this.y < GAME_H * 0.7;
+      this.holdDown = this.y < GAME_H * 0.65;
       this.holdUp = this.y > GAME_H * 0.95;
 
-      this.holdLeft = this.x > this.AI_target.x + this.speed * 3;
-      this.holdRight = this.x < this.AI_target.x - this.speed * 3;
+      this.holdLeft = this.x > this.AI_target.x + this.speed * 4;
+      this.holdRight = this.x < this.AI_target.x - this.speed * 4;
       if (
-        this.AI_target.y > this.y ||
+        this.AI_target.y > this.y-35 ||
         this.AI_target.readyToRemove ||
         enemyList.length == 0
       ) {
         this.AI_target = null;
       }
     } else {
-      this.holdDown = this.y < GAME_H * 0.75;
+      this.holdDown = this.y < GAME_H * 0.7;
       this.holdUp = this.y > GAME_H * 0.9;
       if (this.AI_dir_right) {
         this.holdRight = true;
@@ -610,10 +610,20 @@ function playerClass() {
       }
 
       if (powerupList.length > 0) {
-        this.AI_powerup_chasing = powerupList[0];
+        var dist = approxDist(
+          this.x,
+          this.y,
+          powerupList[0].x,
+          powerupList[0].y
+        );
+        if(dist < 0.45 * GAME_W) { // NOTE: should be less by a margin than give up distance
+          this.AI_powerup_chasing = powerupList[0];
+        }
       } // end of powerup check
       else if (enemyList.length > 0) {
-        this.AI_target = enemyList[0];
+        if(enemyList[0].x > GAME_W * 0.1 && enemyList[0].x < GAME_W * 0.9 && enemyList[0].y < this.y-50) {
+          this.AI_target = enemyList[0];
+        }
       } // end of powerup check
     } // end of AI wander case
   }; // end of doAI function

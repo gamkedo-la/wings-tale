@@ -22,7 +22,7 @@ function enemyWaveBugClass(usingStep) {
   this.frame = Math.floor(Math.random() * ENEMY_FRAMES);
   this.phaseOff = levelProgressInPixels / GAME_H;
   this.freq = ENEMY_WAVES_FREQ;
-  this.speed = usingStep.speed;
+  this.speed = (typeof usingStep.speed !== 'undefined' ? usingStep.speed : 3.0);
   //this.health = 2;
 
   this.collW = this.collH = ENEMY_DIM;
@@ -48,7 +48,9 @@ function enemyWaveBugClass(usingStep) {
         ENEMY_DIM
       );
     } else {
-      drawAnimFrame("bug", this.x, this.y, this.frame, ENEMY_DIM, ENEMY_DIM);
+      //drawAnimFrame("bug", this.x, this.y, this.frame, ENEMY_DIM, ENEMY_DIM);
+      drawAnimFrame("green bug", this.x, this.y, this.frame, ENEMY_DIM, ENEMY_DIM);
+      // micro_pixel_font(Math.floor(this.x)+","+Math.floor(this.y),this.x+10,this.y+10);
     }
   };
   this.animate = function () {
