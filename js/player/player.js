@@ -347,8 +347,10 @@ function playerClass() {
   };
 
   this.drawBombSight = function () {
-    if (this.checkForGroundUnitTarget()) {
-      return drawAnimFrame(
+    // drop bombs whenever there's a ground target detected
+    this.holdBomb = this.checkForGroundUnitTarget();
+    if (this.holdBomb) {
+      drawAnimFrame(
         "bomb sight found target",
         this.x - this.angle * 4,
         this.y - APPROX_BOMB_RANGE,
@@ -356,15 +358,16 @@ function playerClass() {
         BOMB_FRAME_W,
         BOMB_FRAME_H
       );
-    }
-    return drawAnimFrame(
-      "bomb sight",
-      this.x - this.angle * 4,
-      this.y - APPROX_BOMB_RANGE,
-      this.frame % 2,
-      BOMB_FRAME_W,
-      BOMB_FRAME_H
-    );
+    } else {
+      drawAnimFrame(
+        "bomb sight",
+        this.x - this.angle * 4,
+        this.y - APPROX_BOMB_RANGE,
+        this.frame % 2,
+        BOMB_FRAME_W,
+        BOMB_FRAME_H
+      );
+  }
   };
 
   this.checkForGroundUnitTarget = function () {
@@ -542,9 +545,10 @@ function playerClass() {
 
   this.doAI = function () {
     this.holdFire = true; // always
+    /* // now autofires when there's a target it'll hit
     if (Math.random() < 0.01) {
       this.holdBomb = !this.holdBomb;
-    }
+    }*/
     if (this.AI_powerup_chasing != null) {
       this.holdDown = this.y < this.AI_powerup_chasing.y - this.speed;
       this.holdUp = this.y > this.AI_powerup_chasing.y + this.speed;

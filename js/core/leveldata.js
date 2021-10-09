@@ -143,7 +143,8 @@ function groundTypeToObject(kind,atX,atY) {
 // note: should only be called right after making a fresh copy to levData, modifies it
 function processAndRemoveGroundLevelData() {
 	var levelSpawnData = levData[0].groundData;
-	surfaceList.length = 0; // can't set to [] or it breaks moveDrawList connection
+surfaceList = [];
+	//surfaceList.length = 0; // can't set to [] or it breaks moveDrawList connection
 
 	let w = images[curDepthMap].width;
 	let h = images[curDepthMap].height;

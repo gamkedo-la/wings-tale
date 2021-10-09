@@ -273,9 +273,9 @@ function keyHoldUpdate(evt, setTo) {
 function playerKeyHold(evt, keyFrom, whichPlayer, setTo) {
   var validGameKey = true;
 
-  if (evt.keyCode == inputList[keyFrom].bombKey) {
-    playerList[whichPlayer].holdBomb = setTo;
-  } else if (evt.keyCode == inputList[keyFrom].fireKey) {
+  /*if (evt.keyCode == inputList[keyFrom].bombKey) {
+    playerList[whichPlayer].holdBomb = setTo; // now autofires bombs on targets
+  } else */if (evt.keyCode == inputList[keyFrom].fireKey) {
     playerList[whichPlayer].holdFire = setTo;
   } else if (evt.keyCode == inputList[keyFrom].leftKey) {
     playerList[whichPlayer].holdLeft = setTo;
