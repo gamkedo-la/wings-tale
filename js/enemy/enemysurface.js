@@ -75,7 +75,7 @@ function surfaceEnemyClass(startX,startY) {
 	this.draw = function() {
 		this.y = this.origY-bgDrawY;
 		var heightHere = depthAt(this.x,this.origY);
-		var heightScale = 0.8+0.9*(heightHere/255.0);
+		var heightScale = 0.6+0.85*(heightHere/255.0);
 		if(debugDraw_surfacePaths && this.patrolWaypoints.length>0 &&  gameState == GAME_STATE_LEVEL_DEBUG) {
 			context.strokeStyle="black"; // shadow so it's visible on moon stage
 			context.beginPath();
