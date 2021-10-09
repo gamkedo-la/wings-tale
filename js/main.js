@@ -360,10 +360,6 @@ function drawRippleEffect() {
   rippleNewFrame();
 
   context.putImageData(ripple, 0, 0);
-  // context.drawImage(canvas, -PARALLAX_OFFSET_X*W_RATIO,
-  // 						  -PARALLAX_OFFSET_Y*H_RATIO,
-  // 						   GAME_W + (PARALLAX_OFFSET_X*2*W_RATIO >> 0),
-  // 						   GAME_H + (PARALLAX_OFFSET_Y*2*H_RATIO) >> 0);
 }
 
 function stretchLowResCanvasToVisibleCanvas() {
@@ -530,9 +526,9 @@ function update() {
         drawLevelTransitionScreen(levNow);
       }
 
-      // If the player is at the last level, switch back to the level select menu
+      // If the player is at the last level, switch back to the title screen
       if (levNow > LEVEL_LAVA) {
-        gameState = GAME_STATE_LEVEL_SELECT;
+        gameState = GAME_STATE_TITLE;
       }
       // Otherwise, transition to the next level
       else {
