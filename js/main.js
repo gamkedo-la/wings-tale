@@ -18,8 +18,8 @@ var gamepads = new GamepadManager();
 
 var playerScore = 0; // Player Score, Getting powerups adds to it.
 
-// Starts at - 2 due to the increment function running twice at the start of a level.
-var deathCount = -2; // Number of times player has "died" during a level.
+// Starts at - 3 due to the increment function running twice at the start of a level.
+var deathCount = -3; // Number of times player has "died" during a level.
 
 var drawMoveList = []; // list of lists - note, drawn in this order, so should be filled closest to ground up towards sky last
 var animateEachLists = []; // subset of draw/move lists for which each object has its own separate animation frame to update
@@ -213,7 +213,6 @@ function animateSprites() {
 }
 
 function reset() {
-  // console.log("reached reset "+levNow);
   try {
     if (gameMusic && gameMusic.sound) {
       // can be null
@@ -376,6 +375,24 @@ function stretchLowResCanvasToVisibleCanvas() {
   );
 }
 
+function updatePlayerScore() {
+  if (deathCount < 0) {
+    deathCount = 0;
+  }
+
+  playerScore += 1000;
+
+  playerScore -= 1000 * deathCount;
+
+  if (playerScore < 0) {
+    playerScore = 0;
+  }
+
+  if (!deathCount) {
+    playerScore += 10000;
+  }
+}
+
 function update() {
   gamepads.update();
 
@@ -447,7 +464,6 @@ function update() {
       }
 
       listCollideExplode(shotList, enemyList, function (at, to) {
-        //console.log("shot hit!");
         if (at.ownedByPlayer) {
           at.ownedByPlayer.combo.add();
           // note: if the global playerScore gets refactored into
@@ -511,16 +527,17 @@ function update() {
           levelProgressPerc = 0.0;
 
           if (levNow == LEVEL_LAVA) {
-            playerScore += 1000;
+            updatePlayerScore();
             gameState = GAME_STATE_ENDING;
           } else {
             levNow++;
             currentLevelImageName = levNames[levNow];
-            playerScore += 1000;
+            updatePlayerScore();
+
             reset();
             gameState = GAME_STATE_LEVEL_TRANSITION;
           }
-        }, 5000);
+        }, 1000);
       }
 
       break;
@@ -546,6 +563,7 @@ function update() {
 
         setTimeout(function () {
           startLevel(levSeq[levNow]);
+          deathCount = 0;
           gameState = GAME_STATE_PLAY;
           goingToNextLevel = false;
         }, LEVEL_TRANSITION_IN_MILLISECONDS);

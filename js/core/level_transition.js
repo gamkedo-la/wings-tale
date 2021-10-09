@@ -12,18 +12,26 @@ function drawLevelCompleteScreen(level) {
   );
   context.fillText("COMPLETE", canvas.width / 2, canvas.height / 2 + 12);
 
+  // Deaths
+  if (deathCount != 0) {
+    context.fillText(
+      "Hits Taken: " + deathCount + " = " + "-" + deathCount * 1000 + " points",
+      canvas.width / 2,
+      canvas.height / 2 + 30
+    );
+  } else {
+    context.fillText(
+      "No Hits Taken! = 10,000 bonus points",
+      canvas.width / 2,
+      canvas.height / 2 + 30
+    );
+  }
+
   // Score
   context.fillText(
     "Score: " + playerScore,
     canvas.width / 2,
     canvas.height / 2 + 48
-  );
-
-  // Deaths
-  context.fillText(
-    "Deaths: " + deathCount,
-    canvas.width / 2,
-    canvas.height / 2 + 64
   );
 }
 
