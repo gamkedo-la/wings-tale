@@ -33,21 +33,36 @@ function TitleScreen()
 
 		context.textAlign = 'center';
         context.font = "10px Georgia";
-        var lineY = 160;
+        var lineY = 145;
         var lineSkip = 40;
         
         if (titleframes%20<10) { // flash
-            context.fillStyle = 'black';
-            context.fillText("Click or press enter to start", canvas.width/2+1, lineY+1);
-            context.fillStyle = 'white';
-            context.fillText("Click or press enter to start", canvas.width/2, lineY);
+            shadowText("Choose how many players to start", canvas.width/2, lineY, 'white');
         }
         
         // todo
-        context.fillText("[CREDITS]", canvas.width/2, lineY+=lineSkip);
-
-
+        lineSkip /= 3;
+        lineY+=lineSkip/2;
+        var menuItems = ["1 Player","2 Players","Human+AI","Controls","Credits"];
+        for(var i=0;i<menuItems.length;i++) {
+            titleButtonHighlightIfMouseNear(menuItems[i], canvas.width*(i+1)/(menuItems.length+1), lineY+=lineSkip);
+        }
     }
+}
+
+function titleButtonHighlightIfMouseNear(buttonText, centerX, centerY) {
+    var dx = mouseX-centerX;
+    var dy = mouseY-centerY;
+    var mouseDist = Math.sqrt(dx*dx+dy*dy);
+    var isMouseNear = mouseDist < 20;
+    shadowText(buttonText, centerX, centerY, (isMouseNear ? "cyan" : "gray"));
+}
+
+function shadowText(showText, atX, atY, fgColor) {
+    context.fillStyle = 'black';
+    context.fillText(showText, atX+1, atY+1);
+    context.fillStyle = fgColor;
+    context.fillText(showText, atX, atY);
 }
 
 function initializeTitleScreen()

@@ -126,7 +126,7 @@ function playerClass() {
 
   this.decrementPowerupTimers = function () {
     if (this.shotsNumber > 1) {
-      console.log("SHOT: ", this.shotPowerTimer);
+      // console.log("SHOT: ", this.shotPowerTimer);
       this.shotPowerTimer -= 1;
       this.checkTimer("shotPowerTimer", () => {
         this.shotsNumber = 1;
@@ -134,7 +134,7 @@ function playerClass() {
     }
 
     if (this.hasLaserPowerUp) {
-      console.log("LASER: ", this.laserPowerTimer);
+      // console.log("LASER: ", this.laserPowerTimer);
       this.laserPowerTimer -= 1;
       this.checkTimer("laserPowerTimer", () => {
         this.hasLaserPowerUp = false;
@@ -142,7 +142,7 @@ function playerClass() {
     }
 
     if (this.speed > 3) {
-      console.log("SPEED: ", this.speedPowerTimer);
+      // console.log("SPEED: ", this.speedPowerTimer);
       this.speedPowerTimer -= 1;
       this.checkTimer("speedPowerTimer", () => {
         this.speed -= 1;
@@ -150,7 +150,7 @@ function playerClass() {
     }
 
     if (this.bombCount > 1) {
-      console.log("BOMB: ", this.bombPowerTimer);
+      // console.log("BOMB: ", this.bombPowerTimer);
       this.bombPowerTimer -= 1;
       this.checkTimer("bombPowerTimer", () => {
         this.bombCount -= 1;
@@ -158,7 +158,7 @@ function playerClass() {
     }
 
     if (this.ghostCount > 0) {
-      console.log("GHOST: ", this.ghostPowerTimer);
+      // console.log("GHOST: ", this.ghostPowerTimer);
       this.ghostPowerTimer -= 1;
       this.checkTimer("ghostPowerTimer", () => {
         this.ghostCount -= 1;
