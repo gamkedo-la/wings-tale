@@ -336,6 +336,16 @@ function playerClass() {
         (this.angle * Math.PI) / 180
       );
 
+      if (this.checkForGroundUnitTarget()) {
+        drawAnimFrame(
+          "bomb sight found target",
+          this.x - this.angle * 4,
+          this.y - APPROX_BOMB_RANGE,
+          this.frame % 2,
+          BOMB_FRAME_W,
+          BOMB_FRAME_H
+        );
+      }
       drawAnimFrame(
         "bomb sight",
         this.x - this.angle * 4,
@@ -351,17 +361,16 @@ function playerClass() {
 
       drawList(this.defenseRingUnitList);
     }
+  };
 
-    // if (this.homingBombFramesLeft > 0) {
-    //   drawFilledBar(
-    //     this.x - 10,
-    //     this.y + 10,
-    //     20,
-    //     5,
-    //     this.homingBombFramesLeft / HOMING_POWERUP_FRAMES,
-    //     "lime"
-    //   );
-    // }
+  this.checkForGroundUnitTarget = function () {
+    var reticle = {
+      x: this.x - this.angle * 4,
+      y: this.y - APPROX_BOMB_RANGE,
+      collW: BOMB_FRAME_W,
+      collH: BOMB_FRAME_H,
+    };
+    return surfaceList.find((unit) => boxOverLap(unit, reticle));
   };
 
   this.move = function () {
