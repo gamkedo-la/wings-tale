@@ -140,7 +140,7 @@ var creditsList = [
 "Rodrigo Bonzerr Lopez: Fire snake sprite",
 "Gabriel Cornish: Fire dragon head contrast improved",
 "Jonathan Peterson: Alternative player 2 sprite",
-"Abhishek: Intro story text",
+"Abhishek @akhmin_ak: Intro story text",
 "Michael \"Misha\" Fewkes: Initial sound functionality",
 "Guillermo De Leon & Tim Chase: Practice commit",
 " ",
