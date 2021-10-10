@@ -92,7 +92,7 @@ function assignKeyMapping() {
   inputList[0].cheatKeySpawnBug = KEY_J;
 
   inputList[1].bombKey = KEY_X;
-  inputList[1].fireKey = KEY_L;
+  inputList[1].fireKey = KEY_H;
   inputList[1].leftKey = KEY_A;
   inputList[1].upKey = KEY_W;
   inputList[1].downKey = KEY_S;
