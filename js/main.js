@@ -236,7 +236,7 @@ function reset() {
   }
 
   if (twoPlayerGame) {
-    playerList = [new playerClass(), new playerClass()];
+    playerList = [new playerClass(1), new playerClass(2)];
   } else {
     playerList = [new playerClass()];
   }

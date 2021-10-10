@@ -5,7 +5,7 @@ const PLAYER_COLLIDER_SIZE = 4;
 const PLAYER_FRAMES = 3;
 const PLAYER_ANGLE_MAX = 10;
 const PLAYER_ANGLE_STEP = 2;
-const EDGE_MARGIN = PLAYER_DIM/7;
+const EDGE_MARGIN = PLAYER_DIM / 7;
 const INVULNERABLE_DURATION = 15;
 const INVULNERABLE_DURATION_DECREMENT = 0.1;
 
@@ -29,10 +29,12 @@ const HOMING_POWERUP_FRAMES = 300;
 
 playerClass.prototype = new moveDrawClass();
 
-function playerClass() {
+function playerClass(playerNum = 1) {
   // used for ghost player sources
   this.trailX = [];
   this.trailY = [];
+
+  this.playerNum = playerNum;
 
   this.x = GAME_W / 2;
   this.y = GAME_H - PLAYER_DIM * 2;
@@ -179,6 +181,11 @@ function playerClass() {
     var icoYofs = 5;
     var barX = 16;
     var icoX = 8;
+    var P2XOffset = 200;
+    if (this.playerNum === 2) {
+      barX += P2XOffset;
+      icoX += P2XOffset;
+    }
 
     if (this.speed > 3) {
       drawBarWithText(
@@ -367,7 +374,7 @@ function playerClass() {
         BOMB_FRAME_W,
         BOMB_FRAME_H
       );
-  }
+    }
   };
 
   this.checkForGroundUnitTarget = function () {
@@ -457,8 +464,8 @@ function playerClass() {
     var allowBombsToDrop = false;
 
     this.bombReload--;
-    if(this.holdBomb) {
-      if(this.bombReload<=0) {
+    if (this.holdBomb) {
+      if (this.bombReload <= 0) {
         allowBombsToDrop = true;
         this.bombReload = 10;
       }
@@ -559,11 +566,11 @@ function playerClass() {
       this.holdBomb = !this.holdBomb;
     }*/
     if (this.AI_powerup_chasing != null) {
-      this.holdDown = this.y < this.AI_powerup_chasing.y - this.speed*2;
-      this.holdUp = this.y > this.AI_powerup_chasing.y + this.speed*2;
+      this.holdDown = this.y < this.AI_powerup_chasing.y - this.speed * 2;
+      this.holdUp = this.y > this.AI_powerup_chasing.y + this.speed * 2;
 
-      this.holdLeft = this.x > this.AI_powerup_chasing.x + this.speed*3;
-      this.holdRight = this.x < this.AI_powerup_chasing.x - this.speed*3;
+      this.holdLeft = this.x > this.AI_powerup_chasing.x + this.speed * 3;
+      this.holdRight = this.x < this.AI_powerup_chasing.x - this.speed * 3;
 
       var dist = approxDist(
         this.x,
@@ -585,7 +592,7 @@ function playerClass() {
       this.holdLeft = this.x > this.AI_target.x + this.speed * 4;
       this.holdRight = this.x < this.AI_target.x - this.speed * 4;
       if (
-        this.AI_target.y > this.y-35 ||
+        this.AI_target.y > this.y - 35 ||
         this.AI_target.readyToRemove ||
         enemyList.length == 0
       ) {
@@ -616,12 +623,17 @@ function playerClass() {
           powerupList[0].x,
           powerupList[0].y
         );
-        if(dist < 0.45 * GAME_W) { // NOTE: should be less by a margin than give up distance
+        if (dist < 0.45 * GAME_W) {
+          // NOTE: should be less by a margin than give up distance
           this.AI_powerup_chasing = powerupList[0];
         }
       } // end of powerup check
       else if (enemyList.length > 0) {
-        if(enemyList[0].x > GAME_W * 0.1 && enemyList[0].x < GAME_W * 0.9 && enemyList[0].y < this.y-50) {
+        if (
+          enemyList[0].x > GAME_W * 0.1 &&
+          enemyList[0].x < GAME_W * 0.9 &&
+          enemyList[0].y < this.y - 50
+        ) {
           this.AI_target = enemyList[0];
         }
       } // end of powerup check
