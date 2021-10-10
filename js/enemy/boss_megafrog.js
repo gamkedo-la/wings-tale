@@ -33,7 +33,7 @@ function bossMegaFrogClass() {
     { x: GAME_W / 2 - 50, y: GAME_H / 2 - 18 },
     { x: GAME_W / 2 - 50, y: GAME_H / 2 - 58 },
   ];
-  this.health = 500;
+  this.health = 500 * playerList.length;
   this.collW = 256;
   this.collH = 64;
   this.readyToRemove = false;
@@ -274,7 +274,7 @@ function bossMegaFrogClass() {
         90,
         10,
         this.health,
-        500,
+        500 * playerList.length,
         this.x - 45,
         this.y + 175,
         "red"

@@ -109,7 +109,7 @@ function bossLavaDragon_Neck_Class(baseAngOffset, jointOffset) {
   this.neckAngles;
   this.neckAnglesOsc; // oscillator
   this.reloadTime = DRAGON_SHOT_RELOAD;
-  this.health = 100;
+  this.health = 100 * playerList.length;
 
   // updated to the coord at the end of each neck
   this.collX = -100;
@@ -185,7 +185,7 @@ function bossLavaDragon_Neck_Class(baseAngOffset, jointOffset) {
       50,
       10,
       this.health,
-      100,
+      100 * playerList.length,
       offsetX - 12,
       offsetY + 20,
       "blue"
