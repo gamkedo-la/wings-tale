@@ -537,7 +537,7 @@ function update() {
             reset();
             gameState = GAME_STATE_LEVEL_TRANSITION;
           }
-        }, 1000);
+        }, 2500);
       }
 
       break;
