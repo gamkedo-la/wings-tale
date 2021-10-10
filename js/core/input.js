@@ -77,7 +77,7 @@ var inputList = [new inputPlayerClass(), new inputPlayerClass()];
 
 function assignKeyMapping() {
   inputList[0].bombKey = KEY_M;
-  inputList[0].fireKey = KEY_SPACE; // maybe N
+  inputList[0].fireKey = KEY_SPACE;
   inputList[0].leftKey = KEY_LEFT;
   inputList[0].upKey = KEY_UP;
   inputList[0].downKey = KEY_DOWN;
@@ -92,7 +92,7 @@ function assignKeyMapping() {
   inputList[0].cheatKeySpawnBug = KEY_J;
 
   inputList[1].bombKey = KEY_X;
-  inputList[1].fireKey = KEY_Z;
+  inputList[1].fireKey = KEY_L;
   inputList[1].leftKey = KEY_A;
   inputList[1].upKey = KEY_W;
   inputList[1].downKey = KEY_S;
