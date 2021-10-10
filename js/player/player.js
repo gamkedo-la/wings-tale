@@ -333,15 +333,29 @@ function playerClass(playerNum = 1) {
           (this.angle * Math.PI) / 180
         );
       }
-      drawAnimFrame(
-        "player",
-        this.x,
-        this.y,
-        this.frame,
-        PLAYER_FRAME_W,
-        PLAYER_FRAME_H,
-        (this.angle * Math.PI) / 180
-      );
+
+      if (this.playerNum == 1) {
+        drawAnimFrame(
+          "player",
+          this.x,
+          this.y,
+          this.frame,
+          PLAYER_FRAME_W,
+          PLAYER_FRAME_H,
+          (this.angle * Math.PI) / 180
+        );
+        
+      } else {
+        drawAnimFrame(
+          "player_ghost_1",
+          this.x,
+          this.y,
+          this.frame,
+          PLAYER_FRAME_W,
+          PLAYER_FRAME_H,
+          (this.angle * Math.PI) / 180
+        );
+      }
 
       this.drawBombSight();
 
